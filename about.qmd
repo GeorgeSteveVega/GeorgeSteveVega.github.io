@@ -1,10 +1,9 @@
 ---
 title: "About"
 navbar: false
+format: html
+editor: visual
+toc: true
 ---
 
 About this site
-
-```{r}
-1 + 1
-```
