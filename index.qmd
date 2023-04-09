@@ -13,7 +13,7 @@ about:
     - text: Github
       icon: github
       href: https://github.com/GeorgeSteveVega
-    - text: Curriculum V.
+    - text: Hoja de Vida
       icon: file-text
       href: Georgie_CV.pdf    
 ---

@@ -1,5 +1,6 @@
 ---
 title: "Series de Tiempo"
+navbar: false
 author: George Steven Vega- Luis Carlos Garay
 date-format: "MM-YYYY"
 date: 03-03-2023
