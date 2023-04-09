@@ -24,6 +24,12 @@ website:
         contents:
           - Series.qmd
           - Presentacion.qmd
+  sidebar:
+      - title: "Estadistica espacial"
+        contents:
+          - Espacial.qmd
+          # navigation items
+          
 #https://quarto.org/docs/websites/website-navigation.html
 # website:
 #   sidebar:
