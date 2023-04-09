@@ -1,6 +1,7 @@
 ---
 title: Estadistica espacial 
 subtitle: Modelado Geoespacial
+navbar: false
 author: George Vega
 date-format: "MM-YYYY"
 date: 03-03-2023

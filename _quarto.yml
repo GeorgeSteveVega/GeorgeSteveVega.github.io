@@ -16,19 +16,49 @@ website:
       - text: "Estadistica espacial"
         file: Espacial.qmd
       - about.qmd
-      
+
   sidebar:
       - title: "Series de Tiempo"
-        style: "docked"
+        style: "floating"
+        collapse-level: 3
+        sidebar: false
         background: light
         contents:
           - Series.qmd
           - Presentacion.qmd
-  sidebar:
+
       - title: "Estadistica espacial"
         contents:
           - Espacial.qmd
           # navigation items
+
+# website:
+#   title: "George Steven Vega"
+#   navbar:
+#     background: primary
+#     search: true
+#     left:
+#       - href: index.qmd
+#         text: Home
+#       - sidebar:Series de Tiempo
+#       - sidebar:Estadistica espacial
+#       - sidebar:about
+#       
+#   sidebar:
+#       - id: Series de Tiempo
+#         title: "Series de Tiempo"
+#         style: "docked"
+#         sidebar: false
+#         background: light
+#         collapse-level: 2
+#         contents:
+#           - Series.qmd
+#           - Presentacion.qmd
+#           
+#       - id: Estadistica espacial
+#         title: "Estadistica espacial"
+#         contents:
+#           - Espacial.qmd
           
 #https://quarto.org/docs/websites/website-navigation.html
 # website:
