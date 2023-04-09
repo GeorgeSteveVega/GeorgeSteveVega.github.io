@@ -1,0 +1,52 @@
+project:
+  type: website
+  output-dir: docs
+
+
+website:
+  title: "George Steven Vega"
+  navbar:
+    background: primary
+    search: true
+    left:
+      - href: index.qmd
+        text: Home
+      - text: "Series de Tiempo"
+        file: Series.qmd
+      - text: "Estadistica espacial"
+        file: Espacial.qmd
+      - about.qmd
+      
+  sidebar:
+      - title: "Series de Tiempo"
+        style: "docked"
+        background: light
+        contents:
+          - Series.qmd
+          - Presentacion.qmd
+#https://quarto.org/docs/websites/website-navigation.html
+# website:
+#   sidebar:
+#     style: "docked"
+#     search: true
+#     contents:
+#       - section: "Series de Tiempo"
+#         contents:
+#           - Presentacion.qmd
+# 
+#       - section: "Estadistica espacial"
+#         contents:
+#           - Espacial.qmd
+#           
+#       - section: "Index"
+#         contents:
+#           - index.qmd   
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+
+

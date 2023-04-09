@@ -1,0 +1,532 @@
+---
+title: "Series de Tiempo"
+author: George Steven Vega- Luis Carlos Garay
+date-format: "MM-YYYY"
+date: 03-03-2023
+format: html
+editor: visual
+bibliography: References.bib
+cls: apa.csl
+toc: true
+---
+
+# Descriptivo Serie 1 (Standar and Purse 500)
+
+Se realiza la descarga de los datos procedientes de yahoo finance, para lo cual se utiliza el paquete quantmood, el cual realiza la descarga de los datos los cuales son de tipo xts y zoo
+
+```{r}
+#| results: hide
+#| warning: false
+list.of.packages <- c("zoo", "xts", "quantmod")
+lapply(list.of.packages, require, character.only = TRUE)
+```
+
+Inicialmente se crea un ambiente, para exportar los datos diaros de la serie:
+
+```{r}
+#| results: hide
+#| warning: false
+sandp500 <- new.env()
+getSymbols("^GSPC", env = sandp500, src = "yahoo", from = as.Date("1943-01-01"), to = as.Date("2023-04-01"))
+sp500<- sandp500$GSPC[,6]
+```
+
+```{r}
+#| warning: false
+library(dygraphs)
+dygraph(sp500)%>%dyRangeSelector()
+```
+
+Mediante la libreria TSstudio se realiza conveirten los datos a formato ts
+
+```{r}
+#| warning: false
+library(TSstudio)
+sp500ts=ts(sp500,start=c(1943,01),frequency = 365)
+ts_info(sp500ts)
+```
+
+Se lleva acabo el calculo de los días para conocer la cantidad de datos que se deberían tener:
+
+```{r}
+survey <- data.frame(date=c("1943/01/01"),tx_start=c("2023/04/01"))
+
+survey$date_diff <- as.Date(as.character(survey$date), format="%Y/%m/%d")-
+                  as.Date(as.character(survey$tx_start), format="%Y/%m/%d")
+survey
+
+```
+
+Se genera la gráfica de serie de tiempo de la serie:
+
+```{r}
+#| warning: false
+plot(sp500ts)
+length(sp500)
+```
+
+Los datos obtenidos determinan que la serie diaria es irregular y no es equidistante en el tiempo yse visualiza de mejor manera mediante el paquete xts y zoo.
+
+## Visualización
+
+```{r}
+sandp500 <- new.env()
+getSymbols("^GSPC", env = sandp500, src = "yahoo", from = as.Date("1943-01-01"), to = as.Date("2023-03-31"))
+SAP500<- sandp500$GSPC[,6]
+nmonths(SAP500)
+class(SAP500)
+SAP500<-split(SAP500, f="months")
+SAP500<-lapply(SAP500, FUN= mean)
+head(SAP500)
+tail(SAP500)
+fechas<-seq(as.Date("1943-01-01"), length=963, by="months")
+head(fechas)
+tail(fechas)
+SAP500xts<-as.xts(as.numeric(SAP500), order.by=fechas)
+xts.to.df<-function(dataxts){
+  df<-data.frame(fecha=(index(dataxts)),
+                   GSPC=coredata(dataxts))
+  colnames(df)<-c("fecha", "GSPC")
+  df
+}
+SP500ts<-xts.to.df(SAP500xts) 
+write.csv(SP500ts, "C:/Users/ocamp/Downloads/Series/Series Tiempo Univariadas/Documento/SP500ts.csv", row.names=FALSE)
+```
+
+```{r}
+library(parsedate)
+SP500ts<- read.csv("SP500ts.csv")
+Fecha<-parsedate::parse_date(SP500ts$fecha)
+SAP500 <-data.frame(Fecha=Fecha,GSPC=SP500ts$GSPC)
+SAP500ts=ts(SAP500$GSPC,start=c(1943,01),frequency = 12)
+plot.ts(SAP500ts)
+```
+
+## Estabilización de la varianza
+
+```{r}
+#| warning: false
+library(forecast)
+library(MASS)
+forecast::BoxCox.lambda(SAP500ts, method ="loglik", lower = -1, upper = 3)
+MASS::boxcox(lm(SAP500ts ~ 1),seq(-4, 4, length = 20)) 
+log.SAP500.ts<-log(SAP500ts)
+TSstudio::ts_plot(log.SAP500.ts,title = "",slider=TRUE)
+length(log.SAP500.ts)
+plot(log.SAP500.ts)
+forecast::BoxCox.lambda(log.SAP500.ts, method ="loglik", lower = -1, upper = 3)
+MASS::boxcox(lm(log.SAP500.ts ~ 1),seq(-6, 10, length = 50))
+
+```
+
+## Tendencia (Estimación y/o Eliminación)
+
+```{r}
+summary(fit1<-lm(log.SAP500.ts~time(log.SAP500.ts), data=log.SAP500.ts,na.action = NULL))
+plot(log.SAP500.ts) + abline(fit1, col="red")
+x1<-log.SAP500.ts-predict(fit1)
+plot(x1, main="Serie en escala logaritmica removiendo tendencia")
+acf(x1, lag.max = length(x1))
+```
+
+### Descomposición
+
+Filtros moviles
+
+```{r}
+decom.SAP500.ts=decompose(log.SAP500.ts)
+plot(decom.SAP500.ts)
+```
+
+```{r}
+#| warning: false
+library(tidyverse)
+library(lubridate)
+library(timetk)
+library(tibble)
+library(zoo)
+```
+
+```{r}
+#| warning: false
+indice_logSAP500=as.Date(as.yearmon(tk_index(log.SAP500.ts)))
+df_logSAP500=data.frame(Fecha=indice_logSAP500,LogSAP500=as.matrix(log.SAP500.ts))
+str(df_logSAP500)
+tibble_logSAP500=tibble(df_logSAP500)
+tibble_logSAP500%>%timetk::plot_time_series(Fecha, log.SAP500.ts, 
+                   .interactive = TRUE,
+                   .plotly_slider = TRUE)
+```
+
+```{r}
+tibble_logSAP500%>%mutate(LogSAP500_ajus=smooth_vec(log.SAP500.ts,span = 0.75, degree = 2))
+```
+
+```{r}
+tibble_logSAP500%>%mutate(LogSAP500_ajus=smooth_vec(log.SAP500.ts,span = 0.75, degree = 2))%>%ggplot(aes(Fecha, log.SAP500.ts)) +
+    geom_line() +
+    geom_line(aes(y = LogSAP500_ajus), color = "blue")
+```
+
+```{r}
+#| warning: false
+library(feasts)
+library(fable)
+library(tsibble)
+tsibble_lSAP500<-as_tsibble(log.SAP500.ts)
+tsibble_lSAP500 %>%
+  model(
+    STL(value ~ trend() +
+                   season(window = "periodic"),
+    robust = TRUE)) %>%
+  components() %>%
+  autoplot()
+```
+
+```{r}
+tsibble_lSAP500|>mutate(diff_lSAP500=tsibble::difference(value,lag=1,differences = 1))|>
+  autoplot(.vars =diff_lSAP500) + labs(subtitle = "Cambios en escala logarítmica de los pasajeros")
+```
+
+```{r}
+tsibble_lSAP500<-tsibble_lSAP500|>mutate(diff_lSAP500=tsibble::difference(value,lag=1,differences = 1))
+###Diferenciando basado en el objeto tibble
+tibble_logSAP500%>%mutate(diff_LogSAP500=LogSAP500-lag(LogSAP500))%>%plot_time_series(Fecha,diff_LogSAP500)
+tibble_logSAP500<-tibble_logSAP500%>%mutate(diff_LogSAP500=LogSAP500-lag(LogSAP500))
+###Diferenciando con base en el objeto ts
+dlSAP500<-diff(log.SAP500.ts)
+plot(dlSAP500)
+```
+
+## Detección de la estacionalidad
+
+```{r}
+monthplot(dlSAP500)
+```
+
+```{r}
+tsibble_lSAP500%>%na.omit()|>gg_subseries(diff_lSAP500,period=12) ##Gráfico de subseries usando el objeto tibble
+tibble_logSAP500 %>%na.omit()|>
+    mutate(
+        Mes = str_c("", as.character(lubridate::month(Fecha,label=TRUE)))
+    ) %>%
+    plot_time_series(
+        .date_var = Fecha,
+        .value = diff_LogSAP500,
+        .facet_vars = Mes,
+        .facet_ncol = 4, 
+        .color_var = Mes, 
+        .facet_scales = "fixed",
+        .interactive = FALSE,
+        .legend_show = FALSE,
+        .smooth = FALSE
+    )
+library(forecast)
+ggseasonplot(dlSAP500)
+```
+
+```{r}
+tibble_logSAP500%>%na.omit()%>%plot_seasonal_diagnostics(.date_var = Fecha,.value = diff_LogSAP500,.feature_set = c("month.lbl"),.geom="boxplot")
+ggplot(tibble_logSAP500 %>%na.omit()|>
+    mutate(
+        Mes = str_c("Mes ", as.character(lubridate::month(Fecha)))
+    ), aes(x = diff_LogSAP500)) +
+      geom_density(aes(fill = Mes)) +
+      ggtitle("LosPass - Estimación de la densidad vía Kernel por mes") +
+      facet_grid(rows = vars(as.factor(Mes)))
+```
+
+### Periodograma
+
+```{r}
+spectrum(as.numeric(dlSAP500),log='no')
+PeriodgramadlSAP500=spectrum(as.numeric(dlSAP500),log='no')
+ubicacionlSAP500=which.max(PeriodgramadlSAP500$spec)
+x<-PeriodgramadlSAP500$freq[ubicacionlSAP500]
+y<-2*x
+sprintf("El valor de la frecuencia donde se máximiza el periodograma para la serie es: %s",PeriodgramadlSAP500$freq[ubicacionlSAP500])
+plot(PeriodgramadlSAP500$freq, PeriodgramadlSAP500$spec, type="l")+ abline(v = x, lty=2, col="blue") + abline(v = y, lty=2, col="blue")+ abline(v = 2*y, lty=2, col="blue")
+sprintf("El periodo correspondiente es aproximadamente: %s",1/PeriodgramadlSAP500$freq[ubicacionlSAP500])
+```
+
+```{r}
+library(forecast)
+tsibble_lSAP500=as_tsibble(log.SAP500.ts)
+HWAP_inic=stats::HoltWinters(log.SAP500.ts,alpha=NULL,beta=FALSE,gamma=FALSE)
+plot(HWAP_inic)
+HWAP_inic
+forecast::forecast(HWAP_inic,h=12,level =0.95,lambda = 0)
+plot(forecast::forecast(HWAP_inic,h=12,level =0.95,lambda = 0))
+```
+
+```{r}
+HWAP=stats::HoltWinters(log.SAP500.ts,seasonal="additive") ##Puede establecer beta=F y/0 gamma=F, además el objeto debe ser de clase ts.
+plot(HWAP)
+plot(forecast::forecast(HWAP,h=12,level =0.95,lambda = 0))
+HWAP_1=forecast::hw(log.SAP500.ts,seasonal="additive",damped=TRUE)  ###También se puede usar holt
+plot(HWAP_1)
+ajustados=fitted(HWAP)
+plot(ajustados)
+```
+
+```{r}
+HWAP
+summary(HWAP_1)
+```
+
+```{r}
+predictionHWAP_1=forecast::forecast(HWAP,h=12,level =0.95,lambda = 0)
+predictionHWAP_1
+plot(predictionHWAP_1)
+```
+
+```{r}
+predictionHWAP_2=predict(HWAP,n.ahead = 12, prediction.interval = T, level = 0.95)
+predictionHWAP_2=forecast::InvBoxCox(predictionHWAP_2,lambda=0)
+predictionHWAP_2
+```
+
+```{r}
+ajustepass=tsibble_lSAP500%>%
+  model(ETS(value~ error("A")+trend("A")+season("A")))
+pronostico=ajustepass%>%
+  fabletools::forecast(h=12)
+pronostico
+pronostico%>%autoplot(tsibble_lSAP500)+geom_line(aes(y=.fitted),col="#D55E00",data=augment(ajustepass))+labs(y=" ",title="Pronóstico u ajustados")+guides(colour="none")
+```
+
+```{r}
+modelos<-tsibble_lSAP500%>%
+   model(ets=ETS(value~ error("A")+trend("A")+season("A")),
+         stl=decomposition_model(STL(value ~ trend(window = 13) +
+                   season(window = "periodic"),
+    robust = TRUE),NAIVE(season_adjust)))
+ modelos 
+modelos%>%fabletools::forecast(h=12)%>%
+   autoplot(tsibble_lSAP500)
+```
+
+```{r}
+#| warning: false
+library(dplyr)
+library(parsnip)
+library(rsample)
+library(timetk)
+library(modeltime)
+library(tsibble)
+library(tidymodels)
+###Creación del objeto tibble
+lSAP500_tbl<-as_tibble(as_tsibble(log.SAP500.ts))
+lSAP500_tbl$index=as.Date(lSAP500_tbl$index)
+lSAP500_tbl=rename(lSAP500_tbl,Fecha=index,logSAP500=value)
+lSAP500_tbl<-lSAP500_tbl%>%mutate(SAP500=exp(logSAP500))
+lSAP500_tbl
+###División en entrenamiento y prueba
+splits_lSAP500_tbl=timetk::time_series_split(lSAP500_tbl,date_var=Fecha,assess = 12,cumulative = TRUE)
+splits_lSAP500_tbl%>% tk_time_series_cv_plan()%>%
+  plot_time_series_cv_plan(Fecha,logSAP500)
+splits_lSAP500_tbl
+```
+
+```{r}
+#Ajuste del modelo suavizamineto exponencial
+#?modeltime::exp_smoothing
+ets_logSAP500<-modeltime::exp_smoothing(
+  error="additive",
+  trend="additive",
+  season="additive"
+)%>%
+  set_engine("ets")%>%
+  fit(logSAP500 ~ Fecha,data=training(splits_lSAP500_tbl))
+```
+
+```{r}
+modeltime_table(ets_logSAP500) %>%
+  modeltime_calibrate(testing(splits_lSAP500_tbl))%>%
+  modeltime_forecast(
+    new_data = testing(splits_lSAP500_tbl),
+    actual_data = lSAP500_tbl
+  )%>%
+  plot_modeltime_forecast(.conf_interval_fill = "lightblue")
+```
+
+```{r}
+pronostico_ets<-modeltime_table(ets_logSAP500) %>%
+  modeltime_calibrate(testing(splits_lSAP500_tbl))%>%
+  modeltime_forecast(
+    new_data = testing(splits_lSAP500_tbl),
+    actual_data = lSAP500_tbl
+  )
+    
+ pronostico_ets 
+```
+
+```{r}
+ model_tbl<-modeltime_table(ets_logSAP500)
+## Calibración 
+  calibration_tbl<-model_tbl%>%
+    modeltime_calibrate(testing(splits_lSAP500_tbl))
+## Pronóstico sobre el conjunto de prueba
+  calibration_tbl%>%
+   modeltime_forecast(
+    new_data = testing(splits_lSAP500_tbl),
+    actual_data = lSAP500_tbl
+  ) 
+```
+
+```{r}
+###Residuales 
+  residuales_ajuste<-model_tbl%>%
+  modeltime_calibrate(new_data=training(splits_lSAP500_tbl))%>%
+  modeltime_residuals()
+residuales_ajuste%>%plot_modeltime_residuals(
+  .type="timeplot",
+  .interactive = TRUE)
+```
+
+```{r}
+### Precisión de los pronósticos
+  calibration_tbl%>%
+    modeltime_accuracy()
+## Re-ajuste y predicción de valores futuros
+re_ajuste<-calibration_tbl%>%
+  modeltime_refit(data=lSAP500_tbl)
+re_ajuste%>%
+  modeltime_forecast(h=12,
+                     actual_data = lSAP500_tbl
+                     )%>%
+  plot_modeltime_forecast()
+```
+
+### Medidas de Precisión.
+
+```{r}
+h=3
+lserie=length(log.SAP500.ts)
+ntrain=trunc(lserie*0.90) 
+ntrain
+time(log.SAP500.ts)
+time(log.SAP500.ts)[ntrain]
+train=window(log.SAP500.ts,end=time(log.SAP500.ts)[ntrain])
+test=window(log.SAP500.ts,start=time(log.SAP500.ts)[ntrain]+1/12)
+length(train)
+ntest=length(test)
+ntest
+lserie
+```
+
+```{r}
+fchstepahe=matrix(0,nrow=ntest,ncol=h) #Crea una Columna para los h-pasos adelante
+# verval contiene los verdaderos valores de la serie en el conjunto de prueba con los que se compararán los pronósticos.
+verval=cbind(test[1:ntest])
+for(j in 2:h){
+  verval=cbind(verval,c(test[j:ntest],rep(NA,j-1)))
+}
+verval=cbind(test[1:ntest],c(test[2:ntest],NA),c(test[3:ntest],NA,NA))
+#Ajuste del modelo con los datos de entrenamiento
+HWAP_train=stats::HoltWinters(train,seasonal="additive")
+HWAP_train$alpha
+HWAP_train$beta
+HWAP_train$gamma
+```
+
+```{r}
+require(utils)
+suav_inputs=cbind(seq(0.001,0.999,0.1),seq(0.001,0.999,0.1),seq(0.001,0.999,0.1))
+colnames(suav_inputs)<-c("alpha","beta","gamma")
+suav_inputs_tbl=tibble::as_tibble(suav_inputs)
+grilla_suav=expand.grid(alpha=suav_inputs_tbl$alpha,beta=suav_inputs_tbl$beta,gamma=suav_inputs_tbl$gamma) #Grilla de Valores
+#Se crean las ventanas de rolling y se obtiene los h-pronósticos para cada ventana(hay ntest posibles ventanas)
+for(i in 1:(ntest))
+{
+  x=window(log.SAP500.ts,end=time(log.SAP500.ts)[ntrain]+(i-1)/12)
+  print(length(x))
+  refit=stats::HoltWinters(x,seasonal="additive",alpha=HWAP_train$alpha,beta=HWAP_train$beta,gamma=HWAP_train$gamma)
+    fchstepahe[i,]=as.numeric(forecast::forecast(refit,h=h)$mean)
+}
+```
+
+```{r}
+fchstepahe
+```
+
+```{r}
+errores_pred=verval -fchstepahe ##Observación: debo devolver los pronósticos y los verdaderos valores a la escala original si es necesario.
+ECM=apply(errores_pred^2,MARGIN = 2,mean,na.rm=TRUE)##Acá se computa la medida de precisión del pronóstico(en este caso ECM).
+RECM=sqrt(ECM) ##Se le saca raíz 
+RECM ##se lee: Primera fila RECM 1-paso adelante y así sucesivamente
+```
+
+## Rolling
+
+```{r}
+#| warning: false
+library(forecast)
+library(greybox)
+HWAP_train=stats::HoltWinters(train,seasonal="additive")
+ourCallETS <- "forecast::forecast(stats::HoltWinters(x=data,alpha=HWAP_train$alpha,beta=HWAP_train$beta,gamma=HWAP_train$gamma),h=h,level=95)"
+ourValueETS <- c("mean","lower","upper")
+origins=ntest   ##número de rolling windows
+Valoresretornados1 <- ro(log.SAP500.ts, h=h, origins=origins, call=ourCallETS, value=ourValueETS,ci=FALSE,co=FALSE)
+t(Valoresretornados1$holdout)## Permiten verificar los verdaderos valores h-pasos adelante. 
+t(Valoresretornados1$mean)
+```
+
+```{r}
+sqrt(apply((Valoresretornados1$holdout -Valoresretornados1$mean)^2,1,mean,na.rm=TRUE)) ### Se calcula la raíz del error cuadrático medio de predicción
+apply(abs(Valoresretornados1$holdout - -Valoresretornados1$mean),1,mean,na.rm=TRUE) / mean(Valoresretornados1$actuals) ### Error medio absoluto escalado
+```
+
+```{r}
+library(forecast)
+library(greybox)
+salida_ets_train_lSAP500<-ets(train,model="AAA")
+salida_ets_train_lSAP500$par
+```
+
+```{r}
+h=3
+ourCallETS <- "forecast::forecast(forecast::ets(data,alpha=salida_ets_train_lSAP500$par[1],beta=salida_ets_train_lSAP500$par[2]),gamma=salida_ets_train_lSAP500$par[3],h=h,level=95)"
+ourValueETS <- c("mean","lower","upper")
+origins=97
+Valoresretornados1 <- ro(log.SAP500.ts, h=h, origins=origins, call=ourCallETS, value=ourValueETS,ci=FALSE,co=FALSE)
+apply(sqrt((Valoresretornados1$holdout -Valoresretornados1$mean)^2),1,mean,na.rm=TRUE) ### Se calcula la raíz del error cuadrático medio de predicción
+```
+
+```{r}
+apply(abs(Valoresretornados1$holdout - -Valoresretornados1$mean),1,mean,na.rm=TRUE) / mean(Valoresretornados1$actuals) ### Error medio absoluto escalado
+```
+
+# Serie 2
+
+### Visualización de datos
+
+## CPIH ANNUAL RATE
+
+```{r}
+library(parsedate)
+CPIH1 <- read.csv("CPIH1.csv")
+Month<-parsedate::parse_date(CPIH1$CPIHMonth)
+CPIH <-data.frame(Month=Month,CPIH=CPIH1$CPIHMonthly)
+plot(as.ts(CPIH$CPIH))
+CPIHts=ts(CPIH$CPIH,start=c(1989,01),frequency = 12)
+plot(CPIHts)
+plot.ts(CPIHts)
+acf(CPIHts, ci.type="ma")
+acf(CPIHts, type="partial")
+str(CPIHts)
+head(time(CPIHts),20)
+head(cycle(CPIHts),12)
+frequency(CPIHts)
+deltat(CPIHts)
+ts_info(CPIHts)
+
+#plot(as.ts(CPIH.Yearly))
+#plot(as.ts(CPIH.Q))
+```
+
+[CPIH](https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/l55o/mm23) [CPIH Info](https://www.ons.gov.uk/datasets/cpih01/editions/time-series/versions/31#:~:text=Consumer%20Prices%20Index%20including%20owner%20occupiers'%20housing%20costs%20(CPIH),-Current)
+
+## References
+
+    :::
