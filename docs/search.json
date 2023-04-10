@@ -109,7 +109,7 @@
     "href": "Presentacion.html#column-layout",
     "title": "Series de tiempo Univariadas",
     "section": "Column Layout",
-    "text": "Column Layout\nArrange content into columns of varying widths:\n\n\nMotor Trend Car Road Tests\nThe data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles.\n\n\n\n\nknitr::kable(head(mtcars)[,c(\"mpg\", \"cyl\", \"disp\", \"hp\", \"wt\")])\n\n\n\n\n\nmpg\ncyl\ndisp\nhp\nwt\n\n\n\n\nMazda RX4\n21.0\n6\n160\n110\n2.620\n\n\nMazda RX4 Wag\n21.0\n6\n160\n110\n2.875\n\n\nDatsun 710\n22.8\n4\n108\n93\n2.320\n\n\nHornet 4 Drive\n21.4\n6\n258\n110\n3.215\n\n\nHornet Sportabout\n18.7\n8\n360\n175\n3.440\n\n\nValiant\n18.1\n6\n225\n105\n3.460\n\n\n\n\n\n\n\n\nLearn more: Multiple Columns"
+    "text": "Column Layout\nArrange content into columns of varying widths:\n\n\nMotor Trend Car Road Tests\nThe data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles.\n\n\n\n\n\n\n\n\n\nmpg\ncyl\ndisp\nhp\nwt\n\n\n\n\nMazda RX4\n21.0\n6\n160\n110\n2.620\n\n\nMazda RX4 Wag\n21.0\n6\n160\n110\n2.875\n\n\nDatsun 710\n22.8\n4\n108\n93\n2.320\n\n\nHornet 4 Drive\n21.4\n6\n258\n110\n3.215\n\n\nHornet Sportabout\n18.7\n8\n360\n175\n3.440\n\n\nValiant\n18.1\n6\n225\n105\n3.460\n\n\n\n\n\n\n\n\nLearn more: Multiple Columns"
   },
   {
     "objectID": "Presentacion.html#incremental-lists",
@@ -172,21 +172,21 @@
     "href": "Presentacion.html#tabsets",
     "title": "Series de tiempo Univariadas",
     "section": "Tabsets",
-    "text": "Tabsets\n\nPlotData\n\n\n\nlibrary(ggplot2)\nggplot(mtcars, aes(hp, mpg, color = am)) +\n  geom_point() +\n  geom_smooth(formula = y ~ x, method = \"loess\")\n\nWarning: The following aesthetics were dropped during statistical transformation: colour\ni This can happen when ggplot fails to infer the correct grouping structure in\n  the data.\ni Did you forget to specify a `group` aesthetic or to convert a numerical\n  variable into a factor?\n\n\n\n\n\n\n\n\nknitr::kable(mtcars)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nmpg\ncyl\ndisp\nhp\ndrat\nwt\nqsec\nvs\nam\ngear\ncarb\n\n\n\n\nMazda RX4\n21.0\n6\n160.0\n110\n3.90\n2.620\n16.46\n0\n1\n4\n4\n\n\nMazda RX4 Wag\n21.0\n6\n160.0\n110\n3.90\n2.875\n17.02\n0\n1\n4\n4\n\n\nDatsun 710\n22.8\n4\n108.0\n93\n3.85\n2.320\n18.61\n1\n1\n4\n1\n\n\nHornet 4 Drive\n21.4\n6\n258.0\n110\n3.08\n3.215\n19.44\n1\n0\n3\n1\n\n\nHornet Sportabout\n18.7\n8\n360.0\n175\n3.15\n3.440\n17.02\n0\n0\n3\n2\n\n\nValiant\n18.1\n6\n225.0\n105\n2.76\n3.460\n20.22\n1\n0\n3\n1\n\n\nDuster 360\n14.3\n8\n360.0\n245\n3.21\n3.570\n15.84\n0\n0\n3\n4\n\n\nMerc 240D\n24.4\n4\n146.7\n62\n3.69\n3.190\n20.00\n1\n0\n4\n2\n\n\nMerc 230\n22.8\n4\n140.8\n95\n3.92\n3.150\n22.90\n1\n0\n4\n2\n\n\nMerc 280\n19.2\n6\n167.6\n123\n3.92\n3.440\n18.30\n1\n0\n4\n4\n\n\nMerc 280C\n17.8\n6\n167.6\n123\n3.92\n3.440\n18.90\n1\n0\n4\n4\n\n\nMerc 450SE\n16.4\n8\n275.8\n180\n3.07\n4.070\n17.40\n0\n0\n3\n3\n\n\nMerc 450SL\n17.3\n8\n275.8\n180\n3.07\n3.730\n17.60\n0\n0\n3\n3\n\n\nMerc 450SLC\n15.2\n8\n275.8\n180\n3.07\n3.780\n18.00\n0\n0\n3\n3\n\n\nCadillac Fleetwood\n10.4\n8\n472.0\n205\n2.93\n5.250\n17.98\n0\n0\n3\n4\n\n\nLincoln Continental\n10.4\n8\n460.0\n215\n3.00\n5.424\n17.82\n0\n0\n3\n4\n\n\nChrysler Imperial\n14.7\n8\n440.0\n230\n3.23\n5.345\n17.42\n0\n0\n3\n4\n\n\nFiat 128\n32.4\n4\n78.7\n66\n4.08\n2.200\n19.47\n1\n1\n4\n1\n\n\nHonda Civic\n30.4\n4\n75.7\n52\n4.93\n1.615\n18.52\n1\n1\n4\n2\n\n\nToyota Corolla\n33.9\n4\n71.1\n65\n4.22\n1.835\n19.90\n1\n1\n4\n1\n\n\nToyota Corona\n21.5\n4\n120.1\n97\n3.70\n2.465\n20.01\n1\n0\n3\n1\n\n\nDodge Challenger\n15.5\n8\n318.0\n150\n2.76\n3.520\n16.87\n0\n0\n3\n2\n\n\nAMC Javelin\n15.2\n8\n304.0\n150\n3.15\n3.435\n17.30\n0\n0\n3\n2\n\n\nCamaro Z28\n13.3\n8\n350.0\n245\n3.73\n3.840\n15.41\n0\n0\n3\n4\n\n\nPontiac Firebird\n19.2\n8\n400.0\n175\n3.08\n3.845\n17.05\n0\n0\n3\n2\n\n\nFiat X1-9\n27.3\n4\n79.0\n66\n4.08\n1.935\n18.90\n1\n1\n4\n1\n\n\nPorsche 914-2\n26.0\n4\n120.3\n91\n4.43\n2.140\n16.70\n0\n1\n5\n2\n\n\nLotus Europa\n30.4\n4\n95.1\n113\n3.77\n1.513\n16.90\n1\n1\n5\n2\n\n\nFord Pantera L\n15.8\n8\n351.0\n264\n4.22\n3.170\n14.50\n0\n1\n5\n4\n\n\nFerrari Dino\n19.7\n6\n145.0\n175\n3.62\n2.770\n15.50\n0\n1\n5\n6\n\n\nMaserati Bora\n15.0\n8\n301.0\n335\n3.54\n3.570\n14.60\n0\n1\n5\n8\n\n\nVolvo 142E\n21.4\n4\n121.0\n109\n4.11\n2.780\n18.60\n1\n1\n4\n2\n\n\n\n\n\n\n\n\n\nLearn more: Tabsets"
+    "text": "Tabsets\n\nPlotData\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nmpg\ncyl\ndisp\nhp\ndrat\nwt\nqsec\nvs\nam\ngear\ncarb\n\n\n\n\nMazda RX4\n21.0\n6\n160.0\n110\n3.90\n2.620\n16.46\n0\n1\n4\n4\n\n\nMazda RX4 Wag\n21.0\n6\n160.0\n110\n3.90\n2.875\n17.02\n0\n1\n4\n4\n\n\nDatsun 710\n22.8\n4\n108.0\n93\n3.85\n2.320\n18.61\n1\n1\n4\n1\n\n\nHornet 4 Drive\n21.4\n6\n258.0\n110\n3.08\n3.215\n19.44\n1\n0\n3\n1\n\n\nHornet Sportabout\n18.7\n8\n360.0\n175\n3.15\n3.440\n17.02\n0\n0\n3\n2\n\n\nValiant\n18.1\n6\n225.0\n105\n2.76\n3.460\n20.22\n1\n0\n3\n1\n\n\nDuster 360\n14.3\n8\n360.0\n245\n3.21\n3.570\n15.84\n0\n0\n3\n4\n\n\nMerc 240D\n24.4\n4\n146.7\n62\n3.69\n3.190\n20.00\n1\n0\n4\n2\n\n\nMerc 230\n22.8\n4\n140.8\n95\n3.92\n3.150\n22.90\n1\n0\n4\n2\n\n\nMerc 280\n19.2\n6\n167.6\n123\n3.92\n3.440\n18.30\n1\n0\n4\n4\n\n\nMerc 280C\n17.8\n6\n167.6\n123\n3.92\n3.440\n18.90\n1\n0\n4\n4\n\n\nMerc 450SE\n16.4\n8\n275.8\n180\n3.07\n4.070\n17.40\n0\n0\n3\n3\n\n\nMerc 450SL\n17.3\n8\n275.8\n180\n3.07\n3.730\n17.60\n0\n0\n3\n3\n\n\nMerc 450SLC\n15.2\n8\n275.8\n180\n3.07\n3.780\n18.00\n0\n0\n3\n3\n\n\nCadillac Fleetwood\n10.4\n8\n472.0\n205\n2.93\n5.250\n17.98\n0\n0\n3\n4\n\n\nLincoln Continental\n10.4\n8\n460.0\n215\n3.00\n5.424\n17.82\n0\n0\n3\n4\n\n\nChrysler Imperial\n14.7\n8\n440.0\n230\n3.23\n5.345\n17.42\n0\n0\n3\n4\n\n\nFiat 128\n32.4\n4\n78.7\n66\n4.08\n2.200\n19.47\n1\n1\n4\n1\n\n\nHonda Civic\n30.4\n4\n75.7\n52\n4.93\n1.615\n18.52\n1\n1\n4\n2\n\n\nToyota Corolla\n33.9\n4\n71.1\n65\n4.22\n1.835\n19.90\n1\n1\n4\n1\n\n\nToyota Corona\n21.5\n4\n120.1\n97\n3.70\n2.465\n20.01\n1\n0\n3\n1\n\n\nDodge Challenger\n15.5\n8\n318.0\n150\n2.76\n3.520\n16.87\n0\n0\n3\n2\n\n\nAMC Javelin\n15.2\n8\n304.0\n150\n3.15\n3.435\n17.30\n0\n0\n3\n2\n\n\nCamaro Z28\n13.3\n8\n350.0\n245\n3.73\n3.840\n15.41\n0\n0\n3\n4\n\n\nPontiac Firebird\n19.2\n8\n400.0\n175\n3.08\n3.845\n17.05\n0\n0\n3\n2\n\n\nFiat X1-9\n27.3\n4\n79.0\n66\n4.08\n1.935\n18.90\n1\n1\n4\n1\n\n\nPorsche 914-2\n26.0\n4\n120.3\n91\n4.43\n2.140\n16.70\n0\n1\n5\n2\n\n\nLotus Europa\n30.4\n4\n95.1\n113\n3.77\n1.513\n16.90\n1\n1\n5\n2\n\n\nFord Pantera L\n15.8\n8\n351.0\n264\n4.22\n3.170\n14.50\n0\n1\n5\n4\n\n\nFerrari Dino\n19.7\n6\n145.0\n175\n3.62\n2.770\n15.50\n0\n1\n5\n6\n\n\nMaserati Bora\n15.0\n8\n301.0\n335\n3.54\n3.570\n14.60\n0\n1\n5\n8\n\n\nVolvo 142E\n21.4\n4\n121.0\n109\n4.11\n2.780\n18.60\n1\n1\n4\n2\n\n\n\n\n\n\n\n\n\nLearn more: Tabsets"
   },
   {
     "objectID": "Presentacion.html#interactive-slides",
     "href": "Presentacion.html#interactive-slides",
     "title": "Series de tiempo Univariadas",
     "section": "Interactive Slides",
-    "text": "Interactive Slides\nInclude Jupyter widgets and htmlwidgets in your presentations\n\n\nWarning: package 'leaflet' was built under R version 4.1.3\n\n\n\nAttaching package: 'leaflet'\n\n\nThe following object is masked from 'package:xts':\n\n    addLegend\n\n\n\n\n\n\n\nLearn more: Jupyter widgets, htmlwidgets"
+    "text": "Interactive Slides\nInclude Jupyter widgets and htmlwidgets in your presentations\n\n\n\n\n\n\n\nLearn more: Jupyter widgets, htmlwidgets"
   },
   {
     "objectID": "Presentacion.html#interactive-slides-1",
     "href": "Presentacion.html#interactive-slides-1",
     "title": "Series de tiempo Univariadas",
     "section": "Interactive Slides",
-    "text": "Interactive Slides\nTurn presentations into applications with Observable and Shiny. Use component layout to position inputs and outputs.\n\nojs_define(actors = data.frame(\n  x = rnorm(100),\n  y = rnorm(100)\n))\n\n\n\nviewof talentWeight = Inputs.range([-2, 2], { value: 0.7, step: 0.01, label: \"talent weight\" })\nviewof looksWeight = Inputs.range([-2, 2], { value: 0.7, step: 0.01, label: \"looks weight\" })\nviewof minimum = Inputs.range([-2, 2], { value: 1, step: 0.01, label: \"min fame\" })\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nimport { plotActors } from './actors.js';\nplotActors(actors, talentWeight, looksWeight, minimum)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLearn more: Observable, Shiny, Component Layout"
+    "text": "Interactive Slides\nTurn presentations into applications with Observable and Shiny. Use component layout to position inputs and outputs.\n\n\n\n\n\nviewof talentWeight = Inputs.range([-2, 2], { value: 0.7, step: 0.01, label: \"talent weight\" })\nviewof looksWeight = Inputs.range([-2, 2], { value: 0.7, step: 0.01, label: \"looks weight\" })\nviewof minimum = Inputs.range([-2, 2], { value: 1, step: 0.01, label: \"min fame\" })\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nimport { plotActors } from './actors.js';\nplotActors(actors, talentWeight, looksWeight, minimum)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLearn more: Observable, Shiny, Component Layout"
   },
   {
     "objectID": "Presentacion.html#preview-links",
@@ -278,5 +278,82 @@
     "title": "Series de Tiempo",
     "section": "References",
     "text": "References\n:::"
+  },
+  {
+    "objectID": "Presentacion.html#visualización-serie-diaria-paquete-xts",
+    "href": "Presentacion.html#visualización-serie-diaria-paquete-xts",
+    "title": "Series de tiempo Univariadas",
+    "section": "Visualización serie diaria paquete xts",
+    "text": "Visualización serie diaria paquete xts\n\n\n\n\n\nHeterocedasticidad\nTendencia\nComponente estacional\n\n\n\n\n\n\n\n\nCode\nlibrary(zoo)\nlibrary(xts)\nlibrary(quantmod)\nlibrary(dygraphs)\nsandp500 <- new.env()\ngetSymbols(\"^GSPC\", env = sandp500, src = \"yahoo\", from = as.Date(\"1943-01-01\"), to = as.Date(\"2023-04-01\"))\nsp500<- sandp500$GSPC[,6]\ndygraph(sp500)%>%dyRangeSelector()\n\n\n\n\n\n\n\n\n\n\n\nLearn more: Executable Code"
+  },
+  {
+    "objectID": "Presentacion.html#visualización-serie-paquete-tsstudio",
+    "href": "Presentacion.html#visualización-serie-paquete-tsstudio",
+    "title": "Series de tiempo Univariadas",
+    "section": "Visualización serie paquete TSstudio",
+    "text": "Visualización serie paquete TSstudio\n\n\n\n\n\nCode\nlibrary(TSstudio)\nsp500ts=ts(sp500,start=c(1943,01),frequency = 365)\nts_info(sp500ts)\n\n\n\n\n The sp500ts series is a ts object with 1 variable and 20179 observations\n Frequency: 365 \n Start time: 1943 1 \n End time: 1998 104 \n\n\n\n\n\n\n\n\n\n\n\n\nLa serie mediante el paquete TSstudio no se visualiza de manera correcta\nSe lleva acabo el calculo de los días para conocer la cantidad de datos que se deberían tener:\n\n\nCode\nsurvey <- data.frame(date=c(\"1943/01/01\"),tx_start=c(\"2023/04/01\"))\n\nsurvey$date_diff <- as.Date(as.character(survey$date), format=\"%Y/%m/%d\")-\n                  as.Date(as.character(survey$tx_start), format=\"%Y/%m/%d\")\n\n\n\n\n        date   tx_start   date_diff\n1 1943/01/01 2023/04/01 -29310 days\n\n\nLos datos obtenidos determinan que la serie diaria es irregular y no es equidistante en el tiempo y se visualiza de mejor manera mediante el paquete xts y zoo."
+  },
+  {
+    "objectID": "Presentacion.html#conversion-serie-sp500-a-serie-mensual",
+    "href": "Presentacion.html#conversion-serie-sp500-a-serie-mensual",
+    "title": "Series de tiempo Univariadas",
+    "section": "Conversion serie S&P500 a serie mensual",
+    "text": "Conversion serie S&P500 a serie mensual\n\nsandp500 <- new.env()\ngetSymbols(\"^GSPC\", env = sandp500, src = \"yahoo\", from = as.Date(\"1943-01-01\"), to = as.Date(\"2023-03-31\"))\nSAP500<- sandp500$GSPC[,6] #Extraccion de datos\nnmonths(SAP500) #Numero de meses\nSAP500<-split(SAP500, f=\"months\") # Dividir en cantidad de meses\nSAP500<-lapply(SAP500, FUN= mean) #Promedio mensual\nfechas<-seq(as.Date(\"1943-01-01\"), length=963, by=\"months\") #Agrupacion de meses\nSAP500xts<-as.xts(as.numeric(SAP500), order.by=fechas) #Convertir a xts ordenados por fechas\nxts.to.df<-function(dataxts){\n  df<-data.frame(fecha=(index(dataxts)),\n                   GSPC=coredata(dataxts))\n  colnames(df)<-c(\"fecha\", \"GSPC\")\n  df\n}#Funcion para convertir xts a dataframe\nSP500ts<-xts.to.df(SAP500xts) #Datos transformados\nwrite.csv(SP500ts, \"C:/Users/ocamp/Downloads/Series/SP500ts.csv\", row.names=FALSE)\nSe convierte la serie con datos diarios irregulares a una serie equidistante en el tiempo."
+  },
+  {
+    "objectID": "Presentacion.html#visualización-serie-sp-500-mensual",
+    "href": "Presentacion.html#visualización-serie-sp-500-mensual",
+    "title": "Series de tiempo Univariadas",
+    "section": "Visualización serie S&P 500 mensual",
+    "text": "Visualización serie S&P 500 mensual\n\nlibrary(parsedate)\nSP500ts<- read.csv(\"SP500ts.csv\")\nFecha<-parsedate::parse_date(SP500ts$fecha)\nSAP500 <-data.frame(Fecha=Fecha,GSPC=SP500ts$GSPC)\nSAP500ts=ts(SAP500$GSPC,start=c(1943,01),frequency = 12)"
+  },
+  {
+    "objectID": "Presentacion.html#estabilización-de-la-varianza",
+    "href": "Presentacion.html#estabilización-de-la-varianza",
+    "title": "Series de tiempo Univariadas",
+    "section": "Estabilización de la varianza",
+    "text": "Estabilización de la varianza\n\n\n\n\nTransformacion Box-Cox-1\n\n\n\nCode\nlibrary(forecast)\nlibrary(MASS)\nforecast::BoxCox.lambda(SAP500ts, method =\"loglik\", lower = -1, upper = 3)\n\n\n[1] 0\n\n\n\n\n\n\n\n\n\n\n\n\n\nSerie Transformada\n\n\nlog.SAP500.ts<-log(SAP500ts)\npar( mar= c(4,4,1,1))\nplot(log.SAP500.ts)\n\n\n\n\n\nTransformacion Box-Cox-2\n\n\n\nCode\nforecast::BoxCox.lambda(log.SAP500.ts, method =\"loglik\", lower = -1, upper = 3)\n\n\n[1] 0.9"
+  },
+  {
+    "objectID": "Presentacion.html#estimacion-tendencia-deterministica",
+    "href": "Presentacion.html#estimacion-tendencia-deterministica",
+    "title": "Series de tiempo Univariadas",
+    "section": "Estimacion tendencia deterministica",
+    "text": "Estimacion tendencia deterministica\n\n\n\n\nAjuste del modelo lineal sobre la serie transformada\n\n\n\nCode\nsummary(fit1<-lm(log.SAP500.ts~time(log.SAP500.ts), data=log.SAP500.ts,na.action = NULL))\n\n\n\nCall:\nlm(formula = log.SAP500.ts ~ time(log.SAP500.ts), data = log.SAP500.ts, \n    na.action = NULL)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-0.6479 -0.1703 -0.0086  0.1858  0.6906 \n\nCoefficients:\n                      Estimate Std. Error t value Pr(>|t|)    \n(Intercept)         -1.352e+02  7.398e-01  -182.7   <2e-16 ***\ntime(log.SAP500.ts)  7.088e-02  3.730e-04   190.0   <2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 0.2682 on 961 degrees of freedom\nMultiple R-squared:  0.9741,    Adjusted R-squared:  0.9741 \nF-statistic: 3.611e+04 on 1 and 961 DF,  p-value: < 2.2e-16\n\n\n\n\n\n\n\n\nTendencia lineal deterministica\n\n\n\npar( mar= c(4,4,1,1))\nplot(log.SAP500.ts)\nabline(fit1, col=\"red\")"
+  },
+  {
+    "objectID": "Presentacion.html#eliminacion-de-la-tendencia",
+    "href": "Presentacion.html#eliminacion-de-la-tendencia",
+    "title": "Series de tiempo Univariadas",
+    "section": "Eliminacion de la tendencia",
+    "text": "Eliminacion de la tendencia\n\n\n\n\nEliminacion de la tendencia serie log S&P500\n\n\nx1<-log.SAP500.ts-predict(fit1)\nplot(x1, main=\"Serie en escala logaritmica removiendo tendencia\")\n\n\n\n\n\n\n\n\n\n\nFuncion de autocorrelacion\n\n\n\nacf(x1, lag.max = length(x1))"
+  },
+  {
+    "objectID": "Presentacion.html#suavizamiento-promedio-movil",
+    "href": "Presentacion.html#suavizamiento-promedio-movil",
+    "title": "Series de tiempo Univariadas",
+    "section": "Suavizamiento promedio movil",
+    "text": "Suavizamiento promedio movil\n\n\n\n\n\nCode\ndecom.SAP500.ts=decompose(log.SAP500.ts)\n\n\nDe estimación de la tendencia mediante filtro móviles se puede observar que:\n\nComponente de tendencia: apesar de ser creciente parece no ser completamente lineal\nComponente estacional: Según lo obtenido mediante filtros moviles parece haber un componente estacional\nComponente residual. Esta no presenta"
+  },
+  {
+    "objectID": "Presentacion.html#suavizamiento-loess-1",
+    "href": "Presentacion.html#suavizamiento-loess-1",
+    "title": "Series de tiempo Univariadas",
+    "section": "Suavizamiento Loess (1)",
+    "text": "Suavizamiento Loess (1)\nEstimacion de la tendencia\n\n\n\n\n\nCode\nlibrary(tidyverse)\nlibrary(lubridate)\nlibrary(timetk)\nlibrary(tibble)\nlibrary(zoo)\nindice_logSAP500=as.Date(as.yearmon(tk_index(log.SAP500.ts)))\ndf_logSAP500=data.frame(Fecha=indice_logSAP500,LogSAP500=as.matrix(log.SAP500.ts))\ntibble_logSAP500=tibble(df_logSAP500)\ntibble_logSAP500%>%mutate(LogSAP500_ajus=smooth_vec(log.SAP500.ts,span = 0.75, degree = 2))\n\n\n\nSe ajusta a un polinomio de grado 2\nEl porcentaje de datos incluidos en la ventana de suavizamiento es del 75%.\n\n\n\nCode\ntibble_logSAP500%>%mutate(LogSAP500_ajus=smooth_vec(log.SAP500.ts,span = 0.75, degree = 2))%>%ggplot(aes(Fecha, log.SAP500.ts)) +\n    geom_line() +\n    geom_line(aes(y = LogSAP500_ajus), color = \"blue\")"
+  },
+  {
+    "objectID": "Presentacion.html#suavizamiento-loess-2",
+    "href": "Presentacion.html#suavizamiento-loess-2",
+    "title": "Series de tiempo Univariadas",
+    "section": "Suavizamiento Loess (2)",
+    "text": "Suavizamiento Loess (2)\nDescomposición STL\n\n\n\n\n\nCode\nlibrary(feasts)\nlibrary(fable)\nlibrary(tsibble)\ntsibble_lSAP500<-as_tsibble(log.SAP500.ts)\ntsibble_lSAP500 %>%\n  model(\n    STL(value ~ trend() +\n                   season(window = \"periodic\"),\n    robust = TRUE)) %>%\n  components() %>%\n  autoplot()"
+  },
+  {
+    "objectID": "Presentacion.html#serie-sp-500-diferenciada",
+    "href": "Presentacion.html#serie-sp-500-diferenciada",
+    "title": "Series de tiempo Univariadas",
+    "section": "Serie S&P 500 diferenciada",
+    "text": "Serie S&P 500 diferenciada\n\n\n\n\n\nHeterocedasticidad\nTendencia\nComponente estacional\n\n\n\n\n\n\n\n\nCode\ntsibble_lSAP500<-tsibble_lSAP500|>mutate(diff_lprecios=tsibble::difference(value,lag=1,differences = 1))\ntibble_logSAP500%>%mutate(diff_LogSAP500=LogSAP500-lag(LogSAP500))%>%plot_time_series(Fecha,diff_LogSAP500)"
   }
 ]

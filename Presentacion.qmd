@@ -22,47 +22,535 @@ resources:
   - demo.pdf
 ---
 
-## Analisis Descriptivo Serie de Tiempo {transition="slide" transition-speed="slow"}
+## Visualización serie diaria paquete `xts`{.smaller transition="slide" transition-speed="slow"}
 
-Importación serie de tiempo en la que se pretende analizar las siguientes caracteristicas
+::: columns
+::: {.column width="23%"}
+::: {style="font-size:20px"}
+::: incremental
+-   **Heterocedasticidad**
+-   **Tendencia**
+-   **Componente estacional**
+:::
+:::
+:::
 
--   Tendencia
--   Estacionalidad
--   Ciclos
--   Heterocedasticidad
+::: {.column width="2%"}
+:::
 
-```{r, results='hide'}
-list.of.packages <- c("zoo", "xts", "quantmod")
-new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
-if(length(new.packages)) install.packages(new.packages)
-lapply(list.of.packages, require, character.only = TRUE)
+::: {.column width="75%"}
+```{r}
+#| echo: true
+#| fig-width: 7
+#| fig-height: 4
+#| warning: false
+#| results: hide
+#| code-fold: true
+library(zoo)
+library(xts)
+library(quantmod)
+library(dygraphs)
+sandp500 <- new.env()
+getSymbols("^GSPC", env = sandp500, src = "yahoo", from = as.Date("1943-01-01"), to = as.Date("2023-04-01"))
+sp500<- sandp500$GSPC[,6]
+dygraph(sp500)%>%dyRangeSelector()
 ```
-
-## Analisis Descriptivo Serie de Tiempo {transition="slide" transition-speed="slow"}
 
 ```{r}
-precios <- function(activos,fechai,fechaf,periodicidad){
-    precios <- xts()
-    for(i in 1:length(activos)){
-        tmp <- Ad(getSymbols(activos[i],from=fechai,to=fechaf,periodicity=periodicidad,auto.assign=FALSE))
-        precios <- cbind(precios,tmp)
-        precios <- na.approx(precios,na.rm=FALSE)
-    }
-    colnames(precios) <- activos
-    tclass(precios) <- "Date"
-    return(precios)
-}
-
-## Acciones seleccionadas
-activos <- c("^GSPC")
-fechai <- '1943-08-19'
-fechaf <- '2023-02-03'
-periodicidad <- "monthly"   
-
-precios.hist <- precios(activos,fechai,fechaf,periodicidad)
-retornos <- diff(log(precios.hist))[-1,]
-plot(precios.hist,retornos)
+#| echo: false
+#| fig-width: 8
+#| fig-height: 4.5
+#| warning: false
+#| code-fold: true
+dygraph(sp500)%>%dyRangeSelector()
 ```
+:::
+:::
+
+::: footer
+Learn more: [Executable Code](https://quarto.org/docs/presentations/revealjs/#executable-code)
+:::
+
+## Visualización serie paquete `TSstudio`{.smaller transition="slide" transition-speed="slow"}
+
+::: columns
+::: {.column width="65%"}
+::: {style="font-size:26px"}
+```{r}
+#| echo: true
+#| fig-width: 7
+#| fig-height: 4
+#| warning: false
+#| results: hide
+#| code-fold: true
+library(TSstudio)
+sp500ts=ts(sp500,start=c(1943,01),frequency = 365)
+ts_info(sp500ts)
+```
+
+```{r}
+#| echo: false
+#| fig-width: 7
+#| fig-height: 4
+#| warning: false
+#| code-fold: true
+ts_info(sp500ts)
+```
+
+```{r}
+#| echo: false
+#| fig-width: 6
+#| fig-height: 4.6
+#| warning: false
+#| code-fold: true
+par( mar= c(4,4,1,1) )
+plot(sp500ts)
+```
+:::
+:::
+
+::: {.column width="2%"}
+:::
+
+::: {.column width="33%"}
+::: {style="font-size:22px"}
+La serie mediante el paquete `TSstudio` no se visualiza de manera correcta
+
+Se lleva acabo el calculo de los días para conocer la cantidad de datos que se deberían tener:
+
+```{r}
+#| echo: true
+#| fig-width: 7
+#| fig-height: 4
+#| warning: false
+#| results: hide
+#| code-fold: true
+survey <- data.frame(date=c("1943/01/01"),tx_start=c("2023/04/01"))
+
+survey$date_diff <- as.Date(as.character(survey$date), format="%Y/%m/%d")-
+                  as.Date(as.character(survey$tx_start), format="%Y/%m/%d")
+```
+
+```{r}
+#| echo: false
+#| fig-width: 6
+#| fig-height: 4
+#| warning: false
+#| code-fold: true
+survey
+```
+
+Los datos obtenidos determinan que la serie diaria es irregular y no es equidistante en el tiempo y se visualiza de mejor manera mediante el paquete `xts` y `zoo`.
+:::
+:::
+:::
+
+## Conversion serie S&P500 a serie mensual {.smaller transition="slide" transition-speed="slow"}
+
+::: {style="font-size:30px"}
+``` {.r code-line-numbers="1-3|4|5|6|7|8|9-14|15|16"}
+sandp500 <- new.env()
+getSymbols("^GSPC", env = sandp500, src = "yahoo", from = as.Date("1943-01-01"), to = as.Date("2023-03-31"))
+SAP500<- sandp500$GSPC[,6] #Extraccion de datos
+nmonths(SAP500) #Numero de meses
+SAP500<-split(SAP500, f="months") # Dividir en cantidad de meses
+SAP500<-lapply(SAP500, FUN= mean) #Promedio mensual
+fechas<-seq(as.Date("1943-01-01"), length=963, by="months") #Agrupacion de meses
+SAP500xts<-as.xts(as.numeric(SAP500), order.by=fechas) #Convertir a xts ordenados por fechas
+xts.to.df<-function(dataxts){
+  df<-data.frame(fecha=(index(dataxts)),
+                   GSPC=coredata(dataxts))
+  colnames(df)<-c("fecha", "GSPC")
+  df
+}#Funcion para convertir xts a dataframe
+SP500ts<-xts.to.df(SAP500xts) #Datos transformados
+write.csv(SP500ts, "C:/Users/ocamp/Downloads/Series/SP500ts.csv", row.names=FALSE)
+```
+
+Se convierte la serie con datos diarios irregulares a una serie equidistante en el tiempo.
+:::
+
+## Visualización serie S&P 500 mensual {.smaller transition="slide" transition-speed="slow"}
+
+```{r}
+#| echo: true
+#| fig-width: 7
+#| fig-height: 4
+#| warning: false
+#| results: hide
+library(parsedate)
+SP500ts<- read.csv("SP500ts.csv")
+Fecha<-parsedate::parse_date(SP500ts$fecha)
+SAP500 <-data.frame(Fecha=Fecha,GSPC=SP500ts$GSPC)
+SAP500ts=ts(SAP500$GSPC,start=c(1943,01),frequency = 12)
+```
+
+```{r}
+#| echo: false
+#| fig-width: 12
+#| fig-height: 5.2
+#| warning: false
+#| code-fold: true
+par( mar= c(4,4,1,1))
+plot.ts(SAP500ts)
+```
+
+## Estabilización de la varianza {.smaller transition="slide" transition-speed="slow"}
+
+::: columns
+
+::: {.column width="48%"}
+::: {style="font-size:22px"}
+-   **Transformacion Box-Cox-1** 
+```{r}
+#| echo: true
+#| fig-width: 7
+#| fig-height: 4
+#| warning: false
+#| code-fold: true
+library(forecast)
+library(MASS)
+forecast::BoxCox.lambda(SAP500ts, method ="loglik", lower = -1, upper = 3)
+```
+
+```{r}
+#| echo: false
+#| fig-width: 6
+#| fig-height: 4
+#| warning: false
+par( mar= c(4,4,1,1))
+MASS::boxcox(lm(SAP500ts ~ 1),seq(-4, 4, length = 20)) 
+```
+:::
+:::
+
+::: {.column width="1%"}
+:::
+
+::: {.column width="51%"}
+::: {style="font-size:22px"}
+-   **Serie Transformada** 
+```{r}
+#| echo: true
+#| fig-width: 8
+#| fig-height: 4.3
+#| warning: false
+log.SAP500.ts<-log(SAP500ts)
+par( mar= c(4,4,1,1))
+plot(log.SAP500.ts)
+```
+
+-   **Transformacion Box-Cox-2** 
+
+```{r}
+#| echo: true
+#| fig-width: 7
+#| fig-height: 4
+#| warning: false
+#| code-fold: true
+forecast::BoxCox.lambda(log.SAP500.ts, method ="loglik", lower = -1, upper = 3)
+```
+:::
+::: 
+
+:::
+
+## Estimacion tendencia deterministica{.smaller transition="slide" transition-speed="slow"}
+
+::: columns
+
+
+::: {.column width="38%"}
+::: {style="font-size:20px"}
+-   **Ajuste del modelo lineal sobre la serie transformada** 
+
+```{r}
+#| echo: true
+#| fig-width: 7
+#| fig-height: 4
+#| warning: false
+#| code-fold: true
+summary(fit1<-lm(log.SAP500.ts~time(log.SAP500.ts), data=log.SAP500.ts,na.action = NULL))
+```
+:::
+:::
+
+::: {.column width="2%"}
+:::
+
+::: {.column width="60%"}
+::: {style="font-size:20px"}
+-   **Tendencia lineal deterministica**
+::: 
+```{r}
+#| echo: true
+#| fig-width: 7
+#| fig-height: 5
+#| warning: false
+par( mar= c(4,4,1,1))
+plot(log.SAP500.ts)
+abline(fit1, col="red")
+```
+:::
+
+:::
+
+## Eliminacion de la tendencia {.smaller transition="slide" transition-speed="slow"}
+
+::: columns
+
+
+::: {.column width="49%"}
+::: {style="font-size:20px"}
+-   **Eliminacion de la tendencia serie log S&P500** 
+
+```{r}
+#| echo: true
+#| fig-width: 7
+#| fig-height: 6
+#| warning: false
+x1<-log.SAP500.ts-predict(fit1)
+plot(x1, main="Serie en escala logaritmica removiendo tendencia")
+```
+:::
+:::
+
+::: {.column width="2%"}
+:::
+
+::: {.column width="48%"}
+::: {style="font-size:20px"}
+-   **Funcion de autocorrelacion**
+::: 
+```{r}
+#| echo: true
+#| fig-width: 7
+#| fig-height: 6
+#| warning: false
+acf(x1, lag.max = length(x1))
+```
+:::
+
+:::
+
+## Suavizamiento promedio movil {.smaller transition="slide" transition-speed="slow"}
+
+::: columns
+
+
+::: {.column width="33%"}
+::: {style="font-size:22px"}
+
+```{r}
+#| echo: true
+#| fig-width: 7
+#| fig-height: 4
+#| warning: false
+#| results: hide
+#| code-fold: true
+decom.SAP500.ts=decompose(log.SAP500.ts)
+
+```
+
+De estimación de la tendencia mediante filtro móviles se puede observar que: 
+
+- Componente de tendencia: apesar de ser creciente parece no ser completamente lineal
+- Componente estacional: Según lo obtenido mediante filtros moviles parece haber un componente estacional
+- Componente residual. Esta no presenta 
+
+:::
+:::
+
+::: {.column width="1%"}
+:::
+
+::: {.column width="65%"}
+::: {style="font-size:26px"}
+
+```{r}
+#| echo: false
+#| fig-width: 9
+#| fig-height: 7
+#| warning: false
+#| code-fold: true
+par( mar= c(4,4,1,1) )
+plot(decom.SAP500.ts)
+```
+:::
+:::
+
+
+:::
+
+## Suavizamiento Loess (1){.smaller transition="slide" transition-speed="slow"}
+
+### Estimacion de la tendencia
+::: columns
+
+
+::: {.column width="33%"}
+::: {style="font-size:22px"}
+
+```{r}
+#| echo: true
+#| fig-width: 7
+#| fig-height: 4
+#| warning: false
+#| results: hide
+#| code-fold: true
+library(tidyverse)
+library(lubridate)
+library(timetk)
+library(tibble)
+library(zoo)
+indice_logSAP500=as.Date(as.yearmon(tk_index(log.SAP500.ts)))
+df_logSAP500=data.frame(Fecha=indice_logSAP500,LogSAP500=as.matrix(log.SAP500.ts))
+tibble_logSAP500=tibble(df_logSAP500)
+tibble_logSAP500%>%mutate(LogSAP500_ajus=smooth_vec(log.SAP500.ts,span = 0.75, degree = 2))
+```
+- Se ajusta a un polinomio de grado 2
+- El porcentaje de datos incluidos en la ventana de suavizamiento es del 75%.
+```{r, grafica }
+#| echo: true
+#| eval: false
+#| fig-width: 9
+#| fig-height: 6.75
+#| warning: false
+#| code-fold: show
+tibble_logSAP500%>%mutate(LogSAP500_ajus=smooth_vec(log.SAP500.ts,span = 0.75, degree = 2))%>%ggplot(aes(Fecha, log.SAP500.ts)) +
+    geom_line() +
+    geom_line(aes(y = LogSAP500_ajus), color = "blue")
+```
+
+
+:::
+:::
+
+::: {.column width="1%"}
+:::
+
+::: {.column width="65%"}
+::: {style="font-size:26px"}
+
+```{r}
+#| echo: false
+#| fig-width: 9
+#| fig-height: 6.85
+#| warning: false
+#| code-fold: true
+tibble_logSAP500%>%mutate(LogSAP500_ajus=smooth_vec(log.SAP500.ts,span = 0.75, degree = 2))%>%ggplot(aes(Fecha, log.SAP500.ts)) +
+    geom_line() +
+    geom_line(aes(y = LogSAP500_ajus), color = "blue")
+```
+:::
+:::
+
+
+:::
+
+## Suavizamiento Loess (2){.smaller transition="slide" transition-speed="slow"}
+
+### Descomposición STL
+::: columns
+
+
+::: {.column width="33%"}
+::: {style="font-size:22px"}
+
+
+```{r}
+#| echo: true
+#| eval: false
+#| fig-width: 9
+#| fig-height: 7
+#| warning: false
+#| code-fold: show
+library(feasts)
+library(fable)
+library(tsibble)
+tsibble_lSAP500<-as_tsibble(log.SAP500.ts)
+tsibble_lSAP500 %>%
+  model(
+    STL(value ~ trend() +
+                   season(window = "periodic"),
+    robust = TRUE)) %>%
+  components() %>%
+  autoplot()
+```
+
+
+
+:::
+:::
+
+::: {.column width="1%"}
+:::
+
+::: {.column width="65%"}
+::: {style="font-size:26px"}
+
+```{r}
+#| echo: false
+#| fig-width: 9
+#| fig-height: 6.85
+#| warning: false
+#| code-fold: true
+library(feasts)
+library(fable)
+library(tsibble)
+tsibble_lSAP500<-as_tsibble(log.SAP500.ts)
+tsibble_lSAP500 %>%
+  model(
+    STL(value ~ trend() +
+                   season(window = "periodic"),
+    robust = TRUE)) %>%
+  components() %>%
+  autoplot()
+```
+:::
+:::
+
+
+:::
+
+## Serie S&P 500 diferenciada {.smaller transition="slide" transition-speed="slow"}
+
+::: columns
+::: {.column width="23%"}
+::: {style="font-size:20px"}
+::: incremental
+-   **Heterocedasticidad**
+-   **Tendencia**
+-   **Componente estacional**
+:::
+:::
+:::
+
+::: {.column width="2%"}
+:::
+
+::: {.column width="75%"}
+```{r}
+#| echo: true
+#| fig-width: 7
+#| fig-height: 4
+#| warning: false
+#| results: hide
+#| code-fold: true
+tsibble_lSAP500<-tsibble_lSAP500|>mutate(diff_lprecios=tsibble::difference(value,lag=1,differences = 1))
+tibble_logSAP500%>%mutate(diff_LogSAP500=LogSAP500-lag(LogSAP500))%>%plot_time_series(Fecha,diff_LogSAP500)
+```
+
+```{r}
+#| echo: false
+#| fig-width: 8
+#| fig-height: 4.5
+#| warning: false
+#| code-fold: true
+tibble_logSAP500%>%mutate(diff_LogSAP500=LogSAP500-lag(LogSAP500))%>%plot_time_series(Fecha,diff_LogSAP500)
+```
+:::
+:::
 
 ## Hello, There {transition="slide" transition-speed="slow"}
 
@@ -139,22 +627,6 @@ plt.show()
 
 ::: footer
 Learn more: [Line Highlighting](https://quarto.org/docs/presentations/revealjs/#line-highlighting)
-:::
-
-## Executable Code
-
-```{r}
-#| echo: true
-#| fig-width: 10
-#| fig-height: 4.5
-library(ggplot2)
-ggplot(mtcars, aes(hp, mpg, color = am)) +
-  geom_point() +
-  geom_smooth(formula = y ~ x, method = "loess")
-```
-
-::: footer
-Learn more: [Executable Code](https://quarto.org/docs/presentations/revealjs/#executable-code)
 :::
 
 ## LaTeX Equations
@@ -359,7 +831,7 @@ Learn more: [Auto-Animate](https://quarto.org/docs/presentations/revealjs/advanc
 The next few slides will transition using the `slide` transition
 
 | Transition | Description                                                            |
-|------------|------------------------------------------------------------------------|
+|---------------------|---------------------------------------------------|
 | `none`     | No transition (default, switch instantly)                              |
 | `fade`     | Cross fade                                                             |
 | `slide`    | Slide horizontally                                                     |
