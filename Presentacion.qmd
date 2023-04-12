@@ -13,7 +13,7 @@ format:
       data-background-position: 50% 65%
     slide-number: true
     chalkboard: 
-      buttons: false
+      buttons: true
     preview-links: auto
     logo: images/UNAL1.png
     css: custom.css
