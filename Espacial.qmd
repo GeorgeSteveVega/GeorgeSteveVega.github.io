@@ -1,7 +1,6 @@
 ---
-title: Estadistica espacial 
-subtitle: Modelado Geoespacial
-navbar: false
+title: Modelado Geoespacial # Cambiar
+subtitle: Estadistica espacial
 author: George Vega
 date-format: "MM-YYYY"
 date: 03-03-2023
@@ -14,25 +13,35 @@ date: 03-03-2023
 #     fig-width: 8
 #     fig-height: 3.8
 #     fig-pos: "H"
-#     #code-block-bg: light
-#     #linkcolor: highlight
-#     #urlcolor: highlight
-# colorlinks: true
-# bibliography: References.bib
-# cls: apa.csl
+    #code-block-bg: light
+    #linkcolor: highlight
+    #urlcolor: highlight
+colorlinks: true
+bibliography: References.bib
+cls: apa.csl
 # link-citations: yes
 #title: "Series de Tiempo de Univariadas"
 #author: "George Vega"
 #date-format: "MM-YYYY"
 #date: 03-03-2023
 #geometry:
-format: html
+format:
+  html:
+    html-math-method: mathjax
+    include-in-header:
+      - text: |
+          <script>
+          window.MathJax = {
+            loader: {load:
+            ['[tex]/mhchem']},
+              tex: {packages:
+              {'[+]': ['mhchem']}}
+              };
+          </script>
 editor: visual
 toc: true
-bibliography: References.bib
-cls: apa.csl
-#editor_options: 
-#  chunk_output_type: console
+# editor_options: 
+#   chunk_output_type: console
 ---
 
 ```{r}
@@ -59,18 +68,20 @@ knitr::knit_hooks$set(chunk = function(x, options) {
 
 # Introduccion
 
+#distancia euclidiana #convertir a coordenadas planas #Kriging #Mapa de cundinamarca \# Grafica
+
 ## Contaminación del Aire
 
 Los problemas asociados a la contaminación de aire pueden estar divididos en cinco diferentes categorías, polución local, polución urbana, regional, continental y global:
 
 -   **Contaminación Local:**\
-    Este tipo de contaminación esta usualmente caracterizada por uno o varios emisores que aportan una cantidad considerable de material particulado o una gran cantidad de emisores relativamente pequeños. Adicionalmente, existen fuentes emisoras como el \ce{CO} proveniente de la combustión de los vehículos o los subproductos de la generación de compuestos orgánicos volátiles provenientes del tratamiento de residuos serán una gran fuente de emisión.[@Boubel1994]
+    Este tipo de contaminación esta usualmente caracterizada por uno o varios emisores que aportan una cantidad considerable de material particulado o una gran cantidad de emisores relativamente pequeños. Adicionalmente, existen fuentes emisoras como el $\ce{CO}$ proveniente de la combustión de los vehículos o los subproductos de la generación de compuestos orgánicos volátiles provenientes del tratamiento de residuos serán una gran fuente de emisión.[@Boubel1994]
 
 -   **Contaminación Urbana:**\
     Generalmente la contaminación de aire en las zonas urbanas se da de dos maneras; en la primera por la liberación de contaminantes primarios los cuales provienen directamente de fuentes, mientras que en la segunda se da por la formación de reacciones químicas de los contaminantes primarios. La mayoría de los contaminantes urbanos son relativamente no reactivos como el monoxido de carbono y el material particulado, o de especies de baja reactividad como los dióxidos de sulfuro.[@Boubel1994]
 
 -   **Contaminación Regional:**\
-    Esta se da por la existencia de grandes urbes, el aire cercano a estas ciudades contiene gran cantidad de contaminantes primarios y contaminantes provenientes de reacciones químicas. De igual manera existen contaminantes que permanecen en el tiempo, reaccionan y se transforman durante el tiempo. Este es el caso del \ce{SO2} el cual es liberado principalmente a través la combustión de combustibles como el carbón o el petróleo, el \ce{SO2} se oxida a \ce{SO3}, que reacciona con el vapor de agua para formar \ce{H2SO4} el cual reacciona con numerosos compuestos para formar sulfatos. Por ejemplo \ce{NO} resulta de la combustión a alta temperatura, en centrales eléctricas o plantas industriales en la producción.[@Boubel1994]
+    Esta se da por la existencia de grandes urbes, el aire cercano a estas ciudades contiene gran cantidad de contaminantes primarios y contaminantes provenientes de reacciones químicas. De igual manera existen contaminantes que permanecen en el tiempo, reaccionan y se transforman durante el tiempo. Este es el caso del $\ce{SO2}$ el cual es liberado principalmente a través la combustión de combustibles como el carbón o el petróleo, el $\ce{SO2}$ se oxida a $\ce{SO3}$, que reacciona con el vapor de agua para formar $\ce{H2SO4}$ el cual reacciona con numerosos compuestos para formar sulfatos. Por ejemplo $\ce{NO}$ resulta de la combustión a alta temperatura, en centrales eléctricas o plantas industriales en la producción.[@Boubel1994]
 
 -   **Contaminación Continental y Global :\
     **Respecto a la contaminación continental no existe una diferencia respecto a nivel regional, sin embargo, se debe tener en cuenta que existen diferencias a nivel continental, por ejemplo existen casos como la lluvia ácida en escandinavia que ha tenido repercusiones a nivel europeo, otro claro ejemplo en paises asiaticos como Japón, Corea y China sus emisiones contaminantes son más amplias debido a su capacidad industrial. A escala global se tienen en cuenta los impactos continentales y regionales, sin embargo siempre han existido eventos de impacto mundial como el accidente de Chernobyl donde se detectaron niveles inusuales de radiactividad en continentes como el americano, así mismo se deben tener en cuenta los problemas de contaminación a nivel global, como es el caso de clorofluorocarbonos que tiene un efecto profundo sobre la capa de ozono atmosférica, sumado a los efectos de radiación solar que es fuente energética para la generación de reacciones químicas. [@Boubel1994]
@@ -79,23 +90,23 @@ Los problemas asociados a la contaminación de aire pueden estar divididos en ci
 
 De acuerdo con el Centro de Prevencion y control de enfermedades (CDC) por sus siglas en inglés, La EPA ha identificado seis principales contaminantes basados en la salud humana y el medio ambiente. [@CDCP2023]
 
--   Monoxido de Carbono \ce{CO}
+-   Monoxido de Carbono $\ce{CO}$
 
--   Plomo \ce{Pb}
+-   Plomo $\ce{Pb}$
 
--   Oxidos de Nitrogeno (\ce{NO2})
+-   Oxidos de Nitrogeno ($\ce{NO2}$)
 
--   Ozono (\ce{O3})
+-   Ozono ($\ce{O3}$)
 
 -   Material Particulado (PM$_{10}$ y PM$_{2.5}$)
 
--   Dioxido de Sulfuro (\ce{SO2})
+-   Dioxido de Sulfuro ($\ce{SO2}$)
 
--   Acroleina (\ce{C3H4O})
+-   Acroleina ($\ce{C3H4O}$)
 
--   Benzeno (\ce{C6H6})
+-   Benzeno ($\ce{C6H6}$)
 
--   Sulfuro de Carbono (\ce{CS2})
+-   Sulfuro de Carbono ($\ce{CS2}$)
 
 -   Asbesto
 
@@ -105,7 +116,7 @@ De acuerdo con el Centro de Prevencion y control de enfermedades (CDC) por sus s
 
 -   Hidrocarbonos de Petroleo totales (TPH)
 
--   Creosota (\ce{C7H8O2})
+-   Creosota ($\ce{C7H8O2}$)
 
 ### Material particulado
 
@@ -117,28 +128,6 @@ En el año 2015, la OMS declaro la contaminación del aire como una de las princ
 
 Los principales contaminantes del aire son producto de las actividades diarias en las cuales se incluyen: la producción de energías primarias, los sistemas de transporte el desarrollo urbano, añadiendo que el desarrollo industrial y los subproductos de la combustión junto a las incineraciones no controladas presentan un gran impacto sobre la calidad del aire. [@WHO2015]
 
-<!-- ### Material Particulado 2.5 -->
-
-<!-- Los PM en entornos urbanos y no urbanos es una mezcla compleja con componentes que tienen diversas características químicas y físicas. La investigación sobre PM y la interpretación de los resultados de la investigación sobre exposición y riesgo se complican por esta heterogeneidad y la posibilidad de que el potencial de las partículas para causar lesiones varía con el tamaño y otras características físicas, composición química y de la fuente.  Diferentes características de PM pueden ser relevantes para diferentes efectos sobre la salud. Los hallazgos de investigaciones más recientes continúan destacando esta complejidad y la naturaleza dinámica de las partículas suspendidas en el aire, ya que se forman de forma primaria o secundaria y luego continúan experimentando transformaciones químicas y físicas en la atmósfera.[@WHO2021] -->
-
-<!-- No obstante, las partículas todavía se clasifican generalmente por sus propiedades aerodinámicas, porque éstas determinan los procesos de transporte y eliminación en el aire y los sitios de deposición y las vías de eliminación dentro del tracto respiratorio. El diámetro aerodinámico se utiliza como indicador resumen del tamaño de las partículas; el diámetro aerodinámico corresponde al tamaño de una esfera de densidad unitaria con las mismas características aerodinámicas que la partícula de interés. Las diferencias en las propiedades aerodinámicas entre las partículas son aprovechadas por muchas técnicas de muestreo de partículas (Oficina Regional de la OMS para Europa, 2006) -->
-
-<!-- En las últimas décadas, la atención se ha centrado en las partículas con diámetros aerodinámicos inferiores o iguales a 2,5 µm (PM2,5) o 10 µm (PM10). -->
-
-<!-- ### **Necesidad de los modelado del aire** -->
-
-<!-- La necesidad de modelos -->
-
-<!-- Los modelos proporcionan un medio para representar un sistema real de una manera comprensible. Toman muchas formas, comenzando con "modelos conceptuales" que explican la forma en que funciona un sistema, como la descripción de todos los factores y parámetros de cómo se mueve una partícula en la atmósfera después de su liberación de una planta de energía. -->
-
-<!-- Los modelos conceptuales ayudan a identificar las principales influencias sobre dónde es probable que se encuentre una sustancia química en el medio ambiente y, como tal, deben desarrollarse para ayudar a identificar las fuentes de datos necesarias para evaluar un problema ambiental. -->
-
-<!-- En general, desarrollar un modelo de contaminación del aire requiere dos pasos principales. -->
-
-<!-- Primero, se debe definir un modelo del dominio y los procesos que se están estudiando. Luego, en los límites del modelo, se necesita especialmente un modelo de las condiciones de contorno para representar el entorno influyente que rodea el dominio de estudio. La calidad del estudio modelo está relacionada con la precisión y representatividad del estudio real.[@Vallero2008] -->
-
-\
-
 # Modelado Geoestadistico
 
 ## Descripcion de la Zona
@@ -149,83 +138,87 @@ El reino unido mediante su agencia ambiental posee alrededor de 300 sitios de mo
 
 1.  [**Redes automaticas:**](https://uk-air.defra.gov.uk/networks/network-info?view=automatic) estas permiten la captura de datos de contaminantes que se producen por hora. La recopilación de datos comprende datos desde 1972 para algunos sitios:
 
-    -   [Automatic Urban and Rural Network (AURN)](https://uk-air.defra.gov.uk/networks/network-info?view=aurn)
-    -   [Automatic Hydrocarbon Network (AHN)](https://uk-air.defra.gov.uk/networks/network-info?view=hc)
-    -   [Automatic London Network](https://uk-air.defra.gov.uk/networks/network-info?view=aln)
-    -   [Locally-managed automatic monitoring](https://uk-air.defra.gov.uk/networks/network-info?view=nondefraaqmon)
+-   [Automatic Urban and Rural Network (AURN)](https://uk-air.defra.gov.uk/networks/network-info?view=aurn)
+-   [Automatic Hydrocarbon Network (AHN)](https://uk-air.defra.gov.uk/networks/network-info?view=hc)
+-   [Automatic London Network](https://uk-air.defra.gov.uk/networks/network-info?view=aln)
+-   [Locally-managed automatic monitoring](https://uk-air.defra.gov.uk/networks/network-info?view=nondefraaqmon)
 
 2.  [**Redes no automaticas:**](https://uk-air.defra.gov.uk/networks/network-info?view=automatic) La recopilacion de los datos se da para contaminantes que se producen con menor frecuencia (diaria,semanal, mensual) donde las muestras son recopiladas por medios físicos y son sometidas a análisis fisico-quimico que permite calcular la concentración de los resultados, a continuación se relacionan las redes de monitoreo para esta categoría:
 
-    -   [UK Eutrophying & Acidifying Network (UKEAP)](https://uk-air.defra.gov.uk/networks/network-info?view=ukeap)
-    -   [Upland Waters Monitoring Network](https://uk-air.defra.gov.uk/networks/network-info?view=uw)
-    -   [Heavy Metals Network](https://uk-air.defra.gov.uk/networks/network-info?view=metals)
-    -   [Nitrogen Dioxide Diffusion Tube (1993 to 2005)](https://uk-air.defra.gov.uk/networks/network-info?view=no2old)
-    -   [Smoke and Sulphur Dioxide](https://uk-air.defra.gov.uk/networks/network-info?view=smsites)
-    -   [Black Carbon Network](https://uk-air.defra.gov.uk/networks/network-info?view=ukbsn)
-    -   [PAH](https://uk-air.defra.gov.uk/networks/network-info?view=pah)
-    -   [Toxic Organic Micro Pollutants (TOMPs)](https://uk-air.defra.gov.uk/networks/network-info?view=tomps)
-    -   [Non-Automatic Hydrocarbon Network](https://uk-air.defra.gov.uk/networks/network-info?view=nahc)
-    -   [Particle Numbers and Concentrations Network](https://uk-air.defra.gov.uk/networks/network-info?view=particle)
-    -   [JAQU privacy notice](https://uk-air.defra.gov.uk/library/no2ten/privacy-notice)
-    -   [UK Urban NO2 Network](https://uk-air.defra.gov.uk/library/no2ten/privacy-notice)
+-   [UK Eutrophying & Acidifying Network (UKEAP)](https://uk-air.defra.gov.uk/networks/network-info?view=ukeap)
+-   [Upland Waters Monitoring Network](https://uk-air.defra.gov.uk/networks/network-info?view=uw)
+-   [Heavy Metals Network](https://uk-air.defra.gov.uk/networks/network-info?view=metals)
+-   [Nitrogen Dioxide Diffusion Tube (1993 to 2005)](https://uk-air.defra.gov.uk/networks/network-info?view=no2old)
+-   [Smoke and Sulphur Dioxide](https://uk-air.defra.gov.uk/networks/network-info?view=smsites)
+-   [Black Carbon Network](https://uk-air.defra.gov.uk/networks/network-info?view=ukbsn)
+-   [PAH](https://uk-air.defra.gov.uk/networks/network-info?view=pah)
+-   [Toxic Organic Micro Pollutants (TOMPs)](https://uk-air.defra.gov.uk/networks/network-info?view=tomps)
+-   [Non-Automatic Hydrocarbon Network](https://uk-air.defra.gov.uk/networks/network-info?view=nahc)
+-   [Particle Numbers and Concentrations Network](https://uk-air.defra.gov.uk/networks/network-info?view=particle)
+-   [JAQU privacy notice](https://uk-air.defra.gov.uk/library/no2ten/privacy-notice)
+-   [UK Urban NO2 Network](https://uk-air.defra.gov.uk/library/no2ten/privacy-notice)
 
 Dentro de los enlaces relacionados se puede recopilar la información disponible para cada red.
 
 El gobierno del Reino Unido permite la extracción, analisis e interpretacion de los datos de codigo abierto y libre mediante el uso del paquete [`Openair`](https://uk-air.defra.gov.uk/data/openair) usando R. Para la adecuación de los datos se realiza el procedimiento descrito en <https://rspatialdata.github.io/air_pollution.html#Installing_the_openair_packageR> mediante la integracion del paquete `tidyverse`.
 
-Para la extracción de los datos se verifican algunas de las redes de monitoreo existentes en el año 2021- 2022, como se muestra en la siguiente codigo ejecutado en R:
+Para la extracción de los datos se verifican algunas de las redes de monitoreo existentes y posterior se escogen las variables $\ce{NO2}$ y PM$_{10}$ para las cuales se verifican sus redes de monitoreo:
 
 ```{r}
-#| eval: false
-install.packages("openair")
-install.packages("openairmaps")
+#| warning: false
+#| echo: false
+#http://rstudio.github.io/leaflet/markers.html
+#https://bookdown.org/david_carslaw/openair/sections/maps/maps-network.html
+#https://r-charts.com/es/espacial/mapas-interactivos-leaflet/
 library(openair)
 library(openairmaps)
-networkMap(
-    source = c("aurn","saqn","waqn","ni", "aqe", "local"),
-    control = "network",
-    year = 2021:2022,
-    cluster = TRUE,
-    provider = "OpenStreetMap",
-    collapse.control = FALSE
-)
+library(leaflet)
+library(dplyr)
+library(stringr)
+
+# import all Meta data for the AURN
+aurn_meta <- importMeta("aurn", all = TRUE)
+
+# prep data for leaflet
+map_data <- 
+  aurn_meta %>%
+  # get sites in York
+  filter(variable == c("NO2","PM10") & end_date =="ongoing") %>% 
+  # build a popup
+  buildPopup(
+    latitude = "latitude",
+    longitude = "longitude",
+    cols = c("code", "site", "site_type", "zone", "local_authority"), 
+    names = c("AURN Code" = "code", "Name" = "site", 
+              "Site Type" = "site_type", 
+              "Zone" = "zone", "LA" = "local_authority")
+  ) %>%
+  # get unique sites
+  distinct(site, .keep_all = TRUE)
+
+pal <- colorFactor(c("navy", "red"), domain = c("NO2", "PM10"))
+
+leaflet(map_data) %>%
+  addTiles() %>%
+addCircleMarkers(
+      radius = ~ifelse(variable == "NO2", 6, 4),
+      color = ~pal(variable),
+      stroke = FALSE, fillOpacity = 0.4
+    )%>%
+addLegend(data = map_data,
+            position = "topright",
+            pal = pal, values = c("PM10", "NO2"),
+            title = "Variables",
+            opacity = 1)
 ```
 
-![Red de estacion ambiental en el Reino Unido](Red.png){fig-align="center" width="10.8cm"}
-
-Posterior se escogen las variables PM$_{2.5}$ y PM$_{10}$ y se verifican sus redes de monitoreo:
-
-```{r}
-#| eval: false
-networkMap(
-    source = c("aurn","saqn","waqn","ni", "aqe", "local"),
-    control = "variable",
-    year = 2021:2022,
-    cluster = TRUE,
-    provider = "OpenStreetMap",
-    collapse.control = FALSE
-)
-```
-
-::: {#fig-elephants layout-ncol="2"}
-![Estaciones Material Particulado 2.5 $\mu$m](PM25.png){#fig-PM25 fig-align="center" width="8cm" height="5cm"}
-
-![Estaciones de Material Particulado 10 $\mu$m](PM10.png){#fig-PM10 fig-align="center" width="8cm" height="3.5cm"}
-
-Mapa de material particulado en el Reino Unido
-:::
-
-Con base en lo anterior se ejecuta el código para la extracción de los datos diarios de los contaminantes mencionados, se guarda en un data frame y se exporta como CSV:
+Con base en lo anterior se ejecuta el código para la extracción de los datos entre 2021 y 2022 y posteriormente se toman los diarios del material particulado PM$_{10}$ , se guarda en un data frame y se exporta como CSV:
 
 ```{r}
 #| eval: false
 #| echo: true
+#| code-fold: true
 importAURN()
-importSAQN()
-importWAQN()
-importAQE()
-importNI()
-importLocal()
 
 meta_data <- importMeta(source = "aurn", all = TRUE)
 selected_data <- meta_data %>%
@@ -260,18 +253,69 @@ PolucionUK <- read.csv("PolucionUK1.csv")
 attach(PolucionUK)
 ```
 
-El archivo extradido solo poisee la informacion referente a las fechas de medicion del material particulado de
+El archivo extradido solo posee la informacion referente a las fechas de medicion del material particulado de
 
 ```{r}
 head(PolucionUK)
 ```
 
+Se realiza el cambio de coordenadas con base en la informacion del Software [QGIS](https://docs.qgis.org/3.28/en/docs/gentle_gis_introduction/coordinate_reference_systems.html) y [1](https://www.youtube.com/watch?v=90VgEEcffxE). El CRS utilizado para gran bretaña es el [British National Grid](https://www.gov.uk/guidance/uk-geospatial-data-standards-coordinate-reference-systems#:~:text=Data%20Standards%20Register-,CRS%20for%20Great%20Britain%20and%20Ireland,data%20quoted%20in%20this%20system)
+
+```{r}
+#| warning: false
+#| echo: false
+#| results: hide
+library(rgdal)
+library(sf)
+library(ggplot2)
+library(rgeoboundaries)
+PolutionUK<-readOGR(".","UK")
+UK<-st_read("UK.shp")
+uk_boundary <- geoboundaries(country = "GBR")
+ggplot() +
+  geom_sf(data = uk_boundary, fill=NA) + geom_sf(data=UK, shape=23 , fill="blue", color="black") + theme(text = element_text(size=10))+labs(title="Estaciones de Medicion \n Material Particulado PM10 \n Reino Unido") + theme(plot.title = element_text(hjust = 0.5))+
+  labs(x = "Longitud", y = "Latitud")
+
+```
+
+```{r}
+#| warning: false
+proj4string(PolutionUK)
+```
+
+```{r}
+#OSGB 1936 / British National Grid
+CRS.new <- CRS("+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +units=m +no_defs +type=crs")
+PolucionUK1 <- read.csv("PolucionUK1.csv")
+coordinates(PolucionUK1)=c("Longitud","Latitud")
+proj4string(PolucionUK1)<-CRS("+init=epsg:4326")
+coordenadas<-spTransform(PolucionUK1, CRS.new)
+head(coordenadas)
+```
+
+Una vez transformados los datos a coordenadas planas se añaden al data frame
+
+```{r}
+X<-coordinates(coordenadas)[,1]
+Y<-coordinates(coordenadas)[,2]
+Tabledata <- data.frame(Longitud = as.numeric(PolucionUK1$Longitud), 
+                        Latitud = as.numeric(PolucionUK1$Latitud),
+                        Fecha=PolucionUK1$Fecha,
+                        X = as.numeric(X), 
+                        Y = as.numeric(Y),
+                        PM10=as.numeric(PolucionUK1$PM10), 
+                        PM2.5=as.numeric(PolucionUK1$PM2.5), 
+                        sitio=as.character(PolucionUK1$sitio))
+head(Tabledata)
+```
+
 ```{r}
 #| fig-width: 5
 #| fig-height: 3
-summary(PolucionUK[,1:4])
+PolucionUK<-Tabledata[,4:7]
+summary(PolucionUK)
 par( mar= c(4,4,1,2) )
-hist(PM10 ,freq=T,col='blue',labels=TRUE, ylim=c(0,30),main="Distribución de material particulado PM10",
+hist(PolucionUK$PM10 ,freq=T,col='blue',labels=TRUE, ylim=c(0,30),main="Distribución de material particulado PM10",
      xlab="Material Particulado de 10 micrometros",
      ylab="Frecuencia")
 
@@ -284,157 +328,19 @@ Se realiza un gráfico de dispersión para conocer la tendencia del material par
 #| fig-width: 8
 #| fig-height: 6
 par( mar= c(4,4,1,1) )
-plot(PolucionUK[,1:4], main = "Gráfico de dispersión")
-```
-
-```{r}
-#| fig-width: 8
-#| fig-height: 3.2
-#| eval: false
-par(mfrow = c(1, 2))
-par( mar= c(4,4,0.5,2) )
-smoothScatter(Longitud,PM10,
-              pch = 19,
-              colramp = colorRampPalette(c("#f7f7f7", "aquamarine")))
-smoothScatter(Latitud,PM10,
-              pch = 19,
-              colramp = colorRampPalette(c("#f7f7f7", "aquamarine")))
-```
-
-Se realiza el gráfico de dispersión 3D de la variable PM10 en función de las coordenadas:
-
-```{r}
-#| echo: true
-#| fig-width: 3.8
-#| fig-height: 3.8
-library(scatterplot3d)
-library(akima)
-grillas <- interp(Longitud,
-                  Latitud,
-                  PM10)
-par( mar= c(1,1,1,1) )
-scatterplot3d(Longitud, Latitud, PM10, pch = 19, color = "blue")
-```
-
-```{r}
-#| echo: false
-#| eval: false
-#| warning: false
-library(fields)
-library(graphics)
-par(mfrow = c(1, 2))
-par( mar= c(4,4,1,2) )
-persp(grillas$x,
-      grillas$y,
-      grillas$z,
-      xlab = "Latitud",
-      ylab = " ",
-      zlab = "PM10",
-      phi = 0,
-      theta = 0,
-      col = "lightblue",
-      expand = .5,
-      ticktype = "detailed")
-persp(grillas$x,
-      grillas$y,
-      grillas$z,
-      xlab = "Latitud",
-      ylab = " ",
-      zlab = "PM10",
-      phi = 0,
-      theta = 270,
-      col = "lightblue",
-      expand = .5,
-      ticktype = "detailed")
-```
-
-Se realiza un gráfico de contorno para conocer como se distribuye la concentración del material particulado en función de las coordenadas, allí se puede evidenciar que se presentan 5 picos en determinadas coordenadas donde el material particulado es mayor.
-
-```{r}
-#| echo: true
-#| fig-width: 6
-#| fig-height: 3.2
-par(mar = c(2,2,2,1))
-filled.contour(grillas, nlevels=8, plot.axes = {
-  axis(1)
-  axis(2)
-  contour(grillas, add = TRUE, lwd = 2)
-  }
-)
-```
-
-Esto se confirma mediante la gráfica 3D en diferentes ángulos donde representa la forma del material particulado en las coordenadas dadas.
-
-```{r}
-#| echo: false
-#| fig-width: 9
-#| fig-height: 8
-#| warning: false
-library(fields)
-library(graphics)
-par(mfrow = c(2, 2),
-    mar = c(3, 3, 1, 1),
-    mgp = c(2, 1, 0))
-drape.plot(grillas$x,
-           grillas$y,
-           grillas$z,
-           xlab = "Latitud",
-           ylab = "Longitud",
-           zlab = "PM10",
-           phi = 40,
-           theta = 140,
-           #col = topo.colors(64),
-           col = tim.colors(256),
-           expand = .5,
-           ticktype = "detailed")
-drape.plot(grillas$x,
-           grillas$y,
-           grillas$z,
-           xlab = "Latitud",
-           ylab = "Longitud",
-           zlab = "PM10",
-           phi = 35,
-           theta = 0,
-           #col = topo.colors(64),
-           col = tim.colors(256),
-           expand = .5,
-           ticktype = "detailed")
-drape.plot(grillas$x,
-           grillas$y,
-           grillas$z,
-           xlab = "Latitud",
-           ylab = "Longitud",
-           zlab = "PM10",
-           phi = 0,
-           theta = 120,
-           #col = topo.colors(64),
-           col = tim.colors(256),
-           expand = .5,
-           ticktype = "detailed")
-drape.plot(grillas$x,
-           grillas$y,
-           grillas$z,
-           xlab = "Latitud",
-           ylab = "Longitud",
-           zlab = "PM10",
-           phi = 15,
-           theta = 260,
-           #col = topo.colors(64),
-           col = tim.colors(256),
-           expand = .5,
-           ticktype = "detailed")
+plot(PolucionUK, main = "Gráfico de dispersión")
 ```
 
 ## Modelos deterministicos.
 
-La gráfica 3D permite obtener una idea general del modelo deterministico que se puede aplicar para describir los datos, se realizah el ajuste con un modelo lineal, un modelo de segundo orden, y un modelo donde se tiene en cuenta la interacción de las coordenadas, buscando que el modelo seleccionado permita tener el menor error cuadrático posible:
+Se realiza el ajuste con un modelo lineal, un modelo de segundo orden, y un modelo donde se tiene en cuenta la interacción de las coordenadas, buscando que el modelo seleccionado permita tener el menor error cuadrático posible:
 
 ### Modelo Lineal
 
 ```{r}
 #| fig-width: 5
 #| fig-height: 3.5
-mod1 <- lm(PM10 ~ Longitud + Latitud, data = PolucionUK)
+mod1 <- lm(PM10 ~ X + Y, data = PolucionUK)
 summary(mod1)
 anova(mod1)
 ```
@@ -444,34 +350,53 @@ anova(mod1)
 ```{r}
 #| fig-width: 5
 #| fig-height: 3.8
-mod2 <- lm(PM10 ~ Longitud + Latitud + 
-             I(Longitud^2) + I(Latitud^2)+
-             I(Longitud*Latitud), data = PolucionUK)
+mod2 <- lm(PM10 ~ X + Y + 
+             I(X^2) + I(Y^2)+
+             I(X*Y), data = PolucionUK)
 summary(mod2)
 anova(mod2)
 ```
 
-### Modelo de Interseccion
+Así mismo se realiza el análisis de la gráfica de residuales contra las coordenadas para verificar cual es el modelo más adecuado para modelar la media.
 
-```{r}
-mod3 <- lm(PM10 ~ Longitud * Latitud, data = PolucionUK)
-summary(mod3)
-anova(mod3)
-```
-
-Así mismo se realiza el análisis de la gráfica de residuales contra los valores ajustados de los 3 modelos
+### Gráfico de Residuales
 
 ```{r}
 #| fig-width: 8
-#| fig-height: 6
-par(mfrow=c(2,2))
-par( mar= c(4,4,4,2) )
-plot(mod1, which = 1, pch = 20, main="Modelo lineal")
-plot(mod2, which = 1, pch = 20, main="Modelo de segundo orden")
-plot(mod3, which = 1, pch = 20, main="Modelo de segundo orden")
+#| fig-height: 4
+#| warning: false
+#| code-fold: true
+#| code-line-numbers: true
+#| echo: false
+library(ggplot2)
+library(scales)
+library(gridExtra)
+CoordenadaX<-X
+CoordenadaY<-Y
+Residual.LM<-mod1$residuals
+Residual.2ndOr<-mod2$residuals
+dfLX <-data.frame(CoordenadaX,Residual.LM)
+dfLY <-data.frame(CoordenadaY,Residual.LM)
+plot1<-ggplot(dfLX,aes(CoordenadaX,Residual.LM))+geom_point()+scale_x_continuous(labels = comma_format(big.mark = ".",decimal.mark = ","))+ggtitle("Modelo de Lineal")+ ylab("Residuales Modelo Lineal") + xlab("Coordenada X")
+plot2<-ggplot(dfLY,aes(CoordenadaY,Residual.LM))+geom_point()+scale_x_continuous(labels = comma_format(big.mark = ".",decimal.mark = ","))+ggtitle(" ")+ ylab("Residuales Modelo Lineal") + xlab("Coordenada Y")
+grid.arrange(plot1, plot2,nrow=1, ncol=2)
 ```
 
-Con base en los resultados obtenidos de la gráfica de residuales, se establece que un modelo de orden superior podría ser el mas apropiado, ya que los valores se concentran en torno a cero, sin embargo también se identifican unos posibles datos atípicos que afectan el patrón y la variabilidad del modelo.
+```{r}
+#| fig-width: 8
+#| fig-height: 4
+#| warning: false
+#| code-fold: true
+#| code-line-numbers: true
+#| echo: false
+df2X <-data.frame(CoordenadaX,Residual.2ndOr)
+df2Y <-data.frame(CoordenadaY,Residual.2ndOr)
+plot3<-ggplot(df2X,aes(CoordenadaX,Residual.2ndOr))+geom_point()+scale_x_continuous(labels = comma_format(big.mark = ".",decimal.mark = ","))+ggtitle("Modelo de Segundo Orden")+ ylab("Residuales Modelo 2do Orden") + xlab("Coordenada X")
+plot4<-ggplot(df2Y,aes(CoordenadaY,Residual.2ndOr))+geom_point()+scale_x_continuous(labels = comma_format(big.mark = ".",decimal.mark = ","))+ggtitle(" ")+ ylab("Residuales Modelo 2do Orden") + xlab("Coordenada Y")
+grid.arrange(plot3, plot4,nrow=1, ncol=2)
+```
+
+Con base en los resultados obtenidos de la gráfica de residuales, se establece que un modelo lineal podría ser el mas apropiado para realizar el modelado de la media
 
 ### Identificación de Datos atípicos
 
@@ -480,9 +405,12 @@ Con el modelo de segundo orden se identifican los posibles datos atípicos e inf
 ```{r}
 #| fig-width: 8
 #| fig-height: 3.8
+#| warning: false
+#| code-fold: true
+#| code-line-numbers: true
 resmod1 <-  residuals(mod1)
 resStudentmod1 <-  rstudent(mod1)
-Influencia <-data.frame(PM10=PM10,Latitud=Latitud,Longitud=Longitud, Res=resmod1, Res.Est=resStudentmod1)
+Influencia <-data.frame(PM10=PM10,X=X,Y=Y,Longitud=Tabledata$Longitud, Latitud=Tabledata$Latitud, Res=resmod1, Res.Est=resStudentmod1)
 Atipicos <-subset(Influencia,Influencia$Res.Est>2)
 ```
 
@@ -494,18 +422,38 @@ Aquí se identifican las concentraciones de material particulado con residuales 
 Atipicos
 ```
 
-Esto se confirma mediante los siguientes graficos.
+Esto se confirma mediante los siguientes gráficos.
 
 ```{r}
 #| fig-width: 8
 #| fig-height: 3.8
+#| warning: false
+#| code-fold: true
+#| code-line-numbers: true
+#| echo: false
 par(mfrow=c(1,2))
 par( mar= c(4,4,2,2) )
 plot(mod2, which = 4, pch = 20)
 plot(mod2, which = 5, pch = 20)
 ```
 
-Esto confirma que el dato 61, con una concentración de 39.5 $\mu$g$\cdot$m$^{-3}$ con coordenadas 50.3 de latitud y -4.14 de longitud como un dato atípico, sin embargo no esta determinado como un leverage ya que se encuentra dentro de la zona de distancia de cook establecida.
+Esto confirma que el dato 61, con una concentración de 39.5 $\mu$g$\cdot$m$^{-3}$ con coordenadas 50.3 de latitud y -4.14 de longitud (X=247671.3, Y=54681.07) como un dato atípico, sin embargo no esta determinado como un leverage ya que se encuentra dentro de la zona de distancia de cook establecida.
+
+```{r}
+#| fig-width: 8
+#| fig-height: 5
+#| warning: false
+#| code-fold: true
+#| code-line-numbers: true
+#| echo: false
+library(leaflet)
+
+leaflet() %>%
+  addTiles() %>%
+  setView(lng = -4.8, lat = 55, zoom = 5) %>%
+  addCircleMarkers(data = data.frame(lng = c( -4.142361), lat = c(50.37167)))
+
+```
 
 ## Estimación del variograma empírico
 
@@ -515,12 +463,14 @@ Mediante el paquete `geoR` se realiza la estimacion del semivariograma empírico
 
 2.  con remoción de la tendencia mediante un modelo de primer orden
 
-3.  Remocion de la tendencia mediante un modelo de segundo orden.
+3.  Remocion de la tendencia mediante un modelo de primer orden.
 
 ```{r}
 #| fig-width: 8
-#| fig-height: 6
+#| fig-height: 5
 #| warning: false
+#| code-fold: true
+#| code-line-numbers: true
 library(geoR)
 PolucionUKG=as.geodata(PolucionUK)
 plot(PolucionUKG, scatter3d = T)
@@ -528,116 +478,122 @@ plot(PolucionUKG, scatter3d = T)
 
 ```{r}
 #| fig-width: 8
-#| fig-height: 5.3
+#| fig-height: 5
 #| warning: false
+#| code-fold: true
+#| code-line-numbers: true
 plot(PolucionUKG, trend="1st")
-plot(PolucionUKG, trend = "2nd")
+plot(PolucionUKG, trend = "1st", estimator.type = "modulus",messages = F)
 ```
 
 Se confirma el dato atípico en las coordenadas estipuladas. Posteriormente se realiza la estimación de los variogramas omnidireccionales empíricos, incluyendo un modelo adicional en el que se tienen en cuenta los datos atípicos:
 
 ```{r}
+#| fig-width: 8
+#| fig-height: 6.5
 #| warning: false
-#| fig-width: 5
-#| fig-height: 3.5
+#| code-line-numbers: true
+#| code-fold: show
 variog1<-variog(PolucionUKG,messages = F)
 variog2<-variog(PolucionUKG, trend="1st",messages = F)
-variog3<-variog(PolucionUKG, trend="2nd",messages = F)
-variog4<-variog(PolucionUKG,trend = "2nd", estimator.type = "modulus",messages = F)
+variog3<-variog(PolucionUKG,trend = "1st", estimator.type = "modulus",messages = F)
 ```
 
 ```{r}
 #| fig-width: 8
-#| fig-height: 5.5
+#| fig-height: 6.5
 #| warning: false
+#| code-fold: true
+#| code-line-numbers: true
+#| echo: false
 par(mfrow=c(2,2),mar=c(3,3,2,1), mgp = c(2,1,0))
-plot(variog1, main = "Sin remover tendencia")
-plot(variog2, main = "Tendencia de 1er Orden")
-plot(variog3, main = "Tendencia de 2er Orden")
-plot(variog4, main = "Tendencia de 2er Orden \n teniendo en cuenta datos atipicos")
+plot(variog1, main = "Semivariograma sin remover tendencia")
+plot(variog2, main = "Semivariograma removiendo tendencia \n 1er Orden")
+plot(variog3, main = "Semivariograma de Kressie \n removiendo tendencia de 1er Orden")
 ```
 
-Debido a que se contienen datos atípicos se calcula semivarianza espacial mediante el semivariogramaresistente a atipicos propuesto por kressie utilizando una correccion de tendencia de segundo orden
+Debido a que se contienen datos atípicos se calcula semivarianza espacial mediante el semivariograma resistente a atipicos propuesto por kressie utilizando una correccion de tendencia de primer orden
 
-```{r}
-#| echo: false
-#| eval: false
-variog5 <- variog(PolucionUKG,
-                trend = "2nd",messages = F)
-variog5Cloud <- variog(PolucionUKG,
-                trend = "2nd",
-                op="cloud",messages = F)
-variog5BinCloud <- variog(PolucionUKG,
-                trend = "2nd",
-                op="cloud",
-                bin.cloud = TRUE,messages = F)
-variog5Sm <- variog(PolucionUKG,
-                trend = "2nd",
-                op="sm",messages = F)
-```
-
-```{r}
-#| fig-width: 8
-#| fig-height: 6
-#| warning: false
-#| echo: false
-#| eval: false
-par(mfrow = c(2, 2), mar = c(3, 3, 1, 1), mgp = c(2, 1, 0))
-     plot(variog5, main = "binned variogram 2nd trend")
-     plot(variog5Cloud, main = "variogram cloud 2nd trend")
-     plot(variog5BinCloud,main = "clouds for binned variogram 2nd trend")
-     plot(variog5Sm, main = "smoothed variogram 2nd trend")
-```
-
-## Estimación del semivariograma resistente a datos atípicos
-
-```{r}
-variog4$n
-```
+## Selección del semivariograma
 
 Debido a que los últimos pares del semivariograma resistente a datos atipicos generan un comportamiento no adecuado se tienen en cuenta en el modelo, Inicialmente se plantea generar un semivariograma teniendo en cuenta pares de datos mayores a 70 datos, debido a que con esta cantidad de datos tambien se presenta un comportamiento erratico se acorta la distancia inicialmente a 4, y por ultimo a 3.3 donde la semivarianza se estabiliza.
 
 ```{r}
 #| fig-width: 8
-#| fig-height: 3
+#| fig-height: 7
 #| warning: false
+#| code-fold: show
+#| code-line-numbers: true
 variog4<-variog(PolucionUKG,
-                trend = "2nd", 
-                estimator.type = "modulus",
-                messages = F)
-variog5pairs<-variog(PolucionUKG,
-                trend = "2nd", 
-                estimator.type = "modulus",
-                pairs.min = 70,
+                trend = "1st", 
+                max.dist = 701000,
                 messages = F)
 variog5<-variog(PolucionUKG,
-                trend = "2nd", 
-                estimator.type = "modulus",
-                max.dist=4,
+                trend = "1st", 
+                max.dist = 500000,
                 messages = F)
 variog6<-variog(PolucionUKG,
-                trend = "2nd", 
+                trend = "1st", 
                 estimator.type = "modulus",
-                max.dist=3.3,
+                max.dist = 701000,
                 messages = F)
-par(mfrow = c(1, 2), mar = c(3, 3, 1, 1), mgp = c(2, 1, 0))
-plot(variog4, main = "Sin correccion de distancia")
-plot(variog5pairs, main = "Correcion de pares de datos")
+variog7<-variog(PolucionUKG,
+                trend = "1st", 
+                estimator.type = "modulus",
+                max.dist = 500000,
+                pairs.min = 70,
+                messages = F)
 ```
 
 ```{r}
 #| fig-width: 8
-#| fig-height: 3
+#| fig-height: 7
 #| warning: false
-par(mfrow = c(1, 2), mar = c(3, 3, 1, 1), mgp = c(2, 1, 0))
-plot(variog5, main = "Distancia máx 4")
-plot(variog6, main = "Distancia máx 3.3")
+#| code-fold: true
+#| code-line-numbers: true
+#| echo: false
+par(mfrow = c(2, 2), mar = c(3, 3, 2, 1), mgp = c(2, 1, 0))
+plot(variog6, main = "Semivariograma de  Kressie \n dis max: 701000 m")
+plot(variog7, main = "Semivariograma Kressie \n dis max: 500000 m")
+plot(variog4, main = "Semivariograma dis max: 701000 m")
+plot(variog5, main = "Semivariograma dis max: 500000 m", col= "blue", fg="blue", col.main = "blue",col.axis = "blue",col.lab = "blue",pch  = 16)
+
+
 ```
 
 ```{r}
-variog6$u
-variog6$n
-variog6$v
+#| fig-width: 8
+#| fig-height: 3.6
+#| warning: false
+#| code-fold: show
+#| code-line-numbers: true
+variog6<-variog(PolucionUKG,
+                trend = "1st", 
+                max.dist = 450000,
+                messages = F)
+variog7<-variog(PolucionUKG,
+                trend = "1st", 
+                max.dist = 390000,
+                messages = F)
+
+```
+
+```{r}
+#| fig-width: 8
+#| fig-height: 3.6
+#| warning: false
+#| code-fold: true
+#| code-line-numbers: true
+#| echo: false
+par(mfrow = c(1, 2), mar = c(3, 3, 2, 1), mgp = c(2, 1, 0))
+plot(variog6, main = "Semivariograma  dis max: 450000 m")
+plot(variog7, main = "Semivariograma dis max: 390000 m", col= "darkgreen", fg="darkgreen", col.main = "darkgreen",col.axis = "darkgreen",col.lab = "darkgreen",pch  = 16)
+```
+
+```{r}
+variog7$u
+variog7$n
+variog7$v
 ```
 
 ## Estimacion del Variograma teorico
@@ -647,11 +603,13 @@ Para la estimación del semivariancia y los parámetros iniciales se utiliza la 
 ```{r}
 #| echo: true
 #| eval: false
-eyefit(variog6)
-#   cov.model sigmasq  phi tausq kappa kappa2   practicalRange
-#1     cubic   20.32 1.97 21.45  <NA>   <NA>              1.97
-#2      wave   16.93 0.26 20.32  <NA>   <NA> 0.777781146711015
-#3 spherical   21.45 1.88 20.32  <NA>   <NA>           1.88
+eyefit(variog7)
+#   cov.model sigmasq       phi tausq kappa kappa2   practicalRange
+# 1      wave   62.75  91148.53 17.57  <NA>   <NA> 272666.856463506
+# 2     cubic   70.28 567146.41 20.08  <NA>   <NA>        567146.41
+# 1    cauchy    75.3 131658.99 22.59  0.68   <NA> 1184193.03934269
+# 3  gaussian   62.75 202552.29 20.08  <NA>   <NA> 350581.226970189
+
 ```
 
 ### 1. Modelo Wave
@@ -661,67 +619,56 @@ $$\begin{array}{c}\gamma(h)=\tau^{2}+\sigma^{2}\left[1-\exp \left(-3\left(\frac{
 #### Métodos Cuadrados Ordinarios
 
 ```{r}
-wave.mod=c(16.93,0.26)
-fitvar1=variofit(variog6,cov.model="wave",
+#| code-line-numbers: true
+#| code-fold: show
+wave.mod=c(62.75,91148.53 )
+fitvar1WM=variofit(variog7,cov.model="wave",
                  wave.mod,fix.nugget =TRUE, 
-                 nugget = 20.23,wei="equal",messages = F)
+                 nugget = 17.57,wei="equal",messages = F)
 ```
 
 #### Métodos Cuadrados Ponderados por el numero de pares de datos
 
 ```{r}
-
-fitvar2=variofit(variog6,cov.model="wave",
+#| code-fold: show
+#| code-line-numbers: true
+fitvar2WM=variofit(variog7,cov.model="wave",
                  wave.mod,fix.nugget =TRUE, 
-                 nugget = 20.23,wei="npairs",messages = F)
+                 nugget = 17.57,wei="npairs",messages = F)
 ```
 
 #### Métodos Cuadrados Ponderados de Cressie
 
 ```{r}
-#| fig-width: 8
-#| fig-height: 6
-fitvar3=variofit(variog6,cov.model="wave",
+#| code-fold: show
+#| code-line-numbers: true
+fitvar3WM=variofit(variog7,cov.model="wave",
                  wave.mod,fix.nugget =TRUE, 
-                 nugget = 20.23,wei="cressie",messages = F)
+                 nugget = 17.57,wei="cressie",messages = F)
 ```
 
 #### Método por Máxima Verosimilitud
 
 ```{r}
-fitvar4=likfit(PolucionUKG, coords =PolucionUKG$coords, 
-               data = PolucionUKG$data,trend = "2nd", 
+#| code-fold: show
+#| code-line-numbers: true
+fitvar4WM=likfit(PolucionUKG, coords =PolucionUKG$coords, 
+               data = PolucionUKG$data,trend = "1st", 
                ini.cov.pars=wave.mod,
-               fix.nugget = TRUE, nugget = 20.23,
+               fix.nugget = TRUE, nugget = 17.57,
                cov.model="wave", lik.method = "ML",messages = F)
 ```
 
 #### Método por Máxima Verosimilitud Restringida
 
 ```{r}
-fitvar5=likfit(PolucionUKG, coords =PolucionUKG$coords, 
-               data = PolucionUKG$data,trend = "2nd", 
+#| code-fold: show
+#| code-line-numbers: true
+fitvar5WM=likfit(PolucionUKG, coords =PolucionUKG$coords, 
+               data = PolucionUKG$data,trend = "1st", 
                ini.cov.pars=wave.mod,
-               fix.nugget = TRUE, nugget = 20.23,
+               fix.nugget = TRUE, nugget = 17.57,
                cov.model="wave", lik.method = "REML",messages = F)
-```
-
-```{r}
-#| fig-width: 8
-#| fig-height: 5
-plot(variog6,xlab="h",ylab="semivarianza",
-     cex = 0.9,
-     main="Estimación teórica del modelo de semivariograma 
-     para el modelo wave",
-     cex.main=1.3)
-lines(fitvar1,col=1)
-lines(fitvar2,col=2)
-lines(fitvar3,col=3)
-lines(fitvar4,col=4)
-lines(fitvar5,col=5)
-legend("bottomright",c("MCO","MCPnpairs","MCPcressie","ML","REML"),
-       lwd=2,lty=2:7,col=2:7,
-       box.col=9,text.col=2:7)
 ```
 
 ### 2. Modelo Cubico
@@ -729,132 +676,341 @@ legend("bottomright",c("MCO","MCPnpairs","MCPcressie","ML","REML"),
 #### Métodos Cuadrados Ordinarios
 
 ```{r}
-cubic.mod=c(20.32,1.97)
-fitvar1=variofit(variog6,cov.model="cubic",
+#| code-fold: show
+#| code-line-numbers: true
+cubic.mod=c(70.28,567146.41)
+fitvar1CM=variofit(variog7,cov.model="cubic",
                  wave.mod,fix.nugget =TRUE, 
-                 nugget = 21.45,wei="equal",messages = F)
+                 nugget = 20.08,wei="equal",messages = F)
 ```
 
 #### Métodos Cuadrados Ponderados por el numero de pares de datos
 
 ```{r}
-fitvar2=variofit(variog6,cov.model="cubic",
+#| code-fold: show
+#| code-line-numbers: true
+fitvar2CM=variofit(variog7,cov.model="cubic",
                  wave.mod,fix.nugget =TRUE, 
-                 nugget = 21.45,wei="npairs",messages = F)
+                 nugget = 20.08,wei="npairs",messages = F)
 ```
 
 #### Métodos Cuadrados Ponderados de Cressie
 
 ```{r}
-fitvar3=variofit(variog6,cov.model="cubic",
+#| code-fold: show
+#| code-line-numbers: true
+fitvar3CM=variofit(variog7,cov.model="cubic",
                  wave.mod,fix.nugget =TRUE, 
-                 nugget = 21.45,wei="cressie",messages = F)
+                 nugget = 20.08,wei="cressie",messages = F)
 ```
 
 #### Método por Máxima Verosimilitud
 
 ```{r}
-
-fitvar4=likfit(PolucionUKG, coords =PolucionUKG$coords, 
-               data = PolucionUKG$data,trend = "2nd", 
+#| code-fold: show
+#| code-line-numbers: true
+fitvar4CM=likfit(PolucionUKG, coords =PolucionUKG$coords, 
+               data = PolucionUKG$data,trend = "1st", 
                ini.cov.pars=cubic.mod,
-               fix.nugget = TRUE, nugget = 21.45,
+               fix.nugget = TRUE, nugget = 20.08,
                cov.model="wave", lik.method = "ML",messages = F)
 ```
 
 #### Método por Máxima Verosimilitud Restringida
 
 ```{r}
-fitvar5=likfit(PolucionUKG, coords =PolucionUKG$coords, 
-               data = PolucionUKG$data,trend = "2nd", 
+#| code-fold: show
+#| code-line-numbers: true
+fitvar5CM=likfit(PolucionUKG, coords =PolucionUKG$coords, 
+               data = PolucionUKG$data,trend = "1st", 
                ini.cov.pars=cubic.mod,
-               fix.nugget = TRUE, nugget = 21.45,
+               fix.nugget = TRUE, nugget = 20.08,
                cov.model="wave", lik.method = "REML",messages = F)
 ```
 
-```{r}
-#| fig-width: 8
-#| fig-height: 5
-plot(variog6,xlab="h",ylab="semivarianza",
-    cex = 0.9,
-     main="Estimación teórica del modelo de semivariograma 
-     para el modelo cúbico",
-     cex.main=1.3)
-lines(fitvar1,col=1)
-lines(fitvar2,col=2)
-lines(fitvar3,col=3)
-lines(fitvar4,col=4)
-lines(fitvar5,col=5)
-legend("bottomright",c("MCO","MCPnpairs","MCPcressie","ML","REML"),
-       lwd=2,lty=2:7,col=2:7,
-       box.col=9,text.col=2:7)
-```
+### 3. Modelo Cauchy
 
-### 3. Modelo Esférico
-
-$$\gamma(h ; \theta)=\left\{\begin{array}{ll}0 & \text { si }\|h\|=0 \\ c_{0}+c_{s}\left[\frac{3}{2} \frac{\|h\|}{a}-\frac{1}{2}\left(\frac{\|h\|}{a}\right)^{3}\right] & \text { si } 0<\|h\| \leq a \\ c_{0}+c_{s} & \text { si }\|h\|>a\end{array}\right.$$
+$$                $$
 
 #### Métodos Cuadrados Ordinarios
 
 ```{r}
-spherical.mod=c(21.45,1.88)
-fitvar1=variofit(variog6,cov.model="spherical",
-                 wave.mod,fix.nugget =TRUE, 
-                 nugget = 20.32,wei="equal",messages = F)
+#| code-fold: show
+#| code-line-numbers: true
+cauchy.mod=c(75.3,131658.99 )
+fitvar1Cauchy=variofit(variog7,cov.model="cauchy",
+                 cauchy.mod,fix.nugget =TRUE, 
+                 nugget = 22.59,fix.kappa=TRUE, kappa=0.68, wei="equal",messages = F)
 ```
 
 #### Métodos Cuadrados Ponderados por el numero de pares de datos
 
 ```{r}
-fitvar2=variofit(variog6,cov.model="spherical",
-                 wave.mod,fix.nugget =TRUE, 
-                 nugget = 20.32,wei="npairs",messages = F)
+#| code-fold: show
+#| code-line-numbers: true
+fitvar2Cauchy=variofit(variog7,cov.model="cauchy",
+                 cauchy.mod,fix.nugget =TRUE, 
+                 nugget = 22.59,fix.kappa=TRUE, kappa=0.68, wei="npairs",messages = F)
+
 ```
 
 #### Métodos Cuadrados Ponderados de Cressie
 
 ```{r}
-fitvar3=variofit(variog6,cov.model="spherical",
-                 wave.mod,fix.nugget =TRUE, 
-                 nugget = 20.32,wei="cressie",messages = F)
+#| code-fold: show
+#| code-line-numbers: true
+fitvar3Cauchy=variofit(variog7,cov.model="cauchy",
+                 cauchy.mod,fix.nugget =TRUE, 
+                 nugget = 22.59,fix.kappa=TRUE, kappa=0.68, wei="cressie",messages = F)
 ```
 
 #### Método por Máxima Verosimilitud
 
 ```{r}
-fitvar4=likfit(PolucionUKG, coords =PolucionUKG$coords, 
-               data = PolucionUKG$data,trend = "2nd", 
-               ini.cov.pars=spherical.mod,
-               fix.nugget = TRUE, nugget = 20.32,
-               cov.model="spherical", lik.method = "ML",messages = F)
+#| code-fold: show
+#| code-line-numbers: true
+fitvar4Cauchy=likfit(PolucionUKG, coords =PolucionUKG$coords, 
+               data = PolucionUKG$data,trend = "1st", 
+               ini.cov.pars=cauchy.mod,
+               fix.nugget = TRUE, nugget = 17.57,
+               fix.kappa=TRUE, kappa=0.68,
+               cov.model="cauchy", lik.method = "ML",messages = F)
 ```
 
 #### Método por Máxima Verosimilitud Restringida
 
 ```{r}
-fitvar5=likfit(PolucionUKG, coords =PolucionUKG$coords, 
-               data = PolucionUKG$data,trend = "2nd", 
-               ini.cov.pars=spherical.mod,
-               fix.nugget = TRUE, nugget = 20.32,
-               cov.model="spherical", lik.method = "REML",messages = F)
+#| code-fold: show
+#| code-line-numbers: true
+fitvar5Cauchy=likfit(PolucionUKG, coords =PolucionUKG$coords, 
+               data = PolucionUKG$data,trend = "1st", 
+               ini.cov.pars=cauchy.mod,
+               fix.nugget = TRUE, nugget = 17.57,
+               fix.kappa=TRUE, kappa=0.68,
+               cov.model="cauchy", lik.method = "ML",messages = F)
+```
+
+### 4. Modelo Gaussiano
+
+$$                $$
+
+#### Métodos Cuadrados Ordinarios
+
+```{r}
+#| code-line-numbers: true
+#| code-fold: show
+gau.mod=c(62.75,202552.29 )
+fitvar1GAU=variofit(variog7,cov.model="gaussian",
+                 gau.mod,fix.nugget =TRUE, 
+                 nugget = 20.08,wei="equal",messages = F)
+```
+
+#### Métodos Cuadrados Ponderados por el numero de pares de datos
+
+```{r}
+#| code-fold: show
+#| code-line-numbers: true
+fitvar2GAU=variofit(variog7,cov.model="gaussian",
+                 gau.mod,fix.nugget =TRUE, 
+                 nugget = 20.08,wei="npairs",messages = F)
+```
+
+#### Métodos Cuadrados Ponderados de Cressie
+
+```{r}
+#| code-fold: show
+#| code-line-numbers: true
+fitvar3GAU=variofit(variog7,cov.model="gaussian",
+                 gau.mod,fix.nugget =TRUE, 
+                 nugget = 20.08,wei="cressie",messages = F)
+```
+
+#### Método por Máxima Verosimilitud
+
+```{r}
+#| code-fold: show
+#| code-line-numbers: true
+fitvar4GAU=likfit(PolucionUKG, coords =PolucionUKG$coords, 
+               data = PolucionUKG$data,trend = "1st", 
+               ini.cov.pars=gau.mod,
+               fix.nugget = TRUE, nugget = 20.08,
+               cov.model="gaussian", lik.method = "ML",messages = F)
+```
+
+#### Método por Máxima Verosimilitud Restringida
+
+```{r}
+#| code-fold: show
+#| code-line-numbers: true
+fitvar5GAU=likfit(PolucionUKG, coords =PolucionUKG$coords, 
+               data = PolucionUKG$data,trend = "1st", 
+               ini.cov.pars=gau.mod,
+               fix.nugget = TRUE, nugget = 20.08,
+               cov.model="gaussian", lik.method = "REML",messages = F)
+```
+
+##### Graficas Modelos
+
+```{r}
+#| fig-width: 10
+#| fig-height: 10
+#| warning: false
+#| echo: false
+#| code-fold: true
+#| code-line-numbers: true
+par(mfrow = c(2,2))
+plot(variog7,xlab="h",ylab="semivarianza",
+     main="Estimación teórica semivariograma \n modelo wave",)
+lines(fitvar1WM,col=1)
+lines(fitvar2WM,col=2)
+lines(fitvar3WM,col=3)
+lines(fitvar4WM,col=4)
+lines(fitvar5WM,col=5)
+legend("bottomright",c("MCO","MCPnpairs","MCPcressie","ML","REML"),
+       lwd=2,lty=2:7,col=1:5,
+       box.col=9,text.col=1:5)
+
+plot(variog7,xlab="h",ylab="semivarianza",
+    main="Estimación teórica semivariograma \n modelo cúbico",)
+lines(fitvar1CM,col=1)
+lines(fitvar2CM,col=2)
+lines(fitvar3CM,col=3)
+lines(fitvar4CM,col=4)
+lines(fitvar5CM,col=5)
+legend("bottomright",c("MCO","MCPnpairs","MCPcressie","ML","REML"),
+       lwd=2,lty=2:7,col=1:5,
+       box.col=9,text.col=1:5)
+
+plot(variog7,xlab="h",ylab="semivarianza",
+    main="Estimación teórica semivariograma \n cauchy",)
+lines(fitvar1Cauchy,col=1)
+lines(fitvar2Cauchy,col=2)
+lines(fitvar3Cauchy,col=3)
+lines(fitvar4Cauchy,col=4,lwd = 3)
+lines(fitvar5Cauchy,col=5)
+legend("bottomright",c("MCO","MCPnpairs","MCPcressie","ML","REML"),
+       lwd=2,lty=2:7,col=1:5,
+       box.col=9,text.col=1:5)
+
+plot(variog7,xlab="h",ylab="semivarianza",
+    main="Estimación teórica semivariograma \n Gaussiano",)
+lines(fitvar1GAU,col=1)
+lines(fitvar2GAU,col=2)
+lines(fitvar3GAU,col=3)
+lines(fitvar4GAU,col=4)
+lines(fitvar5GAU,col=5)
+legend("bottomright",c("MCO","MCPnpairs","MCPcressie","ML","REML"),
+       lwd=2,lty=2:7,col=1:5,
+       box.col=9,text.col=1:5)
+```
+
+## Kriging
+
+### Validacion Cruzada
+
+```{r}
+#| warning: false
+#| echo: false
+#| code-fold: true
+#| code-line-numbers: true
+library(gstat)
+library(maptools)
+Data = data.frame(PolucionUK[, 1:2], res = mod1$residuals)
+coordinates(Data) = c("X", "Y")
+ve.fit1WM = as.vgm.variomodel(fitvar1WM) 
+ve.fit2WM = as.vgm.variomodel(fitvar2WM) 
+ve.fit3WM = as.vgm.variomodel(fitvar3WM) 
+ve.fit4WM = as.vgm.variomodel(fitvar4WM) 
+ve.fit5WM = as.vgm.variomodel(fitvar5WM) 
+cvMCOWM = krige.cv(res ~ 1, Data, ve.fit1WM, maxdist = 450000) 
+cvMCPWM   = krige.cv(res ~ 1, Data, ve.fit2WM, maxdist = 450000) 
+cvMCPCressieWM = krige.cv(res ~ 1, Data, ve.fit3WM, maxdist = 450000) 
+cvMVWM          = krige.cv(res ~ 1, Data, ve.fit4WM, maxdist = 450000)
+cvMVRWM        = krige.cv(res ~ 1, Data, ve.fit5WM, maxdist = 450000)
+# sqrt((round(mean(cvMCOWM$residual), 5) - 0)^2 + 
+#        (round(mean(cvMCOWM$zscore), + 5) - 0)^2 +
+#        (round(var(cvMCOWM$zscore), 5) - 1)^2)
+
+
+
+
+UKshape = readShapePoly("NUTS1_Jan_2018_SGCB_in_the_UK.shp") 
+poligonos = polygons(UKshape) 
+xy = SpatialPoints(PolucionUK[c("X", "Y")])
+{
+  par(mar = c(0.5, 0.5, 0.5, 0.5))
+  plot(poligonos,axes = F ) 
+  points(xy, pch = 3, col = "red")
+}
+
+muestra = spsample(poligonos, n = 10000, "regular") 
+# Crea la grilla con 10000 puntos
+muestra1 = as.data.frame(muestra) 
+names(muestra1) = c("x", "y") 
+gridded(muestra1) = c("x", "y")
+par(mar = c(0.5, 0.5, 0.5, 0.5))
+plot(muestra1)
+```
+
+[GisINfo1](https://gis.stackexchange.com/questions/267775/uk-regional-shape-map-with-scotland-wales-and-northern-ireland) and [GisINfo2](https://gis.stackexchange.com/questions/247089/what-is-the-process-by-which-ons-creates-generalised-and-ultra-generalised-c)to take [UKshape](https://geoportal.statistics.gov.uk/datasets/ons::nuts1-jan-2018-super-generalised-clipped-boundaries-in-the-uk/explore?location=47.285759%2C-14.075155%2C3.91)
+
+```{r}
+#| fig-width: 10
+#| fig-height: 10
+#| warning: false
+#| echo: false
+#| code-fold: true
+#| code-line-numbers: true
+#| results: hide
+library(viridis)
+PM10preMCO=krige(res ~ 1,Data,muestra1, ve.fit1WM, nsim=0)
+PM10preMCP=krige(res ~ 1,Data,muestra1, ve.fit2WM)
+PM10preMCPCressie=krige(res ~ 1,Data,muestra1, ve.fit3WM)
+PM10preMV=krige(res ~ 1,Data,muestra1, ve.fit4WM)
+PM10preMVRe=krige(res ~ 1,Data,muestra1, ve.fit5WM)
+
+
+li = list("sp.polygons", poligonos) 
+pts = list("sp.points", Data, pch = 18, col = "blue") 
+
+grid.arrange(
+spplot(PM10preMCO, c("var1.pred"), as.table = TRUE, main = " Modelo Wave \n MCO", sp.layout = list(li, pts), contour = FALSE, labels = FALSE, pretty = TRUE, col = "black", col.regions = viridis(64)),
+
+spplot(PM10preMCP, c("var1.pred"), as.table = TRUE, main = " Modelo Wave \n MCP ", sp.layout = list(li, pts), contour = FALSE, labels = FALSE, pretty = TRUE, col = "black", col.regions = viridis(64)),
+
+spplot(PM10preMCPCressie, c("var1.pred"), as.table = TRUE, main = " Modelo Wave \n MCP Cressie", sp.layout = list(li, pts), contour = FALSE, labels = FALSE, pretty = TRUE, col = "black", col.regions = viridis(64)),
+spplot(PM10preMV, c("var1.pred"), as.table = TRUE, main = " Modelo Wave \n MV", sp.layout = list(li, pts), contour = FALSE, labels = FALSE, pretty = TRUE, col = "black", col.regions = viridis(64)),
+spplot(PM10preMVRe, c("var1.pred"), as.table = TRUE, main = " Modelo Wave \n MVRe ", sp.layout = list(li, pts), contour = FALSE, labels = FALSE, pretty = TRUE, col = "black", col.regions = viridis(64)),ncol=3)
+
+
 ```
 
 ```{r}
-#| fig-width: 8
+#| fig-width: 10
 #| fig-height: 5
-plot(variog6,xlab="h",ylab="semivarianza",
-     cex = 0.9,
-     main="Estimación teórica del modelo de semivariograma 
-     para el modelo esférico",
-     cex.main=1.3)
-lines(fitvar1,col=1)
-lines(fitvar2,col=2)
-lines(fitvar3,col=3)
-lines(fitvar4,col=4)
-lines(fitvar5,col=5)
-legend("bottomright",c("MCO","MCPnpairs","MCPcressie","ML","REML"),
-       lwd=2,lty=2:7,col=2:7,
-       box.col=9,text.col=2:7)
+#| warning: false
+#| echo: false
+#| code-fold: true
+#| code-line-numbers: true
+#| results: hide
+
+predModWM<-data.frame(MCO=PM10preMCO$var1.pred,
+                      MCP=PM10preMCP$var1.pred,
+                      MCPCressie=PM10preMCPCressie$var1.pred,
+                      MV=PM10preMV$var1.pred,
+                      MVRe=PM10preMVRe$var1.pred
+)
+errorpredModWM<-data.frame(MCO=PM10preMCO$var1.var,
+                      MCP=PM10preMCP$var1.pred,
+                      MCPCressie=PM10preMCPCressie$var1.var,
+                      MV=PM10preMV$var1.var,
+                      MVRe=PM10preMVRe$var1.var
+)
+par(mfrow=c(1,2),mar = c(6, 2.5, 2, 1))
+boxplot(predModWM, las = 2, main = "Pred.Values")
+boxplot(errorpredModWM, las = 2, main = "Error Pred.Values")
 ```
 
-## References
+## Resources
+
+[1](http://132.72.155.230:3838/r/) [2](https://www.paulamoraga.com/book-geospatial/sec-spatialdataandCRS.html#setting-coordinate-reference-systems-in-r) [3](https://bookdown.org/robinlovelace/geocompr/reproj-geo-data.html) [4](https://bookdown.org/martinmontaneb/CienciaDeDatosParaCuriosos/datos-espaciales-en-r.html) [6](https://rpubs.com/daniballari/srs) [7](https://ethz.ch/content/dam/ethz/special-interest/math/statistics/sfs/Education/Advanced%20Studies%20in%20Applied%20Statistics/course-material-1921/SpatialStatistics/Diggle-Ribeiro-2007.pdf) [8](https://bookdown.org/mcwimberly/gdswr-book/coordinate-reference-systems.html) [9](https://rspatial.org/raster/spatial/6-crs.html) \## References

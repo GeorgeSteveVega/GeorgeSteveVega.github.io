@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="George Vega">
+
+<title>George Steven Vega - Estadistica espacial</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduccion" id="toc-introduccion" class="nav-link active" data-scroll-target="#introduccion">Introduccion</a>
+  <ul class="collapse">
+  <li><a href="#contaminación-del-aire" id="toc-contaminación-del-aire" class="nav-link" data-scroll-target="#contaminación-del-aire">Contaminación del Aire</a>
+  <ul class="collapse">
+  <li><a href="#contaminantes" id="toc-contaminantes" class="nav-link" data-scroll-target="#contaminantes">Contaminantes</a></li>
+  <li><a href="#material-particulado" id="toc-material-particulado" class="nav-link" data-scroll-target="#material-particulado">Material particulado</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#modelado-geoestadistico" id="toc-modelado-geoestadistico" class="nav-link" data-scroll-target="#modelado-geoestadistico">Modelado Geoestadistico</a>
+  <ul class="collapse">
+  <li><a href="#descripcion-de-la-zona" id="toc-descripcion-de-la-zona" class="nav-link" data-scroll-target="#descripcion-de-la-zona">Descripcion de la Zona</a></li>
+  <li><a href="#modelos-deterministicos." id="toc-modelos-deterministicos." class="nav-link" data-scroll-target="#modelos-deterministicos.">Modelos deterministicos.</a>
+  <ul class="collapse">
+  <li><a href="#modelo-lineal" id="toc-modelo-lineal" class="nav-link" data-scroll-target="#modelo-lineal">Modelo Lineal</a></li>
+  <li><a href="#modelo-de-segundo-orden" id="toc-modelo-de-segundo-orden" class="nav-link" data-scroll-target="#modelo-de-segundo-orden">Modelo de Segundo Orden</a></li>
+  <li><a href="#modelo-de-interseccion" id="toc-modelo-de-interseccion" class="nav-link" data-scroll-target="#modelo-de-interseccion">Modelo de Interseccion</a></li>
+  <li><a href="#identificación-de-datos-atípicos" id="toc-identificación-de-datos-atípicos" class="nav-link" data-scroll-target="#identificación-de-datos-atípicos">Identificación de Datos atípicos</a></li>
+  </ul></li>
+  <li><a href="#estimación-del-variograma-empírico" id="toc-estimación-del-variograma-empírico" class="nav-link" data-scroll-target="#estimación-del-variograma-empírico">Estimación del variograma empírico</a></li>
+  <li><a href="#estimación-del-semivariograma-resistente-a-datos-atípicos" id="toc-estimación-del-semivariograma-resistente-a-datos-atípicos" class="nav-link" data-scroll-target="#estimación-del-semivariograma-resistente-a-datos-atípicos">Estimación del semivariograma resistente a datos atípicos</a></li>
+  <li><a href="#estimacion-del-variograma-teorico" id="toc-estimacion-del-variograma-teorico" class="nav-link" data-scroll-target="#estimacion-del-variograma-teorico">Estimacion del Variograma teorico</a>
+  <ul class="collapse">
+  <li><a href="#modelo-wave" id="toc-modelo-wave" class="nav-link" data-scroll-target="#modelo-wave">1. Modelo Wave</a></li>
+  <li><a href="#modelo-cubico" id="toc-modelo-cubico" class="nav-link" data-scroll-target="#modelo-cubico">2. Modelo Cubico</a></li>
+  <li><a href="#modelo-esférico" id="toc-modelo-esférico" class="nav-link" data-scroll-target="#modelo-esférico">3. Modelo Esférico</a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Estadistica espacial</h1>
+<p class="subtitle lead">Modelado Geoespacial</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>George Vega </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">03-2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p></p>
+<div class="cell">
+
+</div>
+<p></p>
+<section id="introduccion" class="level1">
+<h1>Introduccion</h1>
+<section id="contaminación-del-aire" class="level2">
+<h2 class="anchored" data-anchor-id="contaminación-del-aire">Contaminación del Aire</h2>
+<p>Los problemas asociados a la contaminación de aire pueden estar divididos en cinco diferentes categorías, polución local, polución urbana, regional, continental y global:</p>
+<ul>
+<li><p><strong>Contaminación Local:</strong><br>
+Este tipo de contaminación esta usualmente caracterizada por uno o varios emisores que aportan una cantidad considerable de material particulado o una gran cantidad de emisores relativamente pequeños. Adicionalmente, existen fuentes emisoras como el proveniente de la combustión de los vehículos o los subproductos de la generación de compuestos orgánicos volátiles provenientes del tratamiento de residuos serán una gran fuente de emisión.<span class="citation" data-cites="Boubel1994">(<a href="#ref-Boubel1994" role="doc-biblioref">Richard W. Boubel 1994</a>)</span></p></li>
+<li><p><strong>Contaminación Urbana:</strong><br>
+Generalmente la contaminación de aire en las zonas urbanas se da de dos maneras; en la primera por la liberación de contaminantes primarios los cuales provienen directamente de fuentes, mientras que en la segunda se da por la formación de reacciones químicas de los contaminantes primarios. La mayoría de los contaminantes urbanos son relativamente no reactivos como el monoxido de carbono y el material particulado, o de especies de baja reactividad como los dióxidos de sulfuro.<span class="citation" data-cites="Boubel1994">(<a href="#ref-Boubel1994" role="doc-biblioref">Richard W. Boubel 1994</a>)</span></p></li>
+<li><p><strong>Contaminación Regional:</strong><br>
+Esta se da por la existencia de grandes urbes, el aire cercano a estas ciudades contiene gran cantidad de contaminantes primarios y contaminantes provenientes de reacciones químicas. De igual manera existen contaminantes que permanecen en el tiempo, reaccionan y se transforman durante el tiempo. Este es el caso del el cual es liberado principalmente a través la combustión de combustibles como el carbón o el petróleo, el se oxida a , que reacciona con el vapor de agua para formar el cual reacciona con numerosos compuestos para formar sulfatos. Por ejemplo resulta de la combustión a alta temperatura, en centrales eléctricas o plantas industriales en la producción.<span class="citation" data-cites="Boubel1994">(<a href="#ref-Boubel1994" role="doc-biblioref">Richard W. Boubel 1994</a>)</span></p></li>
+<li><p><strong>Contaminación Continental y Global :<br>
+</strong>Respecto a la contaminación continental no existe una diferencia respecto a nivel regional, sin embargo, se debe tener en cuenta que existen diferencias a nivel continental, por ejemplo existen casos como la lluvia ácida en escandinavia que ha tenido repercusiones a nivel europeo, otro claro ejemplo en paises asiaticos como Japón, Corea y China sus emisiones contaminantes son más amplias debido a su capacidad industrial. A escala global se tienen en cuenta los impactos continentales y regionales, sin embargo siempre han existido eventos de impacto mundial como el accidente de Chernobyl donde se detectaron niveles inusuales de radiactividad en continentes como el americano, así mismo se deben tener en cuenta los problemas de contaminación a nivel global, como es el caso de clorofluorocarbonos que tiene un efecto profundo sobre la capa de ozono atmosférica, sumado a los efectos de radiación solar que es fuente energética para la generación de reacciones químicas. <span class="citation" data-cites="Boubel1994">(<a href="#ref-Boubel1994" role="doc-biblioref">Richard W. Boubel 1994</a>)</span></p></li>
+</ul>
+<section id="contaminantes" class="level3">
+<h3 class="anchored" data-anchor-id="contaminantes">Contaminantes</h3>
+<p>De acuerdo con el Centro de Prevencion y control de enfermedades (CDC) por sus siglas en inglés, La EPA ha identificado seis principales contaminantes basados en la salud humana y el medio ambiente. <span class="citation" data-cites="CDCP2023">(<a href="#ref-CDCP2023" role="doc-biblioref">Center for Disease Control and Prevention 2023</a>)</span></p>
+<ul>
+<li><p>Monoxido de Carbono </p></li>
+<li><p>Plomo </p></li>
+<li><p>Oxidos de Nitrogeno ()</p></li>
+<li><p>Ozono ()</p></li>
+<li><p>Material Particulado (PM<span class="math inline">\(_{10}\)</span> y PM<span class="math inline">\(_{2.5}\)</span>)</p></li>
+<li><p>Dioxido de Sulfuro ()</p></li>
+<li><p>Acroleina ()</p></li>
+<li><p>Benzeno ()</p></li>
+<li><p>Sulfuro de Carbono ()</p></li>
+<li><p>Asbesto</p></li>
+<li><p>Queroseno/Combustibles Fosiles</p></li>
+<li><p>Hidrocarburos aromáticos policíclicos (PAHs)</p></li>
+<li><p>Hidrocarbonos de Petroleo totales (TPH)</p></li>
+<li><p>Creosota ()</p></li>
+</ul>
+</section>
+<section id="material-particulado" class="level3">
+<h3 class="anchored" data-anchor-id="material-particulado">Material particulado</h3>
+<p>Los peligros para la salud y morbilidad a causa de las pequeñas emisiones de material particulado (PM) como consecuencia de la ineficaz combustión de los combustibles fósiles y sólidos han sido documentados, sin embargo, no hay precedentes sobre los riesgos ambientales para la salud.<span class="citation" data-cites="Anilla2022">(<a href="#ref-Anilla2022" role="doc-biblioref">Cherian 2022</a>)</span>. La Organizacion mundial de la Salud en el año 2005 emitió una guia de referencia de la calidad del aire sobre contaminantes de material particulado de 2.5<span class="math inline">\(\mu\)</span>m o menos(PM2.5) y 10<span class="math inline">\(\mu\)</span>m la cual se basada relacion entre la exposición a altas concentraciones de material particulado (PM10 y PM2.5) y el aumento de la mortalidad o morbilidad.<span class="citation" data-cites="WHO2006">(<a href="#ref-WHO2006" role="doc-biblioref">WHO 2006</a>)</span></p>
+<p>De acuerdo a la Organizacion Mundial de la Salud para el 2005 el material particulado fino(PM<span class="math inline">\(_{2.5}\)</span>) era en promedio de 10<span class="math inline">\(\mu\)</span>g/m<span class="math inline">\(^3\)</span> anualmente lo que equivale a 25 <span class="math inline">\(\mu\)</span>g/m<span class="math inline">\(^3\)</span> en un dia, mientras que el material particulado grueso (PM<span class="math inline">\(_{10}\)</span>) era de 20<span class="math inline">\(\mu\)</span>g/m<span class="math inline">\(^3\)</span>, aproximadamente 50 <span class="math inline">\(\mu\)</span>g/m<span class="math inline">\(^3\)</span>. Cabe destacar que la contaminación por material particulados, aun en bajas concentraciones tiene impacto sobre la salud, en el informe anteriormente mencionado el PM<span class="math inline">\(_{2.5}\)</span> fue identificado como uno de los principales contaminantes del aire directamente relacionado con la causa de accidentes cerebrovasculares, cardiopatía isquémica; enfermedad pulmonar obstructiva crónica y cáncer de pulmón.<span class="citation" data-cites="WHO2006">(<a href="#ref-WHO2006" role="doc-biblioref">WHO 2006</a>)</span></p>
+<p>En el año 2015, la OMS declaro la contaminación del aire como una de las principales riesgos hacia a la salud publica, por lo que los miembros de los 194 estados miembros emitieron un informe donde se atribuía que La contaminación del aire es una de las principales causas de enfermedad y muerte en todo el mundo. Alrededor de 4,3 millones de muertes cada año, la mayoría en países en desarrollo, están asociadas con la exposición a la contaminación del aire doméstico. Otros 3,7 millones de muertes al año se atribuyen a la contaminación del aire ambiental .<span class="citation" data-cites="WHO2015">(<a href="#ref-WHO2015" role="doc-biblioref">WHO 2015</a>)</span></p>
+<p>Los principales contaminantes del aire son producto de las actividades diarias en las cuales se incluyen: la producción de energías primarias, los sistemas de transporte el desarrollo urbano, añadiendo que el desarrollo industrial y los subproductos de la combustión junto a las incineraciones no controladas presentan un gran impacto sobre la calidad del aire. <span class="citation" data-cites="WHO2015">(<a href="#ref-WHO2015" role="doc-biblioref">WHO 2015</a>)</span></p>
+<!-- ### Material Particulado 2.5 -->
+<!-- Los PM en entornos urbanos y no urbanos es una mezcla compleja con componentes que tienen diversas características químicas y físicas. La investigación sobre PM y la interpretación de los resultados de la investigación sobre exposición y riesgo se complican por esta heterogeneidad y la posibilidad de que el potencial de las partículas para causar lesiones varía con el tamaño y otras características físicas, composición química y de la fuente.  Diferentes características de PM pueden ser relevantes para diferentes efectos sobre la salud. Los hallazgos de investigaciones más recientes continúan destacando esta complejidad y la naturaleza dinámica de las partículas suspendidas en el aire, ya que se forman de forma primaria o secundaria y luego continúan experimentando transformaciones químicas y físicas en la atmósfera.[@WHO2021] -->
+<!-- No obstante, las partículas todavía se clasifican generalmente por sus propiedades aerodinámicas, porque éstas determinan los procesos de transporte y eliminación en el aire y los sitios de deposición y las vías de eliminación dentro del tracto respiratorio. El diámetro aerodinámico se utiliza como indicador resumen del tamaño de las partículas; el diámetro aerodinámico corresponde al tamaño de una esfera de densidad unitaria con las mismas características aerodinámicas que la partícula de interés. Las diferencias en las propiedades aerodinámicas entre las partículas son aprovechadas por muchas técnicas de muestreo de partículas (Oficina Regional de la OMS para Europa, 2006) -->
+<!-- En las últimas décadas, la atención se ha centrado en las partículas con diámetros aerodinámicos inferiores o iguales a 2,5 µm (PM2,5) o 10 µm (PM10). -->
+<!-- ### **Necesidad de los modelado del aire** -->
+<!-- La necesidad de modelos -->
+<!-- Los modelos proporcionan un medio para representar un sistema real de una manera comprensible. Toman muchas formas, comenzando con "modelos conceptuales" que explican la forma en que funciona un sistema, como la descripción de todos los factores y parámetros de cómo se mueve una partícula en la atmósfera después de su liberación de una planta de energía. -->
+<!-- Los modelos conceptuales ayudan a identificar las principales influencias sobre dónde es probable que se encuentre una sustancia química en el medio ambiente y, como tal, deben desarrollarse para ayudar a identificar las fuentes de datos necesarias para evaluar un problema ambiental. -->
+<!-- En general, desarrollar un modelo de contaminación del aire requiere dos pasos principales. -->
+<!-- Primero, se debe definir un modelo del dominio y los procesos que se están estudiando. Luego, en los límites del modelo, se necesita especialmente un modelo de las condiciones de contorno para representar el entorno influyente que rodea el dominio de estudio. La calidad del estudio modelo está relacionada con la precisión y representatividad del estudio real.[@Vallero2008] -->
+<p><br>
+</p>
+</section>
+</section>
+</section>
+<section id="modelado-geoestadistico" class="level1">
+<h1>Modelado Geoestadistico</h1>
+<section id="descripcion-de-la-zona" class="level2">
+<h2 class="anchored" data-anchor-id="descripcion-de-la-zona">Descripcion de la Zona</h2>
+<p>La base de datos seleccionada para este trabajo proviene del departamento de Medio Ambiente, Alimentación y Asuntos Rurales del Reino unido,de la cual se extrae <a href="https://uk-air.defra.gov.uk/data/">datos</a> de la fuente de informacion del Reino Unido.</p>
+<p>El reino unido mediante su agencia ambiental posee alrededor de 300 sitios de monitoreo ambiental los cuales se subdividen en redes que adquieren informacion particular de acuerdo al contaminante. Existen dos tipos de <a href="https://uk-air.defra.gov.uk/networks/">redes de monitoreo</a> en el reino unido:</p>
+<ol type="1">
+<li><p><a href="https://uk-air.defra.gov.uk/networks/network-info?view=automatic"><strong>Redes automaticas:</strong></a> estas permiten la captura de datos de contaminantes que se producen por hora. La recopilación de datos comprende datos desde 1972 para algunos sitios:</p>
+<ul>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=aurn">Automatic Urban and Rural Network (AURN)</a></li>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=hc">Automatic Hydrocarbon Network (AHN)</a></li>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=aln">Automatic London Network</a></li>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=nondefraaqmon">Locally-managed automatic monitoring</a></li>
+</ul></li>
+<li><p><a href="https://uk-air.defra.gov.uk/networks/network-info?view=automatic"><strong>Redes no automaticas:</strong></a> La recopilacion de los datos se da para contaminantes que se producen con menor frecuencia (diaria,semanal, mensual) donde las muestras son recopiladas por medios físicos y son sometidas a análisis fisico-quimico que permite calcular la concentración de los resultados, a continuación se relacionan las redes de monitoreo para esta categoría:</p>
+<ul>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=ukeap">UK Eutrophying &amp; Acidifying Network (UKEAP)</a></li>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=uw">Upland Waters Monitoring Network</a></li>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=metals">Heavy Metals Network</a></li>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=no2old">Nitrogen Dioxide Diffusion Tube (1993 to 2005)</a></li>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=smsites">Smoke and Sulphur Dioxide</a></li>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=ukbsn">Black Carbon Network</a></li>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=pah">PAH</a></li>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=tomps">Toxic Organic Micro Pollutants (TOMPs)</a></li>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=nahc">Non-Automatic Hydrocarbon Network</a></li>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=particle">Particle Numbers and Concentrations Network</a></li>
+<li><a href="https://uk-air.defra.gov.uk/library/no2ten/privacy-notice">JAQU privacy notice</a></li>
+<li><a href="https://uk-air.defra.gov.uk/library/no2ten/privacy-notice">UK Urban NO2 Network</a></li>
+</ul></li>
+</ol>
+<p>Dentro de los enlaces relacionados se puede recopilar la información disponible para cada red.</p>
+<p>El gobierno del Reino Unido permite la extracción, analisis e interpretacion de los datos de codigo abierto y libre mediante el uso del paquete <a href="https://uk-air.defra.gov.uk/data/openair"><code>Openair</code></a> usando R. Para la adecuación de los datos se realiza el procedimiento descrito en <a href="https://rspatialdata.github.io/air_pollution.html#Installing_the_openair_packageR" class="uri">https://rspatialdata.github.io/air_pollution.html#Installing_the_openair_packageR</a> mediante la integracion del paquete <code>tidyverse</code>.</p>
+<p>Para la extracción de los datos se verifican algunas de las redes de monitoreo existentes en el año 2021- 2022, como se muestra en la siguiente codigo ejecutado en R:</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"openair"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"openairmaps"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(openair)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(openairmaps)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">networkMap</span>(</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">source =</span> <span class="fu">c</span>(<span class="st">"aurn"</span>,<span class="st">"saqn"</span>,<span class="st">"waqn"</span>,<span class="st">"ni"</span>, <span class="st">"aqe"</span>, <span class="st">"local"</span>),</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="st">"network"</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">year =</span> <span class="dv">2021</span><span class="sc">:</span><span class="dv">2022</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">cluster =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">provider =</span> <span class="st">"OpenStreetMap"</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">collapse.control =</span> <span class="cn">FALSE</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Red.png" class="img-fluid figure-img" style="width:10.8cm"></p>
+<p></p><figcaption class="figure-caption">Red de estacion ambiental en el Reino Unido</figcaption><p></p>
+</figure>
+</div>
+<p>Posterior se escogen las variables PM<span class="math inline">\(_{2.5}\)</span> y PM<span class="math inline">\(_{10}\)</span> y se verifican sus redes de monitoreo:</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">networkMap</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">source =</span> <span class="fu">c</span>(<span class="st">"aurn"</span>,<span class="st">"saqn"</span>,<span class="st">"waqn"</span>,<span class="st">"ni"</span>, <span class="st">"aqe"</span>, <span class="st">"local"</span>),</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="st">"variable"</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">year =</span> <span class="dv">2021</span><span class="sc">:</span><span class="dv">2022</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">cluster =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">provider =</span> <span class="st">"OpenStreetMap"</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">collapse.control =</span> <span class="cn">FALSE</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p></p>
+<div id="fig-elephants" class="quarto-layout-panel">
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-PM25" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="PM25.png" class="img-fluid figure-img" style="width:8cm" data-ref-parent="fig-elephants"></p>
+<p></p><figcaption class="figure-caption">(a) Estaciones Material Particulado 2.5 <span class="math inline">\(\mu\)</span>m</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-PM10" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="PM10.png" class="img-fluid figure-img" style="width:8cm" data-ref-parent="fig-elephants"></p>
+<p></p><figcaption class="figure-caption">(b) Estaciones de Material Particulado 10 <span class="math inline">\(\mu\)</span>m</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: Mapa de material particulado en el Reino Unido</figcaption><p></p>
+</figure>
+</div>
+<p>Con base en lo anterior se ejecuta el código para la extracción de los datos diarios de los contaminantes mencionados, se guarda en un data frame y se exporta como CSV:</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">importAURN</span>()</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">importSAQN</span>()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">importWAQN</span>()</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">importAQE</span>()</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">importNI</span>()</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">importLocal</span>()</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>meta_data <span class="ot">&lt;-</span> <span class="fu">importMeta</span>(<span class="at">source =</span> <span class="st">"aurn"</span>, <span class="at">all =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>selected_data <span class="ot">&lt;-</span> meta_data <span class="sc">%&gt;%</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(variable <span class="sc">==</span> <span class="fu">c</span>(<span class="st">"PM2.5"</span>,<span class="st">"PM10"</span>))</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>selected_sites <span class="ot">&lt;-</span> selected_data <span class="sc">%&gt;%</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(code) <span class="sc">%&gt;%</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_all</span>(<span class="at">.funs =</span> tolower)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>selected_sites</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>datos <span class="ot">&lt;-</span> <span class="fu">importAURN</span>(<span class="at">site =</span> selected_sites<span class="sc">$</span>code, <span class="at">year =</span> <span class="dv">2021</span><span class="sc">:</span><span class="dv">2022</span>,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>                      <span class="at">pollutant =</span> <span class="fu">c</span>(<span class="st">"pm10"</span>,<span class="st">"pm2.5"</span>),</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>                      <span class="at">meta =</span> <span class="cn">TRUE</span>, <span class="at">data_type =</span> <span class="st">"daily"</span>)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>Tabledata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Longitud =</span> <span class="fu">as.numeric</span>(datos<span class="sc">$</span>longitude), </span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>                        <span class="at">Latitud =</span> <span class="fu">as.numeric</span>(datos<span class="sc">$</span>latitude),</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>                        <span class="at">Fecha=</span><span class="fu">as.Date</span>(datos<span class="sc">$</span>date),</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>                        <span class="at">PM10=</span><span class="fu">as.numeric</span>(datos<span class="sc">$</span>pm10), </span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>                        <span class="at">PM2.5=</span><span class="fu">as.numeric</span>(datos<span class="sc">$</span>pm2<span class="fl">.5</span>), </span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>                        <span class="at">sitio=</span><span class="fu">as.character</span>(datos<span class="sc">$</span>site))</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>Tabla<span class="ot">&lt;-</span> <span class="fu">subset</span>(Tabledata,<span class="at">subset=</span>(Tabledata<span class="sc">$</span>PM10<span class="sc">!=</span><span class="st">"NA"</span> <span class="sc">&amp;</span> </span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>                                   Tabledata<span class="sc">$</span>PM2<span class="fl">.5</span><span class="sc">!=</span><span class="st">"NA"</span> <span class="sc">&amp;</span> </span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>                                   Tabledata<span class="sc">$</span>Fecha<span class="sc">==</span><span class="st">"2022-12-01"</span>))</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(Tabla, <span class="st">"C:/Users/GeorgeVega/Pictures/PolucionUK1.csv"</span>, <span class="at">row.names=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p></p>
+<p>Se extraen los datos espaciales del día 01-12-22 y posteriormente se importa el archivo CSV :</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>PolucionUK <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"PolucionUK1.csv"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">attach</span>(PolucionUK)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p></p>
+<p>El archivo extradido solo poisee la informacion referente a las fechas de medicion del material particulado de</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(PolucionUK)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Longitud  Latitud   PM10  PM2.5                     sitio  X    Fecha
+1 -2.094770 57.15740  7.505  5.560      Aberdeen Erroll Park NA 01/12/22
+2 -3.242900 55.79216  4.460  3.687          Auchencorth Moss NA 01/12/22
+3 -4.041924 51.07479 15.965 13.609            Barnstaple A39 NA 01/12/22
+4 -5.928833 54.59965 13.173  7.967            Belfast Centre NA 01/12/22
+5 -1.874978 52.47615 32.271 19.332 Birmingham A4540 Roadside NA 01/12/22
+6 -1.918235 52.48135 17.717 15.020       Birmingham Ladywood NA 01/12/22</code></pre>
+</div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(PolucionUK[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Longitud          Latitud           PM10            PM2.5       
+ Min.   :-7.9003   Min.   :50.37   Min.   : 3.383   Min.   : 2.173  
+ 1st Qu.:-2.9964   1st Qu.:51.52   1st Qu.:15.101   1st Qu.:12.201  
+ Median :-1.6231   Median :52.65   Median :19.774   Median :16.404  
+ Mean   :-1.9529   Mean   :52.88   Mean   :20.731   Mean   :16.477  
+ 3rd Qu.:-0.8426   3rd Qu.:53.79   3rd Qu.:26.389   3rd Qu.:20.747  
+ Max.   : 1.3027   Max.   :57.48   Max.   :39.521   Max.   :30.456  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>( <span class="at">mar=</span> <span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">2</span>) )</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(PM10 ,<span class="at">freq=</span>T,<span class="at">col=</span><span class="st">'blue'</span>,<span class="at">labels=</span><span class="cn">TRUE</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">30</span>),<span class="at">main=</span><span class="st">"Distribución de material particulado PM10"</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Material Particulado de 10 micrometros"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">"Frecuencia"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="EspacialV1_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="480"></p>
+</div>
+</div>
+<p></p>
+<p>Se realiza un gráfico de dispersión para conocer la tendencia del material particulado en función de las coordenadas. Allí se puede observar que a medida que hay una relación positiva entre el material particulado PM10 y la longitud, mientras que la relación es inversa entre el PM10 y la latitud. Esta relación se mantiene para el material particulado de 5 micras.</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>( <span class="at">mar=</span> <span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>) )</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(PolucionUK[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>], <span class="at">main =</span> <span class="st">"Gráfico de dispersión"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="EspacialV1_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>( <span class="at">mar=</span> <span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="fl">0.5</span>,<span class="dv">2</span>) )</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">smoothScatter</span>(Longitud,PM10,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">pch =</span> <span class="dv">19</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">colramp =</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">"#f7f7f7"</span>, <span class="st">"aquamarine"</span>)))</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">smoothScatter</span>(Latitud,PM10,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">pch =</span> <span class="dv">19</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">colramp =</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">"#f7f7f7"</span>, <span class="st">"aquamarine"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p></p>
+<p>Se realiza el gráfico de dispersión 3D de la variable PM10 en función de las coordenadas:</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scatterplot3d)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(akima)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>grillas <span class="ot">&lt;-</span> <span class="fu">interp</span>(Longitud,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                  Latitud,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                  PM10)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>( <span class="at">mar=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>) )</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">scatterplot3d</span>(Longitud, Latitud, PM10, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">color =</span> <span class="st">"blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="EspacialV1_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="364"></p>
+</div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+
+</div>
+<p></p>
+<p>Se realiza un gráfico de contorno para conocer como se distribuye la concentración del material particulado en función de las coordenadas, allí se puede evidenciar que se presentan 5 picos en determinadas coordenadas donde el material particulado es mayor.</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">filled.contour</span>(grillas, <span class="at">nlevels=</span><span class="dv">8</span>, <span class="at">plot.axes =</span> {</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">axis</span>(<span class="dv">1</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">axis</span>(<span class="dv">2</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">contour</span>(grillas, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="EspacialV1_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="576"></p>
+</div>
+</div>
+<p></p>
+<p>Esto se confirma mediante la gráfica 3D en diferentes ángulos donde representa la forma del material particulado en las coordenadas dadas.</p>
+<p></p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="EspacialV1_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="864"></p>
+</div>
+</div>
+<p></p>
+</section>
+<section id="modelos-deterministicos." class="level2">
+<h2 class="anchored" data-anchor-id="modelos-deterministicos.">Modelos deterministicos.</h2>
+<p>La gráfica 3D permite obtener una idea general del modelo deterministico que se puede aplicar para describir los datos, se realizah el ajuste con un modelo lineal, un modelo de segundo orden, y un modelo donde se tiene en cuenta la interacción de las coordenadas, buscando que el modelo seleccionado permita tener el menor error cuadrático posible:</p>
+<section id="modelo-lineal" class="level3">
+<h3 class="anchored" data-anchor-id="modelo-lineal">Modelo Lineal</h3>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(PM10 <span class="sc">~</span> Longitud <span class="sc">+</span> Latitud, <span class="at">data =</span> PolucionUK)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = PM10 ~ Longitud + Latitud, data = PolucionUK)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-14.389  -5.501  -1.245   5.264  21.871 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)   
+(Intercept) 24.31986   28.68270   0.848  0.39894   
+Longitud     1.42458    0.50670   2.811  0.00615 **
+Latitud     -0.01526    0.54894  -0.028  0.97788   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 7.662 on 83 degrees of freedom
+Multiple R-squared:  0.1004,    Adjusted R-squared:  0.07877 
+F-statistic: 4.634 on 2 and 83 DF,  p-value: 0.01236</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: PM10
+          Df Sum Sq Mean Sq F value   Pr(&gt;F)   
+Longitud   1  544.0  544.03  9.2671 0.003125 **
+Latitud    1    0.0    0.05  0.0008 0.977884   
+Residuals 83 4872.6   58.71                    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p></p>
+</section>
+<section id="modelo-de-segundo-orden" class="level3">
+<h3 class="anchored" data-anchor-id="modelo-de-segundo-orden">Modelo de Segundo Orden</h3>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>mod2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(PM10 <span class="sc">~</span> Longitud <span class="sc">+</span> Latitud <span class="sc">+</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>             <span class="fu">I</span>(Longitud<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(Latitud<span class="sc">^</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>             <span class="fu">I</span>(Longitud<span class="sc">*</span>Latitud), <span class="at">data =</span> PolucionUK)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = PM10 ~ Longitud + Latitud + I(Longitud^2) + I(Latitud^2) + 
+    I(Longitud * Latitud), data = PolucionUK)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-11.2351  -4.4812  -0.6396   4.2101  23.1727 
+
+Coefficients:
+                        Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)           -3.062e+03  6.481e+02  -4.725 9.71e-06 ***
+Longitud              -4.952e+01  1.721e+01  -2.877  0.00515 ** 
+Latitud                1.132e+02  2.454e+01   4.611 1.50e-05 ***
+I(Longitud^2)          4.561e-02  1.902e-01   0.240  0.81106    
+I(Latitud^2)          -1.036e+00  2.326e-01  -4.452 2.73e-05 ***
+I(Longitud * Latitud)  9.619e-01  3.388e-01   2.839  0.00574 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 6.192 on 80 degrees of freedom
+Multiple R-squared:  0.4337,    Adjusted R-squared:  0.3983 
+F-statistic: 12.25 on 5 and 80 DF,  p-value: 7.894e-09</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: PM10
+                      Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+Longitud               1  544.03  544.03 14.1888 0.0003146 ***
+Latitud                1    0.05    0.05  0.0012 0.9726387    
+I(Longitud^2)          1  264.75  264.75  6.9048 0.0103019 *  
+I(Latitud^2)           1 1231.45 1231.45 32.1172 2.212e-07 ***
+I(Longitud * Latitud)  1  309.01  309.01  8.0592 0.0057369 ** 
+Residuals             80 3067.39   38.34                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p></p>
+</section>
+<section id="modelo-de-interseccion" class="level3">
+<h3 class="anchored" data-anchor-id="modelo-de-interseccion">Modelo de Interseccion</h3>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>mod3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(PM10 <span class="sc">~</span> Longitud <span class="sc">*</span> Latitud, <span class="at">data =</span> PolucionUK)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = PM10 ~ Longitud * Latitud, data = PolucionUK)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-17.620  -3.924  -1.189   4.263  16.454 
+
+Coefficients:
+                  Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)      -149.2114    45.7251  -3.263 0.001607 ** 
+Longitud          -62.0978    13.8421  -4.486 2.34e-05 ***
+Latitud             3.2918     0.8726   3.772 0.000304 ***
+Longitud:Latitud    1.2018     0.2617   4.592 1.57e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 6.875 on 82 degrees of freedom
+Multiple R-squared:  0.2844,    Adjusted R-squared:  0.2582 
+F-statistic: 10.86 on 3 and 82 DF,  p-value: 4.398e-06</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(mod3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: PM10
+                 Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+Longitud          1  544.0  544.03  11.509 0.001068 ** 
+Latitud           1    0.0    0.05   0.001 0.975354    
+Longitud:Latitud  1  996.5  996.53  21.082 1.57e-05 ***
+Residuals        82 3876.1   47.27                     
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p></p>
+<p>Así mismo se realiza el análisis de la gráfica de residuales contra los valores ajustados de los 3 modelos</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>( <span class="at">mar=</span> <span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>) )</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod1, <span class="at">which =</span> <span class="dv">1</span>, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">main=</span><span class="st">"Modelo lineal"</span>)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod2, <span class="at">which =</span> <span class="dv">1</span>, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">main=</span><span class="st">"Modelo de segundo orden"</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod3, <span class="at">which =</span> <span class="dv">1</span>, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">main=</span><span class="st">"Modelo de segundo orden"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="EspacialV1_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p></p>
+<p>Con base en los resultados obtenidos de la gráfica de residuales, se establece que un modelo de orden superior podría ser el mas apropiado, ya que los valores se concentran en torno a cero, sin embargo también se identifican unos posibles datos atípicos que afectan el patrón y la variabilidad del modelo.</p>
+</section>
+<section id="identificación-de-datos-atípicos" class="level3">
+<h3 class="anchored" data-anchor-id="identificación-de-datos-atípicos">Identificación de Datos atípicos</h3>
+<p>Con el modelo de segundo orden se identifican los posibles datos atípicos e influenciables, mediante los residuales estudentizados.</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>resmod1 <span class="ot">&lt;-</span>  <span class="fu">residuals</span>(mod1)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>resStudentmod1 <span class="ot">&lt;-</span>  <span class="fu">rstudent</span>(mod1)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>Influencia <span class="ot">&lt;-</span><span class="fu">data.frame</span>(<span class="at">PM10=</span>PM10,<span class="at">Latitud=</span>Latitud,<span class="at">Longitud=</span>Longitud, <span class="at">Res=</span>resmod1, <span class="at">Res.Est=</span>resStudentmod1)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>Atipicos <span class="ot">&lt;-</span><span class="fu">subset</span>(Influencia,Influencia<span class="sc">$</span>Res.Est<span class="sc">&gt;</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p></p>
+<p>Aquí se identifican las concentraciones de material particulado con residuales estudentizados mayores a dos:</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>Atipicos</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     PM10  Latitud  Longitud      Res  Res.Est
+41 37.601 53.81997 -1.576361 16.34829 2.202612
+61 39.521 50.37167 -4.142361 21.87114 3.138070</code></pre>
+</div>
+</div>
+<p></p>
+<p>Esto se confirma mediante los siguientes graficos.</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>( <span class="at">mar=</span> <span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">2</span>) )</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod2, <span class="at">which =</span> <span class="dv">4</span>, <span class="at">pch =</span> <span class="dv">20</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mod2, <span class="at">which =</span> <span class="dv">5</span>, <span class="at">pch =</span> <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="EspacialV1_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p></p>
+<p>Esto confirma que el dato 61, con una concentración de 39.5 <span class="math inline">\(\mu\)</span>g<span class="math inline">\(\cdot\)</span>m<span class="math inline">\(^{-3}\)</span> con coordenadas 50.3 de latitud y -4.14 de longitud como un dato atípico, sin embargo no esta determinado como un leverage ya que se encuentra dentro de la zona de distancia de cook establecida.</p>
+</section>
+</section>
+<section id="estimación-del-variograma-empírico" class="level2">
+<h2 class="anchored" data-anchor-id="estimación-del-variograma-empírico">Estimación del variograma empírico</h2>
+<p>Mediante el paquete <code>geoR</code> se realiza la estimacion del semivariograma empírico, inicialmente se realiza la conversión a datos geoestadísticos y el análisis para los datos:</p>
+<ol type="1">
+<li><p>sin remoción de tendencia</p></li>
+<li><p>con remoción de la tendencia mediante un modelo de primer orden</p></li>
+<li><p>Remocion de la tendencia mediante un modelo de segundo orden.</p></li>
+</ol>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(geoR)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>PolucionUKG<span class="ot">=</span><span class="fu">as.geodata</span>(PolucionUK)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(PolucionUKG, <span class="at">scatter3d =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="EspacialV1_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(PolucionUKG, <span class="at">trend=</span><span class="st">"1st"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="EspacialV1_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="768"></p>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(PolucionUKG, <span class="at">trend =</span> <span class="st">"2nd"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="EspacialV1_files/figure-html/unnamed-chunk-22-2.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p></p>
+<p>Se confirma el dato atípico en las coordenadas estipuladas. Posteriormente se realiza la estimación de los variogramas omnidireccionales empíricos, incluyendo un modelo adicional en el que se tienen en cuenta los datos atípicos:</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>variog1<span class="ot">&lt;-</span><span class="fu">variog</span>(PolucionUKG,<span class="at">messages =</span> F)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>variog2<span class="ot">&lt;-</span><span class="fu">variog</span>(PolucionUKG, <span class="at">trend=</span><span class="st">"1st"</span>,<span class="at">messages =</span> F)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>variog3<span class="ot">&lt;-</span><span class="fu">variog</span>(PolucionUKG, <span class="at">trend=</span><span class="st">"2nd"</span>,<span class="at">messages =</span> F)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>variog4<span class="ot">&lt;-</span><span class="fu">variog</span>(PolucionUKG,<span class="at">trend =</span> <span class="st">"2nd"</span>, <span class="at">estimator.type =</span> <span class="st">"modulus"</span>,<span class="at">messages =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>),<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">1</span>), <span class="at">mgp =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">0</span>))</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(variog1, <span class="at">main =</span> <span class="st">"Sin remover tendencia"</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(variog2, <span class="at">main =</span> <span class="st">"Tendencia de 1er Orden"</span>)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(variog3, <span class="at">main =</span> <span class="st">"Tendencia de 2er Orden"</span>)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(variog4, <span class="at">main =</span> <span class="st">"Tendencia de 2er Orden </span><span class="sc">\n</span><span class="st"> teniendo en cuenta datos atipicos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="EspacialV1_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p></p>
+<p>Debido a que se contienen datos atípicos se calcula semivarianza espacial mediante el semivariogramaresistente a atipicos propuesto por kressie utilizando una correccion de tendencia de segundo orden</p>
+<p></p>
+<div class="cell">
+
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+
+</div>
+<p></p>
+</section>
+<section id="estimación-del-semivariograma-resistente-a-datos-atípicos" class="level2">
+<h2 class="anchored" data-anchor-id="estimación-del-semivariograma-resistente-a-datos-atípicos">Estimación del semivariograma resistente a datos atípicos</h2>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>variog4<span class="sc">$</span>n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 255 522 593 656 563 406 238 166 132  68  27  17  11</code></pre>
+</div>
+</div>
+<p></p>
+<p>Debido a que los últimos pares del semivariograma resistente a datos atipicos generan un comportamiento no adecuado se tienen en cuenta en el modelo, Inicialmente se plantea generar un semivariograma teniendo en cuenta pares de datos mayores a 70 datos, debido a que con esta cantidad de datos tambien se presenta un comportamiento erratico se acorta la distancia inicialmente a 4, y por ultimo a 3.3 donde la semivarianza se estabiliza.</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>variog4<span class="ot">&lt;-</span><span class="fu">variog</span>(PolucionUKG,</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">trend =</span> <span class="st">"2nd"</span>, </span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">estimator.type =</span> <span class="st">"modulus"</span>,</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">messages =</span> F)</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>variog5pairs<span class="ot">&lt;-</span><span class="fu">variog</span>(PolucionUKG,</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">trend =</span> <span class="st">"2nd"</span>, </span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">estimator.type =</span> <span class="st">"modulus"</span>,</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">pairs.min =</span> <span class="dv">70</span>,</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">messages =</span> F)</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>variog5<span class="ot">&lt;-</span><span class="fu">variog</span>(PolucionUKG,</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">trend =</span> <span class="st">"2nd"</span>, </span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">estimator.type =</span> <span class="st">"modulus"</span>,</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">max.dist=</span><span class="dv">4</span>,</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">messages =</span> F)</span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>variog6<span class="ot">&lt;-</span><span class="fu">variog</span>(PolucionUKG,</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">trend =</span> <span class="st">"2nd"</span>, </span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">estimator.type =</span> <span class="st">"modulus"</span>,</span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">max.dist=</span><span class="fl">3.3</span>,</span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>                <span class="at">messages =</span> F)</span>
+<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">mgp =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span>
+<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(variog4, <span class="at">main =</span> <span class="st">"Sin correccion de distancia"</span>)</span>
+<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(variog5pairs, <span class="at">main =</span> <span class="st">"Correcion de pares de datos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="EspacialV1_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">mgp =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(variog5, <span class="at">main =</span> <span class="st">"Distancia máx 4"</span>)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(variog6, <span class="at">main =</span> <span class="st">"Distancia máx 3.3"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="EspacialV1_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>variog6<span class="sc">$</span>u</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 0.1268843 0.3806530 0.6344216 0.8881903 1.1419590 1.3957276 1.6494963
+ [8] 1.9032649 2.1570336 2.4108023 2.6645709 2.9183396 3.1721082</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>variog6<span class="sc">$</span>n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  66  85 116 189 161 204 210 188 227 219 215 238 206</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>variog6<span class="sc">$</span>v</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 21.48313 25.41301 30.72801 38.14893 33.52227 39.77803 41.40685 41.32761
+ [9] 35.51484 38.60511 30.32597 41.43785 41.77249</code></pre>
+</div>
+</div>
+<p></p>
+</section>
+<section id="estimacion-del-variograma-teorico" class="level2">
+<h2 class="anchored" data-anchor-id="estimacion-del-variograma-teorico">Estimacion del Variograma teorico</h2>
+<p>Para la estimación del semivariancia y los parámetros iniciales se utiliza la herramienta <code>eyefit</code> a partir de esta se determina que existen 3 posibles modelos que se ajustan al semivariograma establecido previamente:</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">eyefit</span>(variog6)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   cov.model sigmasq  phi tausq kappa kappa2   practicalRange</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="co">#1     cubic   20.32 1.97 21.45  &lt;NA&gt;   &lt;NA&gt;              1.97</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="co">#2      wave   16.93 0.26 20.32  &lt;NA&gt;   &lt;NA&gt; 0.777781146711015</span></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="co">#3 spherical   21.45 1.88 20.32  &lt;NA&gt;   &lt;NA&gt;           1.88</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p></p>
+<section id="modelo-wave" class="level3">
+<h3 class="anchored" data-anchor-id="modelo-wave">1. Modelo Wave</h3>
+<p><span class="math display">\[\begin{array}{c}\gamma(h)=\tau^{2}+\sigma^{2}\left[1-\exp \left(-3\left(\frac{\|h\|}{a}\right)^{\lambda}\right)\right] \\ 0 \leq \lambda \leq 2\end{array} \]</span></p>
+<section id="métodos-cuadrados-ordinarios" class="level4">
+<h4 class="anchored" data-anchor-id="métodos-cuadrados-ordinarios">Métodos Cuadrados Ordinarios</h4>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>wave.mod<span class="ot">=</span><span class="fu">c</span>(<span class="fl">16.93</span>,<span class="fl">0.26</span>)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>fitvar1<span class="ot">=</span><span class="fu">variofit</span>(variog6,<span class="at">cov.model=</span><span class="st">"wave"</span>,</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>                 wave.mod,<span class="at">fix.nugget =</span><span class="cn">TRUE</span>, </span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">nugget =</span> <span class="fl">20.23</span>,<span class="at">wei=</span><span class="st">"equal"</span>,<span class="at">messages =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p></p>
+</section>
+<section id="métodos-cuadrados-ponderados-por-el-numero-de-pares-de-datos" class="level4">
+<h4 class="anchored" data-anchor-id="métodos-cuadrados-ponderados-por-el-numero-de-pares-de-datos">Métodos Cuadrados Ponderados por el numero de pares de datos</h4>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>fitvar2<span class="ot">=</span><span class="fu">variofit</span>(variog6,<span class="at">cov.model=</span><span class="st">"wave"</span>,</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>                 wave.mod,<span class="at">fix.nugget =</span><span class="cn">TRUE</span>, </span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">nugget =</span> <span class="fl">20.23</span>,<span class="at">wei=</span><span class="st">"npairs"</span>,<span class="at">messages =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p></p>
+</section>
+<section id="métodos-cuadrados-ponderados-de-cressie" class="level4">
+<h4 class="anchored" data-anchor-id="métodos-cuadrados-ponderados-de-cressie">Métodos Cuadrados Ponderados de Cressie</h4>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>fitvar3<span class="ot">=</span><span class="fu">variofit</span>(variog6,<span class="at">cov.model=</span><span class="st">"wave"</span>,</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>                 wave.mod,<span class="at">fix.nugget =</span><span class="cn">TRUE</span>, </span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">nugget =</span> <span class="fl">20.23</span>,<span class="at">wei=</span><span class="st">"cressie"</span>,<span class="at">messages =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p></p>
+</section>
+<section id="método-por-máxima-verosimilitud" class="level4">
+<h4 class="anchored" data-anchor-id="método-por-máxima-verosimilitud">Método por Máxima Verosimilitud</h4>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>fitvar4<span class="ot">=</span><span class="fu">likfit</span>(PolucionUKG, <span class="at">coords =</span>PolucionUKG<span class="sc">$</span>coords, </span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> PolucionUKG<span class="sc">$</span>data,<span class="at">trend =</span> <span class="st">"2nd"</span>, </span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">ini.cov.pars=</span>wave.mod,</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">fix.nugget =</span> <span class="cn">TRUE</span>, <span class="at">nugget =</span> <span class="fl">20.23</span>,</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">cov.model=</span><span class="st">"wave"</span>, <span class="at">lik.method =</span> <span class="st">"ML"</span>,<span class="at">messages =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p></p>
+</section>
+<section id="método-por-máxima-verosimilitud-restringida" class="level4">
+<h4 class="anchored" data-anchor-id="método-por-máxima-verosimilitud-restringida">Método por Máxima Verosimilitud Restringida</h4>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>fitvar5<span class="ot">=</span><span class="fu">likfit</span>(PolucionUKG, <span class="at">coords =</span>PolucionUKG<span class="sc">$</span>coords, </span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> PolucionUKG<span class="sc">$</span>data,<span class="at">trend =</span> <span class="st">"2nd"</span>, </span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">ini.cov.pars=</span>wave.mod,</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">fix.nugget =</span> <span class="cn">TRUE</span>, <span class="at">nugget =</span> <span class="fl">20.23</span>,</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">cov.model=</span><span class="st">"wave"</span>, <span class="at">lik.method =</span> <span class="st">"REML"</span>,<span class="at">messages =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(variog6,<span class="at">xlab=</span><span class="st">"h"</span>,<span class="at">ylab=</span><span class="st">"semivarianza"</span>,</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">cex =</span> <span class="fl">0.9</span>,</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">"Estimación teórica del modelo de semivariograma </span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="st">     para el modelo wave"</span>,</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">cex.main=</span><span class="fl">1.3</span>)</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(fitvar1,<span class="at">col=</span><span class="dv">1</span>)</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(fitvar2,<span class="at">col=</span><span class="dv">2</span>)</span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(fitvar3,<span class="at">col=</span><span class="dv">3</span>)</span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(fitvar4,<span class="at">col=</span><span class="dv">4</span>)</span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(fitvar5,<span class="at">col=</span><span class="dv">5</span>)</span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomright"</span>,<span class="fu">c</span>(<span class="st">"MCO"</span>,<span class="st">"MCPnpairs"</span>,<span class="st">"MCPcressie"</span>,<span class="st">"ML"</span>,<span class="st">"REML"</span>),</span>
+<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">lwd=</span><span class="dv">2</span>,<span class="at">lty=</span><span class="dv">2</span><span class="sc">:</span><span class="dv">7</span>,<span class="at">col=</span><span class="dv">2</span><span class="sc">:</span><span class="dv">7</span>,</span>
+<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">box.col=</span><span class="dv">9</span>,<span class="at">text.col=</span><span class="dv">2</span><span class="sc">:</span><span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="EspacialV1_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p></p>
+</section>
+</section>
+<section id="modelo-cubico" class="level3">
+<h3 class="anchored" data-anchor-id="modelo-cubico">2. Modelo Cubico</h3>
+<section id="métodos-cuadrados-ordinarios-1" class="level4">
+<h4 class="anchored" data-anchor-id="métodos-cuadrados-ordinarios-1">Métodos Cuadrados Ordinarios</h4>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>cubic.mod<span class="ot">=</span><span class="fu">c</span>(<span class="fl">20.32</span>,<span class="fl">1.97</span>)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>fitvar1<span class="ot">=</span><span class="fu">variofit</span>(variog6,<span class="at">cov.model=</span><span class="st">"cubic"</span>,</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>                 wave.mod,<span class="at">fix.nugget =</span><span class="cn">TRUE</span>, </span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">nugget =</span> <span class="fl">21.45</span>,<span class="at">wei=</span><span class="st">"equal"</span>,<span class="at">messages =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p></p>
+</section>
+<section id="métodos-cuadrados-ponderados-por-el-numero-de-pares-de-datos-1" class="level4">
+<h4 class="anchored" data-anchor-id="métodos-cuadrados-ponderados-por-el-numero-de-pares-de-datos-1">Métodos Cuadrados Ponderados por el numero de pares de datos</h4>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>fitvar2<span class="ot">=</span><span class="fu">variofit</span>(variog6,<span class="at">cov.model=</span><span class="st">"cubic"</span>,</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>                 wave.mod,<span class="at">fix.nugget =</span><span class="cn">TRUE</span>, </span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">nugget =</span> <span class="fl">21.45</span>,<span class="at">wei=</span><span class="st">"npairs"</span>,<span class="at">messages =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p></p>
+</section>
+<section id="métodos-cuadrados-ponderados-de-cressie-1" class="level4">
+<h4 class="anchored" data-anchor-id="métodos-cuadrados-ponderados-de-cressie-1">Métodos Cuadrados Ponderados de Cressie</h4>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>fitvar3<span class="ot">=</span><span class="fu">variofit</span>(variog6,<span class="at">cov.model=</span><span class="st">"cubic"</span>,</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>                 wave.mod,<span class="at">fix.nugget =</span><span class="cn">TRUE</span>, </span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">nugget =</span> <span class="fl">21.45</span>,<span class="at">wei=</span><span class="st">"cressie"</span>,<span class="at">messages =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p></p>
+</section>
+<section id="método-por-máxima-verosimilitud-1" class="level4">
+<h4 class="anchored" data-anchor-id="método-por-máxima-verosimilitud-1">Método por Máxima Verosimilitud</h4>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>fitvar4<span class="ot">=</span><span class="fu">likfit</span>(PolucionUKG, <span class="at">coords =</span>PolucionUKG<span class="sc">$</span>coords, </span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> PolucionUKG<span class="sc">$</span>data,<span class="at">trend =</span> <span class="st">"2nd"</span>, </span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">ini.cov.pars=</span>cubic.mod,</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">fix.nugget =</span> <span class="cn">TRUE</span>, <span class="at">nugget =</span> <span class="fl">21.45</span>,</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">cov.model=</span><span class="st">"wave"</span>, <span class="at">lik.method =</span> <span class="st">"ML"</span>,<span class="at">messages =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p></p>
+</section>
+<section id="método-por-máxima-verosimilitud-restringida-1" class="level4">
+<h4 class="anchored" data-anchor-id="método-por-máxima-verosimilitud-restringida-1">Método por Máxima Verosimilitud Restringida</h4>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>fitvar5<span class="ot">=</span><span class="fu">likfit</span>(PolucionUKG, <span class="at">coords =</span>PolucionUKG<span class="sc">$</span>coords, </span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> PolucionUKG<span class="sc">$</span>data,<span class="at">trend =</span> <span class="st">"2nd"</span>, </span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">ini.cov.pars=</span>cubic.mod,</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">fix.nugget =</span> <span class="cn">TRUE</span>, <span class="at">nugget =</span> <span class="fl">21.45</span>,</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">cov.model=</span><span class="st">"wave"</span>, <span class="at">lik.method =</span> <span class="st">"REML"</span>,<span class="at">messages =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(variog6,<span class="at">xlab=</span><span class="st">"h"</span>,<span class="at">ylab=</span><span class="st">"semivarianza"</span>,</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">cex =</span> <span class="fl">0.9</span>,</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">"Estimación teórica del modelo de semivariograma </span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a><span class="st">     para el modelo cúbico"</span>,</span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">cex.main=</span><span class="fl">1.3</span>)</span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(fitvar1,<span class="at">col=</span><span class="dv">1</span>)</span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(fitvar2,<span class="at">col=</span><span class="dv">2</span>)</span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(fitvar3,<span class="at">col=</span><span class="dv">3</span>)</span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(fitvar4,<span class="at">col=</span><span class="dv">4</span>)</span>
+<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(fitvar5,<span class="at">col=</span><span class="dv">5</span>)</span>
+<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomright"</span>,<span class="fu">c</span>(<span class="st">"MCO"</span>,<span class="st">"MCPnpairs"</span>,<span class="st">"MCPcressie"</span>,<span class="st">"ML"</span>,<span class="st">"REML"</span>),</span>
+<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">lwd=</span><span class="dv">2</span>,<span class="at">lty=</span><span class="dv">2</span><span class="sc">:</span><span class="dv">7</span>,<span class="at">col=</span><span class="dv">2</span><span class="sc">:</span><span class="dv">7</span>,</span>
+<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">box.col=</span><span class="dv">9</span>,<span class="at">text.col=</span><span class="dv">2</span><span class="sc">:</span><span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="EspacialV1_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p></p>
+</section>
+</section>
+<section id="modelo-esférico" class="level3">
+<h3 class="anchored" data-anchor-id="modelo-esférico">3. Modelo Esférico</h3>
+<p><span class="math display">\[\gamma(h ; \theta)=\left\{\begin{array}{ll}0 &amp; \text { si }\|h\|=0 \\ c_{0}+c_{s}\left[\frac{3}{2} \frac{\|h\|}{a}-\frac{1}{2}\left(\frac{\|h\|}{a}\right)^{3}\right] &amp; \text { si } 0&lt;\|h\| \leq a \\ c_{0}+c_{s} &amp; \text { si }\|h\|&gt;a\end{array}\right.\]</span></p>
+<section id="métodos-cuadrados-ordinarios-2" class="level4">
+<h4 class="anchored" data-anchor-id="métodos-cuadrados-ordinarios-2">Métodos Cuadrados Ordinarios</h4>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>spherical.mod<span class="ot">=</span><span class="fu">c</span>(<span class="fl">21.45</span>,<span class="fl">1.88</span>)</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>fitvar1<span class="ot">=</span><span class="fu">variofit</span>(variog6,<span class="at">cov.model=</span><span class="st">"spherical"</span>,</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>                 wave.mod,<span class="at">fix.nugget =</span><span class="cn">TRUE</span>, </span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">nugget =</span> <span class="fl">20.32</span>,<span class="at">wei=</span><span class="st">"equal"</span>,<span class="at">messages =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p></p>
+</section>
+<section id="métodos-cuadrados-ponderados-por-el-numero-de-pares-de-datos-2" class="level4">
+<h4 class="anchored" data-anchor-id="métodos-cuadrados-ponderados-por-el-numero-de-pares-de-datos-2">Métodos Cuadrados Ponderados por el numero de pares de datos</h4>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>fitvar2<span class="ot">=</span><span class="fu">variofit</span>(variog6,<span class="at">cov.model=</span><span class="st">"spherical"</span>,</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>                 wave.mod,<span class="at">fix.nugget =</span><span class="cn">TRUE</span>, </span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">nugget =</span> <span class="fl">20.32</span>,<span class="at">wei=</span><span class="st">"npairs"</span>,<span class="at">messages =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p></p>
+</section>
+<section id="métodos-cuadrados-ponderados-de-cressie-2" class="level4">
+<h4 class="anchored" data-anchor-id="métodos-cuadrados-ponderados-de-cressie-2">Métodos Cuadrados Ponderados de Cressie</h4>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>fitvar3<span class="ot">=</span><span class="fu">variofit</span>(variog6,<span class="at">cov.model=</span><span class="st">"spherical"</span>,</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>                 wave.mod,<span class="at">fix.nugget =</span><span class="cn">TRUE</span>, </span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">nugget =</span> <span class="fl">20.32</span>,<span class="at">wei=</span><span class="st">"cressie"</span>,<span class="at">messages =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p></p>
+</section>
+<section id="método-por-máxima-verosimilitud-2" class="level4">
+<h4 class="anchored" data-anchor-id="método-por-máxima-verosimilitud-2">Método por Máxima Verosimilitud</h4>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>fitvar4<span class="ot">=</span><span class="fu">likfit</span>(PolucionUKG, <span class="at">coords =</span>PolucionUKG<span class="sc">$</span>coords, </span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> PolucionUKG<span class="sc">$</span>data,<span class="at">trend =</span> <span class="st">"2nd"</span>, </span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">ini.cov.pars=</span>spherical.mod,</span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">fix.nugget =</span> <span class="cn">TRUE</span>, <span class="at">nugget =</span> <span class="fl">20.32</span>,</span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">cov.model=</span><span class="st">"spherical"</span>, <span class="at">lik.method =</span> <span class="st">"ML"</span>,<span class="at">messages =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p></p>
+</section>
+<section id="método-por-máxima-verosimilitud-restringida-2" class="level4">
+<h4 class="anchored" data-anchor-id="método-por-máxima-verosimilitud-restringida-2">Método por Máxima Verosimilitud Restringida</h4>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>fitvar5<span class="ot">=</span><span class="fu">likfit</span>(PolucionUKG, <span class="at">coords =</span>PolucionUKG<span class="sc">$</span>coords, </span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> PolucionUKG<span class="sc">$</span>data,<span class="at">trend =</span> <span class="st">"2nd"</span>, </span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">ini.cov.pars=</span>spherical.mod,</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">fix.nugget =</span> <span class="cn">TRUE</span>, <span class="at">nugget =</span> <span class="fl">20.32</span>,</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">cov.model=</span><span class="st">"spherical"</span>, <span class="at">lik.method =</span> <span class="st">"REML"</span>,<span class="at">messages =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(variog6,<span class="at">xlab=</span><span class="st">"h"</span>,<span class="at">ylab=</span><span class="st">"semivarianza"</span>,</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">cex =</span> <span class="fl">0.9</span>,</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">"Estimación teórica del modelo de semivariograma </span></span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a><span class="st">     para el modelo esférico"</span>,</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">cex.main=</span><span class="fl">1.3</span>)</span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(fitvar1,<span class="at">col=</span><span class="dv">1</span>)</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(fitvar2,<span class="at">col=</span><span class="dv">2</span>)</span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(fitvar3,<span class="at">col=</span><span class="dv">3</span>)</span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(fitvar4,<span class="at">col=</span><span class="dv">4</span>)</span>
+<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(fitvar5,<span class="at">col=</span><span class="dv">5</span>)</span>
+<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomright"</span>,<span class="fu">c</span>(<span class="st">"MCO"</span>,<span class="st">"MCPnpairs"</span>,<span class="st">"MCPcressie"</span>,<span class="st">"ML"</span>,<span class="st">"REML"</span>),</span>
+<span id="cb64-12"><a href="#cb64-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">lwd=</span><span class="dv">2</span>,<span class="at">lty=</span><span class="dv">2</span><span class="sc">:</span><span class="dv">7</span>,<span class="at">col=</span><span class="dv">2</span><span class="sc">:</span><span class="dv">7</span>,</span>
+<span id="cb64-13"><a href="#cb64-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">box.col=</span><span class="dv">9</span>,<span class="at">text.col=</span><span class="dv">2</span><span class="sc">:</span><span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="EspacialV1_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p></p>
+</section>
+</section>
+</section>
+<section id="references" class="level2">
+
+
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-CDCP2023" class="csl-entry" role="doc-biblioentry">
+Center for Disease Control and Prevention. 2023. <em>Air Pollutants</em>.
+</div>
+<div id="ref-Anilla2022" class="csl-entry" role="doc-biblioentry">
+Cherian, Anilla. 2022. <em>Air Pollution, Clean Energy and Climate Change</em>. Wiley.
+</div>
+<div id="ref-Boubel1994" class="csl-entry" role="doc-biblioentry">
+Richard W. Boubel, Bruce Turner, Donald L. Fox. 1994. <em>Fundamentals of Air Pollution</em>. 3rd ed. Academic Press.
+</div>
+<div id="ref-WHO2006" class="csl-entry" role="doc-biblioentry">
+WHO. 2006. <em>Air Quality Guidelines: Global Update 2005 : Particulate Matter, Ozone, Nitrogen Dioxide, and Sulfur Dioxide</em>. A EURO Publication. World Health Organization.
+</div>
+<div id="ref-WHO2015" class="csl-entry" role="doc-biblioentry">
+———. 2015. <em>Health and the Environment: Addressing the Health Impact of Air Pollution</em>. Governing body documents. World Health Organization.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
