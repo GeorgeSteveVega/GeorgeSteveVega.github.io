@@ -13,7 +13,7 @@ format:
       data-background-position: 50% 65%
     slide-number: true
     chalkboard: 
-      buttons: false
+      buttons: true
     preview-links: auto
     logo: images/UNAL1.png
     css: custom.css
@@ -25,24 +25,30 @@ resources:
 ## Visualización serie diaria paquete `xts`{.smaller transition="slide" transition-speed="slow"}
 
 ::: columns
-::: {.column width="23%"}
-::: {style="font-size:20px"}
+::: {.column width="25%"}
+::: {style="font-size:17px"}
 ::: incremental
+Se genera la grafica de la serie con el fin de visualizar características de los datos como patrones, datos atípicos, cambios en el tiempo y la relacion entre las variables. 
+
 -   **Heterocedasticidad**
--   **Tendencia**
+Se observa que la varianza marginal cambiante a traves del tiempo
+-   **Tendencia** Al ser una serie económica se presenta tendencia creciente, se debe tener en cuenta que el precio de las acciones se ven afectadas por el incremento en el valor de la moneda año año  
 -   **Componente estacional**
+No se evidencia un aparente componente estacional de periodo fijo o conocido a la vista. 
+-   **Componente ciclico**
+Tampoco se evidencia una componente ciclica de periodo no fijo. 
 :::
 :::
 :::
 
-::: {.column width="2%"}
+::: {.column width="0.5%"}
 :::
 
-::: {.column width="75%"}
+::: {.column width="74.5%"}
 ```{r}
 #| echo: true
-#| fig-width: 7
-#| fig-height: 4
+#| fig-width: 10
+#| fig-height: 5
 #| warning: false
 #| results: hide
 #| code-fold: true
@@ -68,12 +74,49 @@ dygraph(sp500)%>%dyRangeSelector()
 :::
 
 ::: footer
-Learn more: [Executable Code](https://quarto.org/docs/presentations/revealjs/#executable-code)
+Forecasing: Princicples and Practice - [2.3 Time series patterns](https://otexts.com/fpp3/tspatterns.html)
 :::
 
 ## Visualización serie paquete `TSstudio`{.smaller transition="slide" transition-speed="slow"}
 
 ::: columns
+::: {.column width="33%"}
+::: {style="font-size:22px"}
+Al ser una serie irregular la serie con el paquete `TSstudio` no se visualiza de manera correcta
+
+Conteo de dias:
+
+```{r}
+#| echo: true
+#| fig-width: 7
+#| fig-height: 4
+#| warning: false
+#| results: hide
+#| code-fold: true
+survey <- data.frame(date=c("1943/01/01"),tx_start=c("2023/04/01"))
+
+survey$date_diff <- as.Date(as.character(survey$date), format="%Y/%m/%d")-
+                  as.Date(as.character(survey$tx_start), format="%Y/%m/%d")
+```
+
+```{r}
+#| echo: false
+#| fig-width: 6
+#| fig-height: 4
+#| warning: false
+#| code-fold: true
+survey
+```
+
+Las series que han sido observadas de manera irregular en el tiempo pueden ser modeladas mediante las ecuaciones de estado espacio (Pag. 344)
+
+:::
+:::
+
+::: {.column width="2%"}
+:::
+
+
 ::: {.column width="65%"}
 ::: {style="font-size:26px"}
 ```{r}
@@ -109,45 +152,16 @@ plot(sp500ts)
 :::
 :::
 
-::: {.column width="2%"}
+::: footer
+Time Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications 
 :::
 
-::: {.column width="33%"}
-::: {style="font-size:22px"}
-La serie mediante el paquete `TSstudio` no se visualiza de manera correcta
 
-Se lleva acabo el calculo de los días para conocer la cantidad de datos que se deberían tener:
-
-```{r}
-#| echo: true
-#| fig-width: 7
-#| fig-height: 4
-#| warning: false
-#| results: hide
-#| code-fold: true
-survey <- data.frame(date=c("1943/01/01"),tx_start=c("2023/04/01"))
-
-survey$date_diff <- as.Date(as.character(survey$date), format="%Y/%m/%d")-
-                  as.Date(as.character(survey$tx_start), format="%Y/%m/%d")
-```
-
-```{r}
-#| echo: false
-#| fig-width: 6
-#| fig-height: 4
-#| warning: false
-#| code-fold: true
-survey
-```
-
-Los datos obtenidos determinan que la serie diaria es irregular y no es equidistante en el tiempo y se visualiza de mejor manera mediante el paquete `xts` y `zoo`.
-:::
-:::
 :::
 
 ## Conversion serie S&P500 a serie mensual {.smaller transition="slide" transition-speed="slow"}
 
-::: {style="font-size:30px"}
+::: {style="font-size:25px"}
 ``` {.r code-line-numbers="1-3|4|5|6|7|8|9-14|15|16"}
 sandp500 <- new.env()
 getSymbols("^GSPC", env = sandp500, src = "yahoo", from = as.Date("1943-01-01"), to = as.Date("2023-03-31"))
@@ -167,13 +181,19 @@ SP500ts<-xts.to.df(SAP500xts) #Datos transformados
 write.csv(SP500ts, "C:/Users/ocamp/Downloads/Series/SP500ts.csv", row.names=FALSE)
 ```
 
-Se convierte la serie con datos diarios irregulares a una serie equidistante en el tiempo.
+Se convierte la serie con datos diarios irregulares a una serie mensual, especialmente en tópicos financieros se involucran los retornos en vez de los precios de las acciones, los inversores promedio están interesados principalmente en los retornos debido a la oportunidad de inversion. 
+
 :::
-
+::: footer
+Analysis of Financial Time Series - (Ruey S. Tsay) 1ed. - 1.1 Financial Time Series and
+Their Characteristics
+:::
 ## Visualización serie S&P 500 mensual {.smaller transition="slide" transition-speed="slow"}
-
+:::columns
+::: {.column width="48%"}
 ```{r}
 #| echo: true
+#| code-fold: true
 #| fig-width: 7
 #| fig-height: 4
 #| warning: false
@@ -187,13 +207,40 @@ SAP500ts=ts(SAP500$GSPC,start=c(1943,01),frequency = 12)
 
 ```{r}
 #| echo: false
-#| fig-width: 12
-#| fig-height: 5.2
+#| fig-width: 6
+#| fig-height: 6
 #| warning: false
 #| code-fold: true
 par( mar= c(4,4,1,1))
 plot.ts(SAP500ts)
 ```
+:::
+
+::: {.column width="2%"}
+:::
+
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| code-fold: true
+#| fig-width: 6
+#| fig-height: 5
+#| warning: false
+par( mar= c(4,4,1,1))
+acf(SAP500ts, lag.max=length(SAP500ts))
+```
+::: {style="font-size:20px"}
+- La serie presenta tendencia debido que para pequeños rezagos las autocorrelaciones son largas y positivas
+- no se observa periodicidad estacional 
+- la serie es no estacionaria ya que la FAC decrece lentamente
+:::
+:::
+
+::: footer
+Forecasing: Princicples and Practice - [2.8 Autocorrelation](https://otexts.com/fpp3/acf.html)
+:::
+
+:::
 
 ## Estabilización de la varianza {.smaller transition="slide" transition-speed="slow"}
 
@@ -253,6 +300,11 @@ forecast::BoxCox.lambda(log.SAP500.ts, method ="loglik", lower = -1, upper = 3)
 :::
 ::: 
 
+::: footer
+Forecasing: Princicples and Practice - [3.1 Transformations and adjustments](https://otexts.com/fpp3/transformations.html)
+:::
+
+
 :::
 
 ## Estimacion tendencia deterministica{.smaller transition="slide" transition-speed="slow"}
@@ -284,12 +336,52 @@ summary(fit1<-lm(log.SAP500.ts~time(log.SAP500.ts), data=log.SAP500.ts,na.action
 ::: 
 ```{r}
 #| echo: true
-#| fig-width: 7
+#| fig-width: 5
 #| fig-height: 5
 #| warning: false
 par( mar= c(4,4,1,1))
 plot(log.SAP500.ts)
 abline(fit1, col="red")
+```
+:::
+
+:::
+
+
+
+## Eliminacion de la tendencia {.smaller transition="slide" transition-speed="slow"}
+
+::: columns
+
+
+::: {.column width="49%"}
+::: {style="font-size:20px"}
+-   **Eliminacion de la tendencia serie log S&P500** 
+
+```{r}
+#| echo: true
+#| fig-width: 5
+#| fig-height: 5
+#| warning: false
+x1<-log.SAP500.ts-predict(fit1)
+plot(x1, main="Serie en escala logaritmica removiendo tendencia")
+```
+:::
+:::
+
+::: {.column width="2%"}
+:::
+
+::: {.column width="48%"}
+::: {style="font-size:20px"}
+-   **Funcion de autocorrelacion**
+::: 
+```{r}
+#| echo: true
+#| fig-width: 5
+#| fig-height: 5
+#| warning: false
+acf(x1, lag.max = length(x1))
 ```
 :::
 
@@ -309,8 +401,8 @@ abline(fit1, col="red")
 #| fig-width: 7
 #| fig-height: 6
 #| warning: false
-x1<-log.SAP500.ts-predict(fit1)
-plot(x1, main="Serie en escala logaritmica removiendo tendencia")
+difx1<-diff(x1)
+plot(difx1, main="Serie diferenciada en escala logaritmica removiendo tendencia")
 ```
 :::
 :::
@@ -324,13 +416,34 @@ plot(x1, main="Serie en escala logaritmica removiendo tendencia")
 ::: 
 ```{r}
 #| echo: true
-#| fig-width: 7
-#| fig-height: 6
+#| fig-width: 5
+#| fig-height: 5
 #| warning: false
-acf(x1, lag.max = length(x1))
+acf(difx1, lag.max = length(difx1))
 ```
 :::
 
+:::
+
+## Componentes Serie S&P500
+::: {style="font-size:30px"}
+Anteriormente se realizó
+ la transformación de la serie para estabilizar la variación a través del tiempo, para series económicas  la descomposición multiplicativa es común.
+ 
+Cuando se realiza la transformación logarítmica, se esta aplicando la descomposición multiplicativa de los datos originales de la serie  
+
+```{=tex}
+\begin{equation*}
+\log y_{t}=\log S_{t}+\log T_{t}+\log R_{t}
+\end{equation*}
+```
+
+La anterior ecuación $y_t$ representa los datos de la serie, $S_t$ es la componente estaciona, $T_t$ la componente tendencia-cíclica t $R_t$ es la componente residual. 
+:::
+
+
+::: footer
+Learn more: [LaTeX Equations](https://quarto.org/docs/authoring/markdown-basics.html#equations)
 :::
 
 ## Suavizamiento promedio movil {.smaller transition="slide" transition-speed="slow"}
@@ -355,7 +468,7 @@ decom.SAP500.ts=decompose(log.SAP500.ts)
 De estimación de la tendencia mediante filtro móviles se puede observar que: 
 
 - Componente de tendencia: apesar de ser creciente parece no ser completamente lineal
-- Componente estacional: Según lo obtenido mediante filtros moviles parece haber un componente estacional
+- Componente estacional: El programa genera una componente estacional sin embargo es posible que no exista ya que asume que la componente estacional se repite año a año 
 - Componente residual. Esta no presenta 
 
 :::
@@ -513,7 +626,50 @@ tsibble_lSAP500 %>%
 
 :::
 
-## Serie S&P 500 diferenciada {.smaller transition="slide" transition-speed="slow"}
+## Deteccion ciclos y estacionalidades {.smaller transition="slide" transition-speed="slow"}
+
+::: columns
+
+
+::: {.column width="39.5%"}
+::: {style="font-size:18px"}
+-   **Periodograma** 
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| fig-width: 5
+#| fig-height: 4
+#| warning: false
+dlSAP500<-diff(log.SAP500.ts)
+PeriodgramadlSAP500=spectrum(as.numeric(dlSAP500),log='no')
+```
+El valor de la frecuencia donde se encuentra el pico del periodograma para la serie es: 0.0237, sin embargo no existen un periodo estipulado
+:::
+:::
+
+::: {.column width="0.5%"}
+:::
+
+::: {.column width="60%"}
+::: {style="font-size:18px"}
+-   **Deteccion de estacionalidad**
+
+```{r}
+#| echo: true
+#| fig-width: 5.7
+#| fig-height: 4.5
+#| warning: false
+library(forecast)
+ts_seasonal(dlSAP500, type= "box")
+```
+No se observa un patron estacional para la serie logaritmica diferenciada
+:::
+
+:::
+
+:::
+## Serie S&P 500 Log diferenciada {.smaller transition="slide" transition-speed="slow"}
 
 ::: columns
 ::: {.column width="23%"}
@@ -552,17 +708,526 @@ tibble_logSAP500%>%mutate(diff_LogSAP500=LogSAP500-lag(LogSAP500))%>%plot_time_s
 :::
 :::
 
-## Hello, There {transition="slide" transition-speed="slow"}
+## HoldWinters Ini(1){.smaller transition="slide" transition-speed="slow"}
 
-This presentation will show you examples of what you can do with Quarto and [Reveal.js](https://revealjs.com), including:
+::: columns
+::: {.column width="33%"}
+::: {style="font-size:22px"}
+```{r}
+#| echo: true
+#| fig-width: 7
+#| fig-height: 4
+#| warning: false
+#| results: hide
+#| code-fold: true
+library(forecast)
+tsibble_lSAP500=as_tsibble(log.SAP500.ts)
+HWAP_inic=stats::HoltWinters(log.SAP500.ts,alpha=NULL,beta=FALSE,gamma=FALSE)
 
--   Presenting code and LaTeX equations
--   Including computations in slide output
--   Image, video, and iframe backgrounds
--   Fancy transitions and animations
--   Printing to PDF
+```
 
-...and much more
+```{r}
+#| echo: false
+#| fig-width: 7
+#| fig-height: 4
+#| warning: false
+#| code-fold: true
+HWAP_inic
+```
+
+:::
+:::
+
+::: {.column width="2%"}
+:::
+
+
+::: {.column width="65%"}
+::: {style="font-size:18px"}
+
+
+```{r}
+#| echo: false
+#| fig-width: 6
+#| fig-height: 5
+#| warning: false
+#| code-fold: true
+par( mar= c(4,4,1,1) )
+plot(HWAP_inic)
+```
+:::
+:::
+
+::: footer
+Time Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications 
+:::
+
+
+:::
+
+## Hold Winters Ini{.smaller transition="slide" transition-speed="slow"}
+
+::: columns
+::: {.column width="34.5%"}
+::: {style="font-size:22px"}
+
+```{r}
+#| echo: true
+#| fig-width: 5
+#| fig-height: 5
+#| warning: false
+#| code-fold: true
+forecast::forecast(HWAP_inic,h=12,level =0.95,lambda = 0)
+```
+Al ser una serie irregular la serie con el paquete `TSstudio` no se visualiza de manera correcta
+
+
+
+Las series que han sido observadas de manera irregular en el tiempo pueden ser modeladas mediante las ecuaciones de estado espacio (Pag. 344)
+
+:::
+:::
+
+::: {.column width="0.5%"}
+:::
+
+
+::: {.column width="65%"}
+::: {style="font-size:20px"}
+
+
+
+```{r}
+#| echo: false
+#| fig-width: 8
+#| fig-height: 6
+#| warning: false
+#| code-fold: true
+par( mar= c(4,4,1,1) )
+plot(forecast::forecast(HWAP_inic,h=12,level =0.95,lambda = 0))
+```
+:::
+:::
+
+::: footer
+Time Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications 
+:::
+
+
+:::
+
+## Hold Winters Aditivo (1){.smaller transition="slide" transition-speed="slow"}
+
+::: columns
+::: {.column width="34.5%"}
+::: {style="font-size:22px"}
+```{r}
+#| echo: true
+#| fig-width: 7
+#| fig-height: 4
+#| warning: false
+#| results: hide
+#| code-fold: true
+HWAP=stats::HoltWinters(log.SAP500.ts,seasonal="additive")
+
+```
+
+```{r}
+#| echo: false
+#| fig-width: 7
+#| fig-height: 4
+#| warning: false
+#| code-fold: true
+HWAP
+```
+
+:::
+:::
+
+::: {.column width="0.5%"}
+:::
+
+
+::: {.column width="65%"}
+::: {style="font-size:18px"}
+
+
+```{r}
+#| echo: false
+#| fig-width: 6
+#| fig-height: 5
+#| warning: false
+#| code-fold: true
+par( mar= c(4,4,1,1) )
+plot(HWAP)
+```
+:::
+:::
+
+::: footer
+Time Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications 
+:::
+
+
+:::
+
+## Hold Winters Aditivo (2){.smaller transition="slide" transition-speed="slow"}
+
+::: columns
+::: {.column width="34.5%"}
+::: {style="font-size:22px"}
+
+```{r}
+#| echo: true
+#| fig-width: 5
+#| fig-height: 5
+#| warning: false
+#| code-fold: true
+forecast::forecast(HWAP,h=12,level =0.95,lambda = 0)
+```
+Al ser una serie irregular la serie con el paquete `TSstudio` no se visualiza de manera correcta
+
+
+
+Las series que han sido observadas de manera irregular en el tiempo pueden ser modeladas mediante las ecuaciones de estado espacio (Pag. 344)
+
+:::
+:::
+
+::: {.column width="0.5%"}
+:::
+
+
+::: {.column width="65%"}
+::: {style="font-size:20px"}
+
+
+
+```{r}
+#| echo: false
+#| fig-width: 8
+#| fig-height: 6
+#| warning: false
+#| code-fold: true
+par( mar= c(4,4,1,1) )
+plot(forecast::forecast(HWAP,h=12,level =0.95,lambda = 0))
+```
+:::
+:::
+
+::: footer
+Time Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications 
+:::
+:::
+
+## Hold Winters Damped (1){.smaller transition="slide" transition-speed="slow"}
+
+::: columns
+::: {.column width="39.5%"}
+::: {style="font-size:22px"}
+```{r}
+#| echo: true
+#| fig-width: 7
+#| fig-height: 4
+#| warning: false
+#| results: hide
+#| code-fold: true
+HWAP_1=forecast::hw(log.SAP500.ts,seasonal="additive",damped=TRUE)
+
+```
+
+```{r}
+#| echo: false
+#| fig-width: 7
+#| fig-height: 4
+#| warning: false
+#| code-fold: true
+HWAP_1
+```
+
+:::
+:::
+
+::: {.column width="0.5%"}
+:::
+
+
+::: {.column width="60%"}
+::: {style="font-size:18px"}
+
+
+```{r}
+#| echo: false
+#| fig-width: 6
+#| fig-height: 5
+#| warning: false
+#| code-fold: true
+par( mar= c(4,4,1,1) )
+plot(HWAP_1)
+```
+:::
+:::
+
+::: footer
+Time Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications 
+:::
+
+
+:::
+
+## PredictionHWAP (1){.smaller transition="slide" transition-speed="slow"}
+
+::: columns
+::: {.column width="34.5%"}
+::: {style="font-size:22px"}
+
+```{r}
+#| echo: true
+#| fig-width: 5
+#| fig-height: 5
+#| warning: false
+#| code-fold: true
+predictionHWAP_1=forecast::forecast(HWAP,h=12,level =0.95,lambda = 0)
+```
+
+```{r}
+#| echo: false
+#| fig-width: 7
+#| fig-height: 4
+#| warning: false
+#| code-fold: true
+predictionHWAP_1
+```
+:::
+:::
+
+::: {.column width="0.5%"}
+:::
+
+
+::: {.column width="65%"}
+::: {style="font-size:20px"}
+
+
+
+```{r}
+#| echo: false
+#| fig-width: 8
+#| fig-height: 6
+#| warning: false
+#| code-fold: true
+par( mar= c(4,4,1,1) )
+plot(predictionHWAP_1)
+```
+:::
+:::
+
+::: footer
+Time Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications 
+:::
+:::
+
+## PredictionHWAP (2){.smaller transition="slide" transition-speed="slow"}
+
+::: columns
+::: {.column width="34.5%"}
+::: {style="font-size:22px"}
+
+```{r}
+#| echo: true
+#| fig-width: 5
+#| fig-height: 5
+#| warning: false
+#| code-fold: true
+predictionHWAP_2=predict(HWAP,n.ahead = 12, prediction.interval = T, level = 0.95)
+predictionHWAP_2=forecast::InvBoxCox(predictionHWAP_2,lambda=0)
+```
+
+```{r}
+#| echo: false
+#| fig-width: 7
+#| fig-height: 4
+#| warning: false
+#| code-fold: true
+predictionHWAP_2
+```
+:::
+:::
+
+::: {.column width="0.5%"}
+:::
+
+
+::: {.column width="65%"}
+::: {style="font-size:20px"}
+
+
+
+```{r}
+#| echo: false
+#| fig-width: 8
+#| fig-height: 6
+#| warning: false
+#| code-fold: true
+ajustepass=tsibble_lSAP500%>%
+  model(ETS(value~ error("A")+trend("A")+season("A")))
+pronostico=ajustepass%>%
+  fabletools::forecast(h=12)
+pronostico%>%autoplot(tsibble_lSAP500)+geom_line(aes(y=.fitted),col="#D55E00",data=augment(ajustepass))+labs(y=" ",title="Pronóstico u ajustados")+guides(colour="none")
+```
+:::
+:::
+
+::: footer
+Time Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications 
+:::
+:::
+
+## PredictionNaive{.smaller transition="slide" transition-speed="slow"}
+
+::: columns
+::: {.column width="34.5%"}
+::: {style="font-size:22px"}
+
+```{r}
+#| echo: true
+#| fig-width: 5
+#| fig-height: 5
+#| warning: false
+#| code-fold: true
+modelos<-tsibble_lSAP500%>%
+   model(ets=ETS(value~ error("A")+trend("A")+season("A")),
+         stl=decomposition_model(STL(value ~ trend(window = 13) +
+                   season(window = "periodic"),
+    robust = TRUE),NAIVE(season_adjust)))
+```
+
+```{r}
+#| echo: false
+#| fig-width: 7
+#| fig-height: 4
+#| warning: false
+#| code-fold: true
+```
+:::
+:::
+
+::: {.column width="0.5%"}
+:::
+
+
+::: {.column width="65%"}
+::: {style="font-size:20px"}
+
+
+
+```{r}
+#| echo: false
+#| fig-width: 8
+#| fig-height: 6
+#| warning: false
+#| code-fold: true
+modelos%>%fabletools::forecast(h=12)%>%
+   autoplot(tsibble_lSAP500)
+```
+:::
+:::
+
+::: footer
+Time Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications 
+:::
+:::
+
+## Tabsets {.smaller .scrollable transition="slide"}
+
+::: panel-tabset
+### Plot
+
+```{r}
+library(ggplot2)
+ggplot(mtcars, aes(hp, mpg, color = am)) +
+  geom_point() +
+  geom_smooth(formula = y ~ x, method = "loess")
+```
+
+### Data
+
+```{r}
+knitr::kable(mtcars)
+```
+:::
+
+::: footer
+Learn more: [Tabsets](https://quarto.org/docs/presentations/revealjs/#tabsets)
+:::
+
+
+## Prediction Validacion Cruzada{.smaller transition="slide" transition-speed="slow"}
+
+::: columns
+::: {.column width="34.5%"}
+::: {style="font-size:22px"}
+
+```{r}
+#| echo: true
+#| fig-width: 5
+#| fig-height: 5
+#| warning: false
+#| code-fold: true
+library(dplyr)
+library(parsnip)
+library(rsample)
+library(timetk)
+library(modeltime)
+library(tsibble)
+library(tidymodels)
+###Creación del objeto tibble
+lSAP500_tbl<-as_tibble(as_tsibble(log.SAP500.ts))
+lSAP500_tbl$index=as.Date(lSAP500_tbl$index)
+lSAP500_tbl=rename(lSAP500_tbl,Fecha=index,logSAP500=value)
+lSAP500_tbl<-lSAP500_tbl%>%mutate(SAP500=exp(logSAP500))
+```
+
+```{r}
+#| echo: false
+#| fig-width: 7
+#| fig-height: 4
+#| warning: false
+#| code-fold: true
+lSAP500_tbl
+```
+:::
+:::
+
+::: {.column width="0.5%"}
+:::
+
+
+::: {.column width="65%"}
+::: {style="font-size:20px"}
+
+
+
+```{r}
+#| echo: false
+#| fig-width: 7
+#| fig-height: 6
+#| warning: false
+#| code-fold: true
+splits_lSAP500_tbl=timetk::time_series_split(lSAP500_tbl,date_var=Fecha,assess = 12,cumulative = TRUE)
+splits_lSAP500_tbl%>% tk_time_series_cv_plan()%>%
+  plot_time_series_cv_plan(Fecha,logSAP500)
+```
+:::
+:::
+
+::: footer
+Time Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications 
+:::
+:::
+
+
+
 
 ## Pretty Code {auto-animate="true"}
 

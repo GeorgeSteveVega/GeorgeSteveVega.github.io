@@ -284,35 +284,35 @@
     "href": "Presentacion.html#visualización-serie-diaria-paquete-xts",
     "title": "Series de tiempo Univariadas",
     "section": "Visualización serie diaria paquete xts",
-    "text": "Visualización serie diaria paquete xts\n\n\n\n\n\nHeterocedasticidad\nTendencia\nComponente estacional\n\n\n\n\n\n\n\n\nCode\nlibrary(zoo)\nlibrary(xts)\nlibrary(quantmod)\nlibrary(dygraphs)\nsandp500 <- new.env()\ngetSymbols(\"^GSPC\", env = sandp500, src = \"yahoo\", from = as.Date(\"1943-01-01\"), to = as.Date(\"2023-04-01\"))\nsp500<- sandp500$GSPC[,6]\ndygraph(sp500)%>%dyRangeSelector()\n\n\n\n\n\n\n\n\n\n\n\nLearn more: Executable Code"
+    "text": "Visualización serie diaria paquete xts\n\n\n\n\nSe genera la grafica de la serie con el fin de visualizar características de los datos como patrones, datos atípicos, cambios en el tiempo y la relacion entre las variables.\n\nHeterocedasticidad Se observa que la varianza marginal cambiante a traves del tiempo\nTendencia Al ser una serie económica se presenta tendencia creciente, se debe tener en cuenta que el precio de las acciones se ven afectadas por el incremento en el valor de la moneda año año\n\nComponente estacional No se evidencia un aparente componente estacional de periodo fijo o conocido a la vista.\nComponente ciclico Tampoco se evidencia una componente ciclica de periodo no fijo.\n\n\n\n\n\n\n\n\nCode\nlibrary(zoo)\nlibrary(xts)\nlibrary(quantmod)\nlibrary(dygraphs)\nsandp500 <- new.env()\ngetSymbols(\"^GSPC\", env = sandp500, src = \"yahoo\", from = as.Date(\"1943-01-01\"), to = as.Date(\"2023-04-01\"))\nsp500<- sandp500$GSPC[,6]\ndygraph(sp500)%>%dyRangeSelector()\n\n\n\n\n\n\n\n\n\n\n\nForecasing: Princicples and Practice - 2.3 Time series patterns"
   },
   {
     "objectID": "Presentacion.html#visualización-serie-paquete-tsstudio",
     "href": "Presentacion.html#visualización-serie-paquete-tsstudio",
     "title": "Series de tiempo Univariadas",
     "section": "Visualización serie paquete TSstudio",
-    "text": "Visualización serie paquete TSstudio\n\n\n\n\n\nCode\nlibrary(TSstudio)\nsp500ts=ts(sp500,start=c(1943,01),frequency = 365)\nts_info(sp500ts)\n\n\n\n\n The sp500ts series is a ts object with 1 variable and 20179 observations\n Frequency: 365 \n Start time: 1943 1 \n End time: 1998 104 \n\n\n\n\n\n\n\n\n\n\n\n\nLa serie mediante el paquete TSstudio no se visualiza de manera correcta\nSe lleva acabo el calculo de los días para conocer la cantidad de datos que se deberían tener:\n\n\nCode\nsurvey <- data.frame(date=c(\"1943/01/01\"),tx_start=c(\"2023/04/01\"))\n\nsurvey$date_diff <- as.Date(as.character(survey$date), format=\"%Y/%m/%d\")-\n                  as.Date(as.character(survey$tx_start), format=\"%Y/%m/%d\")\n\n\n\n\n        date   tx_start   date_diff\n1 1943/01/01 2023/04/01 -29310 days\n\n\nLos datos obtenidos determinan que la serie diaria es irregular y no es equidistante en el tiempo y se visualiza de mejor manera mediante el paquete xts y zoo."
+    "text": "Visualización serie paquete TSstudio\n\n\n\nAl ser una serie irregular la serie con el paquete TSstudio no se visualiza de manera correcta\nConteo de dias:\n\n\nCode\nsurvey <- data.frame(date=c(\"1943/01/01\"),tx_start=c(\"2023/04/01\"))\n\nsurvey$date_diff <- as.Date(as.character(survey$date), format=\"%Y/%m/%d\")-\n                  as.Date(as.character(survey$tx_start), format=\"%Y/%m/%d\")\n\n\n\n\n        date   tx_start   date_diff\n1 1943/01/01 2023/04/01 -29310 days\n\n\nLas series que han sido observadas de manera irregular en el tiempo pueden ser modeladas mediante las ecuaciones de estado espacio (Pag. 344)\n\n\n\n\n\n\n\nCode\nlibrary(TSstudio)\nsp500ts=ts(sp500,start=c(1943,01),frequency = 365)\nts_info(sp500ts)\n\n\n\n\n The sp500ts series is a ts object with 1 variable and 20179 observations\n Frequency: 365 \n Start time: 1943 1 \n End time: 1998 104 \n\n\n\n\n\n\n\n\n\nTime Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications"
   },
   {
     "objectID": "Presentacion.html#conversion-serie-sp500-a-serie-mensual",
     "href": "Presentacion.html#conversion-serie-sp500-a-serie-mensual",
     "title": "Series de tiempo Univariadas",
     "section": "Conversion serie S&P500 a serie mensual",
-    "text": "Conversion serie S&P500 a serie mensual\n\nsandp500 <- new.env()\ngetSymbols(\"^GSPC\", env = sandp500, src = \"yahoo\", from = as.Date(\"1943-01-01\"), to = as.Date(\"2023-03-31\"))\nSAP500<- sandp500$GSPC[,6] #Extraccion de datos\nnmonths(SAP500) #Numero de meses\nSAP500<-split(SAP500, f=\"months\") # Dividir en cantidad de meses\nSAP500<-lapply(SAP500, FUN= mean) #Promedio mensual\nfechas<-seq(as.Date(\"1943-01-01\"), length=963, by=\"months\") #Agrupacion de meses\nSAP500xts<-as.xts(as.numeric(SAP500), order.by=fechas) #Convertir a xts ordenados por fechas\nxts.to.df<-function(dataxts){\n  df<-data.frame(fecha=(index(dataxts)),\n                   GSPC=coredata(dataxts))\n  colnames(df)<-c(\"fecha\", \"GSPC\")\n  df\n}#Funcion para convertir xts a dataframe\nSP500ts<-xts.to.df(SAP500xts) #Datos transformados\nwrite.csv(SP500ts, \"C:/Users/ocamp/Downloads/Series/SP500ts.csv\", row.names=FALSE)\nSe convierte la serie con datos diarios irregulares a una serie equidistante en el tiempo."
+    "text": "Conversion serie S&P500 a serie mensual\n\nsandp500 <- new.env()\ngetSymbols(\"^GSPC\", env = sandp500, src = \"yahoo\", from = as.Date(\"1943-01-01\"), to = as.Date(\"2023-03-31\"))\nSAP500<- sandp500$GSPC[,6] #Extraccion de datos\nnmonths(SAP500) #Numero de meses\nSAP500<-split(SAP500, f=\"months\") # Dividir en cantidad de meses\nSAP500<-lapply(SAP500, FUN= mean) #Promedio mensual\nfechas<-seq(as.Date(\"1943-01-01\"), length=963, by=\"months\") #Agrupacion de meses\nSAP500xts<-as.xts(as.numeric(SAP500), order.by=fechas) #Convertir a xts ordenados por fechas\nxts.to.df<-function(dataxts){\n  df<-data.frame(fecha=(index(dataxts)),\n                   GSPC=coredata(dataxts))\n  colnames(df)<-c(\"fecha\", \"GSPC\")\n  df\n}#Funcion para convertir xts a dataframe\nSP500ts<-xts.to.df(SAP500xts) #Datos transformados\nwrite.csv(SP500ts, \"C:/Users/ocamp/Downloads/Series/SP500ts.csv\", row.names=FALSE)\nSe convierte la serie con datos diarios irregulares a una serie mensual, especialmente en tópicos financieros se involucran los retornos en vez de los precios de las acciones, los inversores promedio están interesados principalmente en los retornos debido a la oportunidad de inversion.\n\n\nAnalysis of Financial Time Series - (Ruey S. Tsay) 1ed. - 1.1 Financial Time Series and Their Characteristics"
   },
   {
     "objectID": "Presentacion.html#visualización-serie-sp-500-mensual",
     "href": "Presentacion.html#visualización-serie-sp-500-mensual",
     "title": "Series de tiempo Univariadas",
     "section": "Visualización serie S&P 500 mensual",
-    "text": "Visualización serie S&P 500 mensual\n\nlibrary(parsedate)\nSP500ts<- read.csv(\"SP500ts.csv\")\nFecha<-parsedate::parse_date(SP500ts$fecha)\nSAP500 <-data.frame(Fecha=Fecha,GSPC=SP500ts$GSPC)\nSAP500ts=ts(SAP500$GSPC,start=c(1943,01),frequency = 12)"
+    "text": "Visualización serie S&P 500 mensual\n\n\n\n\nCode\nlibrary(parsedate)\nSP500ts<- read.csv(\"SP500ts.csv\")\nFecha<-parsedate::parse_date(SP500ts$fecha)\nSAP500 <-data.frame(Fecha=Fecha,GSPC=SP500ts$GSPC)\nSAP500ts=ts(SAP500$GSPC,start=c(1943,01),frequency = 12)\n\n\n\n\n\n\n\n\n\n\n\n\nCode\npar( mar= c(4,4,1,1))\nacf(SAP500ts, lag.max=length(SAP500ts))\n\n\n\n\n\n\n\nLa serie presenta tendencia debido que para pequeños rezagos las autocorrelaciones son largas y positivas\nno se observa periodicidad estacional\nla serie es no estacionaria ya que la FAC decrece lentamente\n\n\n\nForecasing: Princicples and Practice - 2.8 Autocorrelation"
   },
   {
     "objectID": "Presentacion.html#estabilización-de-la-varianza",
     "href": "Presentacion.html#estabilización-de-la-varianza",
     "title": "Series de tiempo Univariadas",
     "section": "Estabilización de la varianza",
-    "text": "Estabilización de la varianza\n\n\n\n\nTransformacion Box-Cox-1\n\n\n\nCode\nlibrary(forecast)\nlibrary(MASS)\nforecast::BoxCox.lambda(SAP500ts, method =\"loglik\", lower = -1, upper = 3)\n\n\n[1] 0\n\n\n\n\n\n\n\n\n\n\n\n\n\nSerie Transformada\n\n\nlog.SAP500.ts<-log(SAP500ts)\npar( mar= c(4,4,1,1))\nplot(log.SAP500.ts)\n\n\n\n\n\nTransformacion Box-Cox-2\n\n\n\nCode\nforecast::BoxCox.lambda(log.SAP500.ts, method =\"loglik\", lower = -1, upper = 3)\n\n\n[1] 0.9"
+    "text": "Estabilización de la varianza\n\n\n\n\nTransformacion Box-Cox-1\n\n\n\nCode\nlibrary(forecast)\nlibrary(MASS)\nforecast::BoxCox.lambda(SAP500ts, method =\"loglik\", lower = -1, upper = 3)\n\n\n[1] 0\n\n\n\n\n\n\n\n\n\n\n\n\n\nSerie Transformada\n\n\nlog.SAP500.ts<-log(SAP500ts)\npar( mar= c(4,4,1,1))\nplot(log.SAP500.ts)\n\n\n\n\n\nTransformacion Box-Cox-2\n\n\n\nCode\nforecast::BoxCox.lambda(log.SAP500.ts, method =\"loglik\", lower = -1, upper = 3)\n\n\n[1] 0.9\n\n\n\n\nForecasing: Princicples and Practice - 3.1 Transformations and adjustments"
   },
   {
     "objectID": "Presentacion.html#estimacion-tendencia-deterministica",
@@ -333,7 +333,7 @@
     "href": "Presentacion.html#suavizamiento-promedio-movil",
     "title": "Series de tiempo Univariadas",
     "section": "Suavizamiento promedio movil",
-    "text": "Suavizamiento promedio movil\n\n\n\n\n\nCode\ndecom.SAP500.ts=decompose(log.SAP500.ts)\n\n\nDe estimación de la tendencia mediante filtro móviles se puede observar que:\n\nComponente de tendencia: apesar de ser creciente parece no ser completamente lineal\nComponente estacional: Según lo obtenido mediante filtros moviles parece haber un componente estacional\nComponente residual. Esta no presenta"
+    "text": "Suavizamiento promedio movil\n\n\n\n\n\nCode\ndecom.SAP500.ts=decompose(log.SAP500.ts)\n\n\nDe estimación de la tendencia mediante filtro móviles se puede observar que:\n\nComponente de tendencia: apesar de ser creciente parece no ser completamente lineal\nComponente estacional: El programa genera una componente estacional sin embargo es posible que no exista ya que asume que la componente estacional se repite año a año\nComponente residual. Esta no presenta"
   },
   {
     "objectID": "Presentacion.html#suavizamiento-loess-1",
@@ -355,5 +355,166 @@
     "title": "Series de tiempo Univariadas",
     "section": "Serie S&P 500 diferenciada",
     "text": "Serie S&P 500 diferenciada\n\n\n\n\n\nHeterocedasticidad\nTendencia\nComponente estacional\n\n\n\n\n\n\n\n\nCode\ntsibble_lSAP500<-tsibble_lSAP500|>mutate(diff_lprecios=tsibble::difference(value,lag=1,differences = 1))\ntibble_logSAP500%>%mutate(diff_LogSAP500=LogSAP500-lag(LogSAP500))%>%plot_time_series(Fecha,diff_LogSAP500)"
+  },
+  {
+    "objectID": "Presentacion.html#componentes-serie-sp500",
+    "href": "Presentacion.html#componentes-serie-sp500",
+    "title": "Series de tiempo Univariadas",
+    "section": "Componentes Serie S&P500",
+    "text": "Componentes Serie S&P500\n\nAnteriormente se realizó la transformación de la serie para estabilizar la variación a través del tiempo, para series económicas la descomposición multiplicativa es común.\nCuando se realiza la transformación logarítmica, se esta aplicando la descomposición multiplicativa de los datos originales de la serie\n\\[\\begin{equation*}\n\\log y_{t}=\\log S_{t}+\\log T_{t}+\\log R_{t}\n\\end{equation*}\\]\nLa anterior ecuación \\(y_t\\) representa los datos de la serie, \\(S_t\\) es la componente estaciona, \\(T_t\\) la componente tendencia-cíclica t \\(R_t\\) es la componente residual.\n\n\nLearn more: LaTeX Equations"
+  },
+  {
+    "objectID": "Presentacion.html#descompositicion-clasica",
+    "href": "Presentacion.html#descompositicion-clasica",
+    "title": "Series de tiempo Univariadas",
+    "section": "Descompositicion Clasica",
+    "text": "Descompositicion Clasica\nSuavizamiento promedio movil\n\n\n\n\n\nCode\ndecom.SAP500.ts=decompose(log.SAP500.ts)\n\n\nDe estimación de la tendencia mediante filtro móviles se puede observar que:\n\nComponente de tendencia: apesar de ser creciente parece no ser completamente lineal\nComponente estacional: Según lo obtenido mediante filtros moviles parece haber un componente estacional\nComponente residual. Esta no presenta"
+  },
+  {
+    "objectID": "Presentacion.html#descomposicion-clasica",
+    "href": "Presentacion.html#descomposicion-clasica",
+    "title": "Series de tiempo Univariadas",
+    "section": "Descomposicion Clasica",
+    "text": "Descomposicion Clasica\nSuavizamiento promedio movil\n\n\n\n\n\nCode\ndecom.SAP500.ts=decompose(log.SAP500.ts)\n\n\nDe estimación de la tendencia mediante filtro móviles se puede observar que:\n\nComponente de tendencia: apesar de ser creciente parece no ser completamente lineal\nComponente estacional: El programa genera una componente estacional sin embargo es posible que no exista\nComponente residual. Esta no presenta"
+  },
+  {
+    "objectID": "Presentacion.html#eliminacion-de-la-tendencia-1",
+    "href": "Presentacion.html#eliminacion-de-la-tendencia-1",
+    "title": "Series de tiempo Univariadas",
+    "section": "Eliminacion de la tendencia",
+    "text": "Eliminacion de la tendencia\n\n\n\n\nEliminacion de la tendencia serie log S&P500\n\n\ndifx1<-diff(x1)\nplot(difx1, main=\"Serie diferenciada en escala logaritmica removiendo tendencia\")\n\n\n\n\n\n\n\n\n\n\nFuncion de autocorrelacion\n\n\n\nacf(difx1, lag.max = length(difx1))"
+  },
+  {
+    "objectID": "Presentacion.html#estimacion-de-la-tendencia",
+    "href": "Presentacion.html#estimacion-de-la-tendencia",
+    "title": "Series de tiempo Univariadas",
+    "section": "Estimacion de la tendencia",
+    "text": "Estimacion de la tendencia\nSuavizamiento promedio movil\n\n\n\n\n\nCode\ndecom.SAP500.ts=decompose(log.SAP500.ts)\n\n\nDe estimación de la tendencia mediante filtro móviles se puede observar que:\n\nComponente de tendencia: apesar de ser creciente parece no ser completamente lineal\nComponente estacional: El programa genera una componente estacional sin embargo es posible que no exista\nComponente residual. Esta no presenta"
+  },
+  {
+    "objectID": "Presentacion.html#deteccion-ciclos-y-estacionalidades",
+    "href": "Presentacion.html#deteccion-ciclos-y-estacionalidades",
+    "title": "Series de tiempo Univariadas",
+    "section": "Deteccion ciclos y estacionalidades",
+    "text": "Deteccion ciclos y estacionalidades\n\n\n\n\nPeriodograma\n\n\n\nCode\ndlSAP500<-diff(log.SAP500.ts)\nPeriodgramadlSAP500=spectrum(as.numeric(dlSAP500),log='no')\n\n\n\n\n\nEl valor de la frecuencia donde se encuentra el pico del periodograma para la serie es: 0.0237, sin embargo no existen un periodo estipulado\n\n\n\n\n\n\nDeteccion de estacionalidad\n\n\nlibrary(forecast)\nts_seasonal(dlSAP500, type= \"box\")\n\n\n\n\n\nNo se observa un patron estacional para la serie logaritmica diferenciada"
+  },
+  {
+    "objectID": "Presentacion.html#serie-sp-500-log-diferenciada",
+    "href": "Presentacion.html#serie-sp-500-log-diferenciada",
+    "title": "Series de tiempo Univariadas",
+    "section": "Serie S&P 500 Log diferenciada",
+    "text": "Serie S&P 500 Log diferenciada\n\n\n\n\n\nHeterocedasticidad\nTendencia\nComponente estacional\n\n\n\n\n\n\n\n\nCode\ntsibble_lSAP500<-tsibble_lSAP500|>mutate(diff_lprecios=tsibble::difference(value,lag=1,differences = 1))\ntibble_logSAP500%>%mutate(diff_LogSAP500=LogSAP500-lag(LogSAP500))%>%plot_time_series(Fecha,diff_LogSAP500)"
+  },
+  {
+    "objectID": "Presentacion.html#visualización-serie-paquete-tsstudio-1",
+    "href": "Presentacion.html#visualización-serie-paquete-tsstudio-1",
+    "title": "Series de tiempo Univariadas",
+    "section": "Visualización serie paquete TSstudio",
+    "text": "Visualización serie paquete TSstudio\n\n\n\nAl ser una serie irregular la serie con el paquete TSstudio no se visualiza de manera correcta\nLas series que han sido observadas de manera irregular en el tiempo pueden ser modeladas mediante las ecuaciones de estado espacio (Pag. 344)\n\n\n\n\n\n\n\nCode\nlibrary(forecast)\ntsibble_lSAP500=as_tsibble(log.SAP500.ts)\nHWAP_inic=stats::HoltWinters(log.SAP500.ts,alpha=NULL,beta=FALSE,gamma=FALSE)\n\n\n\n\nHolt-Winters exponential smoothing without trend and without seasonal component.\n\nCall:\nstats::HoltWinters(x = log.SAP500.ts, alpha = NULL, beta = FALSE,     gamma = FALSE)\n\nSmoothing parameters:\n alpha: 0.9999261\n beta : FALSE\n gamma: FALSE\n\nCoefficients:\n      [,1]\na 8.284547\n\n\n\n\n\n\n\n\n\nTime Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications"
+  },
+  {
+    "objectID": "Presentacion.html#visualización-serie-paquete-tsstudio-2",
+    "href": "Presentacion.html#visualización-serie-paquete-tsstudio-2",
+    "title": "Series de tiempo Univariadas",
+    "section": "Visualización serie paquete TSstudio",
+    "text": "Visualización serie paquete TSstudio\n\n\n\n\n\nCode\nforecast::forecast(HWAP_inic,h=12,level =0.95,lambda = 0)\n\n\n         Point Forecast    Lo 95    Hi 95\nApr 2023        3962.17 3698.189 4244.995\nMay 2023        3962.17 3594.077 4367.962\nJun 2023        3962.17 3516.179 4464.730\nJul 2023        3962.17 3451.821 4547.973\nAug 2023        3962.17 3396.097 4622.597\nSep 2023        3962.17 3346.493 4691.117\nOct 2023        3962.17 3301.517 4755.023\nNov 2023        3962.17 3260.198 4815.287\nDec 2023        3962.17 3221.861 4872.584\nJan 2024        3962.17 3186.016 4927.404\nFeb 2024        3962.17 3152.293 4980.118\nMar 2024        3962.17 3120.404 5031.012\n\n\nAl ser una serie irregular la serie con el paquete TSstudio no se visualiza de manera correcta\nLas series que han sido observadas de manera irregular en el tiempo pueden ser modeladas mediante las ecuaciones de estado espacio (Pag. 344)\n\n\n\n\n\n\n\n\n\n\n\n\nTime Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications"
+  },
+  {
+    "objectID": "Presentacion.html#holdwinters-initsstudio",
+    "href": "Presentacion.html#holdwinters-initsstudio",
+    "title": "Series de tiempo Univariadas",
+    "section": "HoldWinters IniTSstudio",
+    "text": "HoldWinters IniTSstudio\n\n\n\nAl ser una serie irregular la serie con el paquete TSstudio no se visualiza de manera correcta\nLas series que han sido observadas de manera irregular en el tiempo pueden ser modeladas mediante las ecuaciones de estado espacio (Pag. 344)\n\n\n\n\n\n\n\nCode\nlibrary(forecast)\ntsibble_lSAP500=as_tsibble(log.SAP500.ts)\nHWAP_inic=stats::HoltWinters(log.SAP500.ts,alpha=NULL,beta=FALSE,gamma=FALSE)\n\n\n\n\nHolt-Winters exponential smoothing without trend and without seasonal component.\n\nCall:\nstats::HoltWinters(x = log.SAP500.ts, alpha = NULL, beta = FALSE,     gamma = FALSE)\n\nSmoothing parameters:\n alpha: 0.9999261\n beta : FALSE\n gamma: FALSE\n\nCoefficients:\n      [,1]\na 8.284547\n\n\n\n\n\n\n\n\n\nTime Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications"
+  },
+  {
+    "objectID": "Presentacion.html#hold-winters-ini",
+    "href": "Presentacion.html#hold-winters-ini",
+    "title": "Series de tiempo Univariadas",
+    "section": "Hold Winters Ini",
+    "text": "Hold Winters Ini\n\n\n\n\n\nCode\nforecast::forecast(HWAP_inic,h=12,level =0.95,lambda = 0)\n\n\n         Point Forecast    Lo 95    Hi 95\nApr 2023        3962.17 3698.189 4244.995\nMay 2023        3962.17 3594.077 4367.962\nJun 2023        3962.17 3516.179 4464.730\nJul 2023        3962.17 3451.821 4547.973\nAug 2023        3962.17 3396.097 4622.597\nSep 2023        3962.17 3346.493 4691.117\nOct 2023        3962.17 3301.517 4755.023\nNov 2023        3962.17 3260.198 4815.287\nDec 2023        3962.17 3221.861 4872.584\nJan 2024        3962.17 3186.016 4927.404\nFeb 2024        3962.17 3152.293 4980.118\nMar 2024        3962.17 3120.404 5031.012\n\n\nAl ser una serie irregular la serie con el paquete TSstudio no se visualiza de manera correcta\nLas series que han sido observadas de manera irregular en el tiempo pueden ser modeladas mediante las ecuaciones de estado espacio (Pag. 344)\n\n\n\n\n\n\n\n\n\n\n\n\nTime Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications"
+  },
+  {
+    "objectID": "Presentacion.html#holdwinters-aditivo",
+    "href": "Presentacion.html#holdwinters-aditivo",
+    "title": "Series de tiempo Univariadas",
+    "section": "HoldWinters Aditivo",
+    "text": "HoldWinters Aditivo\n\n\n\nAl ser una serie irregular la serie con el paquete TSstudio no se visualiza de manera correcta\nLas series que han sido observadas de manera irregular en el tiempo pueden ser modeladas mediante las ecuaciones de estado espacio (Pag. 344)\n\n\n\n\n\n\n\nCode\nHWAP=stats::HoltWinters(log.SAP500.ts,seasonal=\"additive\")\n\n\n\n\nHolt-Winters exponential smoothing with trend and additive seasonal component.\n\nCall:\nstats::HoltWinters(x = log.SAP500.ts, seasonal = \"additive\")\n\nSmoothing parameters:\n alpha: 0.9384734\n beta : 0\n gamma: 1\n\nCoefficients:\n            [,1]\na    8.287693755\nb    0.005434905\ns1   0.013304678\ns2   0.004659898\ns3   0.001569480\ns4   0.001703984\ns5  -0.002685071\ns6  -0.013494558\ns7  -0.012107676\ns8   0.009515117\ns9   0.013915937\ns10  0.017148401\ns11  0.013756569\ns12 -0.003148797\n\n\n\n\n\n\n\n\n\nTime Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications"
+  },
+  {
+    "objectID": "Presentacion.html#hold-winters-ini-1",
+    "href": "Presentacion.html#hold-winters-ini-1",
+    "title": "Series de tiempo Univariadas",
+    "section": "Hold Winters Ini",
+    "text": "Hold Winters Ini\n\n\n\n\n\nCode\nforecast::forecast(HWAP_inic,h=12,level =0.95,lambda = 0)\n\n\n         Point Forecast    Lo 95    Hi 95\nApr 2023        3962.17 3698.189 4244.995\nMay 2023        3962.17 3594.077 4367.962\nJun 2023        3962.17 3516.179 4464.730\nJul 2023        3962.17 3451.821 4547.973\nAug 2023        3962.17 3396.097 4622.597\nSep 2023        3962.17 3346.493 4691.117\nOct 2023        3962.17 3301.517 4755.023\nNov 2023        3962.17 3260.198 4815.287\nDec 2023        3962.17 3221.861 4872.584\nJan 2024        3962.17 3186.016 4927.404\nFeb 2024        3962.17 3152.293 4980.118\nMar 2024        3962.17 3120.404 5031.012\n\n\nAl ser una serie irregular la serie con el paquete TSstudio no se visualiza de manera correcta\nLas series que han sido observadas de manera irregular en el tiempo pueden ser modeladas mediante las ecuaciones de estado espacio (Pag. 344)\n\n\n\n\n\n\n\n\n\n\n\n\nTime Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications"
+  },
+  {
+    "objectID": "Presentacion.html#holdwinters-ini1",
+    "href": "Presentacion.html#holdwinters-ini1",
+    "title": "Series de tiempo Univariadas",
+    "section": "HoldWinters Ini(1)",
+    "text": "HoldWinters Ini(1)\n\n\n\n\n\nCode\nlibrary(forecast)\ntsibble_lSAP500=as_tsibble(log.SAP500.ts)\nHWAP_inic=stats::HoltWinters(log.SAP500.ts,alpha=NULL,beta=FALSE,gamma=FALSE)\n\n\n\n\nHolt-Winters exponential smoothing without trend and without seasonal component.\n\nCall:\nstats::HoltWinters(x = log.SAP500.ts, alpha = NULL, beta = FALSE,     gamma = FALSE)\n\nSmoothing parameters:\n alpha: 0.9999261\n beta : FALSE\n gamma: FALSE\n\nCoefficients:\n      [,1]\na 8.284547\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTime Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications"
+  },
+  {
+    "objectID": "Presentacion.html#hold-winters-aditivo-1",
+    "href": "Presentacion.html#hold-winters-aditivo-1",
+    "title": "Series de tiempo Univariadas",
+    "section": "Hold Winters Aditivo (1)",
+    "text": "Hold Winters Aditivo (1)\n\n\n\n\n\nCode\nHWAP=stats::HoltWinters(log.SAP500.ts,seasonal=\"additive\")\n\n\n\n\nHolt-Winters exponential smoothing with trend and additive seasonal component.\n\nCall:\nstats::HoltWinters(x = log.SAP500.ts, seasonal = \"additive\")\n\nSmoothing parameters:\n alpha: 0.9384734\n beta : 0\n gamma: 1\n\nCoefficients:\n            [,1]\na    8.287693755\nb    0.005434905\ns1   0.013304678\ns2   0.004659898\ns3   0.001569480\ns4   0.001703984\ns5  -0.002685071\ns6  -0.013494558\ns7  -0.012107676\ns8   0.009515117\ns9   0.013915937\ns10  0.017148401\ns11  0.013756569\ns12 -0.003148797\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTime Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications"
+  },
+  {
+    "objectID": "Presentacion.html#hold-winters-aditivo-2",
+    "href": "Presentacion.html#hold-winters-aditivo-2",
+    "title": "Series de tiempo Univariadas",
+    "section": "Hold Winters Aditivo (2)",
+    "text": "Hold Winters Aditivo (2)\n\n\n\n\n\nCode\nforecast::forecast(HWAP,h=12,level =0.95,lambda = 0)\n\n\n         Point Forecast    Lo 95    Hi 95\nApr 2023       4049.843 3758.873 4363.336\nMay 2023       4036.864 3644.497 4471.474\nJun 2023       4046.340 3574.815 4580.060\nJul 2023       4068.938 3529.266 4691.133\nAug 2023       4073.196 3475.931 4773.089\nSep 2023       4051.363 3406.671 4818.059\nOct 2023       4079.095 3383.687 4917.422\nNov 2023       4190.973 3432.729 5116.702\nDec 2023       4232.397 3425.614 5229.190\nJan 2024       4269.240 3416.694 5334.517\nFeb 2024       4277.972 3387.139 5403.097\nMar 2024       4229.182 3314.333 5396.555\n\n\nAl ser una serie irregular la serie con el paquete TSstudio no se visualiza de manera correcta\nLas series que han sido observadas de manera irregular en el tiempo pueden ser modeladas mediante las ecuaciones de estado espacio (Pag. 344)\n\n\n\n\n\n\n\n\n\n\n\n\nTime Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications"
+  },
+  {
+    "objectID": "Presentacion.html#hold-winters-damped-1",
+    "href": "Presentacion.html#hold-winters-damped-1",
+    "title": "Series de tiempo Univariadas",
+    "section": "Hold Winters Damped (1)",
+    "text": "Hold Winters Damped (1)\n\n\n\n\n\nCode\nHWAP_1=forecast::hw(log.SAP500.ts,seasonal=\"additive\",damped=TRUE)\n\n\n\n\n         Point Forecast    Lo 80    Hi 80    Lo 95    Hi 95\nApr 2023       8.313136 8.259378 8.366895 8.230920 8.395353\nMay 2023       8.314502 8.246819 8.382185 8.210990 8.418014\nJun 2023       8.331623 8.249267 8.413980 8.205670 8.457577\nJul 2023       8.351034 8.253858 8.448209 8.202417 8.499651\nAug 2023       8.361074 8.249256 8.472893 8.190062 8.532086\nSep 2023       8.336584 8.210468 8.462700 8.143706 8.529461\nOct 2023       8.331381 8.191402 8.471360 8.117301 8.545461\nNov 2023       8.355401 8.202031 8.508770 8.120841 8.589960\nDec 2023       8.349641 8.183364 8.515918 8.095343 8.603939\nJan 2024       8.348123 8.169418 8.526829 8.074817 8.621430\nFeb 2024       8.345524 8.154852 8.536196 8.053917 8.637131\nMar 2024       8.315776 8.113579 8.517973 8.006542 8.625009\nApr 2024       8.338686 8.122736 8.554635 8.008420 8.668952\nMay 2024       8.335020 8.108480 8.561560 7.988557 8.681484\nJun 2024       8.348101 8.111323 8.584880 7.985980 8.710223\nJul 2024       8.364267 8.117581 8.610953 7.986993 8.741541\nAug 2024       8.371702 8.115418 8.627985 7.979749 8.763654\nSep 2024       8.345118 8.079527 8.610710 7.938932 8.751305\nOct 2024       8.338235 8.063607 8.612863 7.918228 8.758242\nNov 2024       8.360905 8.077494 8.644315 7.927466 8.794344\nDec 2024       8.354061 8.062106 8.646017 7.907554 8.800569\nJan 2025       8.351673 8.051394 8.651953 7.892436 8.810911\nFeb 2025       8.348375 8.039980 8.656769 7.876726 8.820024\nMar 2025       8.318065 8.001751 8.634380 7.834304 8.801827\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTime Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications"
+  },
+  {
+    "objectID": "Presentacion.html#hold-winters-aditivo-2-1",
+    "href": "Presentacion.html#hold-winters-aditivo-2-1",
+    "title": "Series de tiempo Univariadas",
+    "section": "Hold Winters Aditivo (2)",
+    "text": "Hold Winters Aditivo (2)\n\n\n\n\n\nCode\nforecast::forecast(HWAP,h=12,level =0.95,lambda = 0)\n\n\n         Point Forecast    Lo 95    Hi 95\nApr 2023       4049.843 3758.873 4363.336\nMay 2023       4036.864 3644.497 4471.474\nJun 2023       4046.340 3574.815 4580.060\nJul 2023       4068.938 3529.266 4691.133\nAug 2023       4073.196 3475.931 4773.089\nSep 2023       4051.363 3406.671 4818.059\nOct 2023       4079.095 3383.687 4917.422\nNov 2023       4190.973 3432.729 5116.702\nDec 2023       4232.397 3425.614 5229.190\nJan 2024       4269.240 3416.694 5334.517\nFeb 2024       4277.972 3387.139 5403.097\nMar 2024       4229.182 3314.333 5396.555\n\n\nAl ser una serie irregular la serie con el paquete TSstudio no se visualiza de manera correcta\nLas series que han sido observadas de manera irregular en el tiempo pueden ser modeladas mediante las ecuaciones de estado espacio (Pag. 344)\n\n\n\n\n\n\n\n\n\n\n\n\nTime Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications"
+  },
+  {
+    "objectID": "Presentacion.html#predictionhwap-1",
+    "href": "Presentacion.html#predictionhwap-1",
+    "title": "Series de tiempo Univariadas",
+    "section": "PredictionHWAP (1)",
+    "text": "PredictionHWAP (1)\n\n\n\n\n\nCode\npredictionHWAP_1=forecast::forecast(HWAP,h=12,level =0.95,lambda = 0)\n\n\n\n\n         Point Forecast    Lo 95    Hi 95\nApr 2023       4049.843 3758.873 4363.336\nMay 2023       4036.864 3644.497 4471.474\nJun 2023       4046.340 3574.815 4580.060\nJul 2023       4068.938 3529.266 4691.133\nAug 2023       4073.196 3475.931 4773.089\nSep 2023       4051.363 3406.671 4818.059\nOct 2023       4079.095 3383.687 4917.422\nNov 2023       4190.973 3432.729 5116.702\nDec 2023       4232.397 3425.614 5229.190\nJan 2024       4269.240 3416.694 5334.517\nFeb 2024       4277.972 3387.139 5403.097\nMar 2024       4229.182 3314.333 5396.555\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTime Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications"
+  },
+  {
+    "objectID": "Presentacion.html#predictionhwap-2",
+    "href": "Presentacion.html#predictionhwap-2",
+    "title": "Series de tiempo Univariadas",
+    "section": "PredictionHWAP (2)",
+    "text": "PredictionHWAP (2)\n\n\n\n\n\nCode\npredictionHWAP_2=predict(HWAP,n.ahead = 12, prediction.interval = T, level = 0.95)\npredictionHWAP_2=forecast::InvBoxCox(predictionHWAP_2,lambda=0)\n\n\n\n\n              fit      upr      lwr\nApr 2023 4049.843 4363.336 3758.873\nMay 2023 4036.864 4471.474 3644.497\nJun 2023 4046.340 4580.060 3574.815\nJul 2023 4068.938 4691.133 3529.266\nAug 2023 4073.196 4773.089 3475.931\nSep 2023 4051.363 4818.059 3406.671\nOct 2023 4079.095 4917.422 3383.687\nNov 2023 4190.973 5116.702 3432.729\nDec 2023 4232.397 5229.190 3425.614\nJan 2024 4269.240 5334.517 3416.694\nFeb 2024 4277.972 5403.097 3387.139\nMar 2024 4229.182 5396.555 3314.333\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTime Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications"
+  },
+  {
+    "objectID": "Presentacion.html#predictionnaive",
+    "href": "Presentacion.html#predictionnaive",
+    "title": "Series de tiempo Univariadas",
+    "section": "PredictionNaive",
+    "text": "PredictionNaive\n\n\n\n\n\nCode\nmodelos<-tsibble_lSAP500%>%\n   model(ets=ETS(value~ error(\"A\")+trend(\"A\")+season(\"A\")),\n         stl=decomposition_model(STL(value ~ trend(window = 13) +\n                   season(window = \"periodic\"),\n    robust = TRUE),NAIVE(season_adjust)))\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTime Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications"
+  },
+  {
+    "objectID": "Presentacion.html#prediction-validacion-cruzada",
+    "href": "Presentacion.html#prediction-validacion-cruzada",
+    "title": "Series de tiempo Univariadas",
+    "section": "Prediction Validacion Cruzada",
+    "text": "Prediction Validacion Cruzada\n\n\n\n\n\nCode\nlibrary(dplyr)\nlibrary(parsnip)\nlibrary(rsample)\nlibrary(timetk)\nlibrary(modeltime)\nlibrary(tsibble)\nlibrary(tidymodels)\n###Creación del objeto tibble\nlSAP500_tbl<-as_tibble(as_tsibble(log.SAP500.ts))\nlSAP500_tbl$index=as.Date(lSAP500_tbl$index)\nlSAP500_tbl=rename(lSAP500_tbl,Fecha=index,logSAP500=value)\nlSAP500_tbl<-lSAP500_tbl%>%mutate(SAP500=exp(logSAP500))\n\n\n\n\n# A tibble: 963 x 3\n   Fecha      logSAP500 SAP500\n   <date>         <dbl>  <dbl>\n 1 1943-01-01      2.31   10.1\n 2 1943-02-01      2.37   10.7\n 3 1943-03-01      2.40   11.1\n 4 1943-04-01      2.44   11.5\n 5 1943-05-01      2.48   11.9\n 6 1943-06-01      2.49   12.1\n 7 1943-07-01      2.51   12.4\n 8 1943-08-01      2.46   11.7\n 9 1943-09-01      2.48   12.0\n10 1943-10-01      2.47   11.9\n# i 953 more rows\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTime Series Analysis and Its Applications With R Examples (Shumway and Stoffer) 3ed. - 6.4 Missing Data Modifications"
+  },
+  {
+    "objectID": "Presentacion.html#tabsets-1",
+    "href": "Presentacion.html#tabsets-1",
+    "title": "Series de tiempo Univariadas",
+    "section": "Tabsets",
+    "text": "Tabsets\n\nPlotData\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nmpg\ncyl\ndisp\nhp\ndrat\nwt\nqsec\nvs\nam\ngear\ncarb\n\n\n\n\nMazda RX4\n21.0\n6\n160.0\n110\n3.90\n2.620\n16.46\n0\n1\n4\n4\n\n\nMazda RX4 Wag\n21.0\n6\n160.0\n110\n3.90\n2.875\n17.02\n0\n1\n4\n4\n\n\nDatsun 710\n22.8\n4\n108.0\n93\n3.85\n2.320\n18.61\n1\n1\n4\n1\n\n\nHornet 4 Drive\n21.4\n6\n258.0\n110\n3.08\n3.215\n19.44\n1\n0\n3\n1\n\n\nHornet Sportabout\n18.7\n8\n360.0\n175\n3.15\n3.440\n17.02\n0\n0\n3\n2\n\n\nValiant\n18.1\n6\n225.0\n105\n2.76\n3.460\n20.22\n1\n0\n3\n1\n\n\nDuster 360\n14.3\n8\n360.0\n245\n3.21\n3.570\n15.84\n0\n0\n3\n4\n\n\nMerc 240D\n24.4\n4\n146.7\n62\n3.69\n3.190\n20.00\n1\n0\n4\n2\n\n\nMerc 230\n22.8\n4\n140.8\n95\n3.92\n3.150\n22.90\n1\n0\n4\n2\n\n\nMerc 280\n19.2\n6\n167.6\n123\n3.92\n3.440\n18.30\n1\n0\n4\n4\n\n\nMerc 280C\n17.8\n6\n167.6\n123\n3.92\n3.440\n18.90\n1\n0\n4\n4\n\n\nMerc 450SE\n16.4\n8\n275.8\n180\n3.07\n4.070\n17.40\n0\n0\n3\n3\n\n\nMerc 450SL\n17.3\n8\n275.8\n180\n3.07\n3.730\n17.60\n0\n0\n3\n3\n\n\nMerc 450SLC\n15.2\n8\n275.8\n180\n3.07\n3.780\n18.00\n0\n0\n3\n3\n\n\nCadillac Fleetwood\n10.4\n8\n472.0\n205\n2.93\n5.250\n17.98\n0\n0\n3\n4\n\n\nLincoln Continental\n10.4\n8\n460.0\n215\n3.00\n5.424\n17.82\n0\n0\n3\n4\n\n\nChrysler Imperial\n14.7\n8\n440.0\n230\n3.23\n5.345\n17.42\n0\n0\n3\n4\n\n\nFiat 128\n32.4\n4\n78.7\n66\n4.08\n2.200\n19.47\n1\n1\n4\n1\n\n\nHonda Civic\n30.4\n4\n75.7\n52\n4.93\n1.615\n18.52\n1\n1\n4\n2\n\n\nToyota Corolla\n33.9\n4\n71.1\n65\n4.22\n1.835\n19.90\n1\n1\n4\n1\n\n\nToyota Corona\n21.5\n4\n120.1\n97\n3.70\n2.465\n20.01\n1\n0\n3\n1\n\n\nDodge Challenger\n15.5\n8\n318.0\n150\n2.76\n3.520\n16.87\n0\n0\n3\n2\n\n\nAMC Javelin\n15.2\n8\n304.0\n150\n3.15\n3.435\n17.30\n0\n0\n3\n2\n\n\nCamaro Z28\n13.3\n8\n350.0\n245\n3.73\n3.840\n15.41\n0\n0\n3\n4\n\n\nPontiac Firebird\n19.2\n8\n400.0\n175\n3.08\n3.845\n17.05\n0\n0\n3\n2\n\n\nFiat X1-9\n27.3\n4\n79.0\n66\n4.08\n1.935\n18.90\n1\n1\n4\n1\n\n\nPorsche 914-2\n26.0\n4\n120.3\n91\n4.43\n2.140\n16.70\n0\n1\n5\n2\n\n\nLotus Europa\n30.4\n4\n95.1\n113\n3.77\n1.513\n16.90\n1\n1\n5\n2\n\n\nFord Pantera L\n15.8\n8\n351.0\n264\n4.22\n3.170\n14.50\n0\n1\n5\n4\n\n\nFerrari Dino\n19.7\n6\n145.0\n175\n3.62\n2.770\n15.50\n0\n1\n5\n6\n\n\nMaserati Bora\n15.0\n8\n301.0\n335\n3.54\n3.570\n14.60\n0\n1\n5\n8\n\n\nVolvo 142E\n21.4\n4\n121.0\n109\n4.11\n2.780\n18.60\n1\n1\n4\n2\n\n\n\n\n\n\n\n\n\nLearn more: Tabsets"
   }
 ]
