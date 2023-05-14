@@ -1,5 +1,5 @@
 ---
-title: Modelado Geoespacial # Cambiar
+title: Kriging Espacial # Cambiar
 subtitle: Estadistica espacial
 author: George Vega
 date-format: "MM-YYYY"
@@ -730,7 +730,7 @@ fitvar5CM=likfit(PolucionUKG, coords =PolucionUKG$coords,
 
 ### 3. Modelo Cauchy
 
-$$                $$
+$$                                $$
 
 #### Métodos Cuadrados Ordinarios
 
@@ -792,7 +792,7 @@ fitvar5Cauchy=likfit(PolucionUKG, coords =PolucionUKG$coords,
 
 ### 4. Modelo Gaussiano
 
-$$                $$
+$$                                $$
 
 #### Métodos Cuadrados Ordinarios
 
@@ -915,14 +915,14 @@ legend("bottomright",c("MCO","MCPnpairs","MCPcressie","ML","REML"),
 #| code-line-numbers: true
 library(gstat)
 library(maptools)
-Data = data.frame(PolucionUK[, 1:2], res = mod1$residuals)
+Data = data.frame(PolucionUK, res = mod1$residuals)
 coordinates(Data) = c("X", "Y")
 ve.fit1WM = as.vgm.variomodel(fitvar1WM) 
 ve.fit2WM = as.vgm.variomodel(fitvar2WM) 
 ve.fit3WM = as.vgm.variomodel(fitvar3WM) 
 ve.fit4WM = as.vgm.variomodel(fitvar4WM) 
 ve.fit5WM = as.vgm.variomodel(fitvar5WM) 
-cvMCOWM = krige.cv(res ~ 1, Data, ve.fit1WM, maxdist = 450000) 
+cvMCOWM = krige.cv(PM10 ~ 1+ X + Y, Data, ve.fit1WM, maxdist = 450000) 
 cvMCPWM   = krige.cv(res ~ 1, Data, ve.fit2WM, maxdist = 450000) 
 cvMCPCressieWM = krige.cv(res ~ 1, Data, ve.fit3WM, maxdist = 450000) 
 cvMVWM          = krige.cv(res ~ 1, Data, ve.fit4WM, maxdist = 450000)
@@ -963,11 +963,11 @@ plot(muestra1)
 #| code-line-numbers: true
 #| results: hide
 library(viridis)
-PM10preMCO=krige(res ~ 1,Data,muestra1, ve.fit1WM, nsim=0)
-PM10preMCP=krige(res ~ 1,Data,muestra1, ve.fit2WM)
-PM10preMCPCressie=krige(res ~ 1,Data,muestra1, ve.fit3WM)
-PM10preMV=krige(res ~ 1,Data,muestra1, ve.fit4WM)
-PM10preMVRe=krige(res ~ 1,Data,muestra1, ve.fit5WM)
+PM10preMCO=krige(PM10 ~1,Data,muestra1, ve.fit1WM,  maxdist = 450000)
+PM10preMCP=krige(PM10 ~ 1,Data,muestra1, ve.fit2WM,  maxdist = 450000)
+PM10preMCPCressie=krige(PM10~ 1,Data,muestra1, ve.fit3WM,  maxdist = 450000)
+PM10preMV=krige(PM10 ~ 1,Data,muestra1, ve.fit4WM,  maxdist = 450000)
+PM10preMVRe=krige(PM10 ~ 1,Data,muestra1, ve.fit5WM,  maxdist = 450000)
 
 
 li = list("sp.polygons", poligonos) 
