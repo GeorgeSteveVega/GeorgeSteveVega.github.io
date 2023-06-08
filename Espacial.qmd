@@ -730,7 +730,7 @@ fitvar5CM=likfit(PolucionUKG, coords =PolucionUKG$coords,
 
 ### 3. Modelo Cauchy
 
-$$                                $$
+$$                                                                                                                                $$
 
 #### Métodos Cuadrados Ordinarios
 
@@ -792,7 +792,7 @@ fitvar5Cauchy=likfit(PolucionUKG, coords =PolucionUKG$coords,
 
 ### 4. Modelo Gaussiano
 
-$$                                $$
+$$                                                                                                                                $$
 
 #### Métodos Cuadrados Ordinarios
 
@@ -982,7 +982,14 @@ spplot(PM10preMCPCressie, c("var1.pred"), as.table = TRUE, main = " Modelo Wave 
 spplot(PM10preMV, c("var1.pred"), as.table = TRUE, main = " Modelo Wave \n MV", sp.layout = list(li, pts), contour = FALSE, labels = FALSE, pretty = TRUE, col = "black", col.regions = viridis(64)),
 spplot(PM10preMVRe, c("var1.pred"), as.table = TRUE, main = " Modelo Wave \n MVRe ", sp.layout = list(li, pts), contour = FALSE, labels = FALSE, pretty = TRUE, col = "black", col.regions = viridis(64)),ncol=3)
 
+grid.arrange(
+spplot(PM10preMCO, c("var1.var"), as.table = TRUE, main = " Modelo Wave \n MCO", sp.layout = list(li, pts), contour = FALSE, labels = FALSE, pretty = TRUE, col = "black", col.regions = viridis(64)),
 
+spplot(PM10preMCP, c("var1.var"), as.table = TRUE, main = " Modelo Wave \n MCP ", sp.layout = list(li, pts), contour = FALSE, labels = FALSE, pretty = TRUE, col = "black", col.regions = viridis(64)),
+
+spplot(PM10preMCPCressie, c("var1.var"), as.table = TRUE, main = " Modelo Wave \n MCP Cressie", sp.layout = list(li, pts), contour = FALSE, labels = FALSE, pretty = TRUE, col = "black", col.regions = viridis(64)),
+spplot(PM10preMV, c("var1.pred"), as.table = TRUE, main = " Modelo Wave \n MV", sp.layout = list(li, pts), contour = FALSE, labels = FALSE, pretty = TRUE, col = "black", col.regions = viridis(64)),
+spplot(PM10preMVRe, c("var1.var"), as.table = TRUE, main = " Modelo Wave \n MVRe ", sp.layout = list(li, pts), contour = FALSE, labels = FALSE, pretty = TRUE, col = "black", col.regions = viridis(64)),ncol=3)
 ```
 
 ```{r}

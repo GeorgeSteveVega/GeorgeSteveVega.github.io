@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.269">
+<meta name="generator" content="quarto-1.3.283">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -18,9 +18,10 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -47,48 +48,19 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+/* CSS for citations */
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
 }
-.hanging div.csl-entry {
+.hanging-indent div.csl-entry {
   margin-left:2em;
   text-indent:-2em;
 }
@@ -102,8 +74,7 @@ div.csl-right-inline {
 }
 div.csl-indent {
   margin-left: 2em;
-}
-</style>
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -141,7 +112,7 @@ div.csl-indent {
     "search-submit-button-title": "Submit"
   }
 }</script>
-<script src="site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="site_libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
 <script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
 <link href="site_libs/leaflet-1.3.1/leaflet.css" rel="stylesheet">
 <script src="site_libs/leaflet-1.3.1/leaflet.js"></script>
@@ -149,7 +120,7 @@ div.csl-indent {
 <script src="site_libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="site_libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
-<script src="site_libs/leaflet-binding-2.1.2/leaflet.js"></script>
+<script src="site_libs/leaflet-binding-2.1.1/leaflet.js"></script>
 <script>
 window.MathJax = {
   loader: {load:
@@ -159,6 +130,7 @@ window.MathJax = {
     };
 </script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="styles.css">
@@ -175,55 +147,61 @@ window.MathJax = {
     <span class="navbar-title">George Steven Vega</span>
     </a>
   </div>
+            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html">
+    <a class="nav-link" href="./index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./Series.html">
+    <a class="nav-link" href="./Series.html" rel="" target="">
  <span class="menu-text">Series de Tiempo</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./Espacial.html" aria-current="page">
+    <a class="nav-link active" href="./Espacial.html" rel="" target="" aria-current="page">
  <span class="menu-text">Estadistica espacial</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html">
+    <a class="nav-link" href="./about.html" rel="" target="">
  <span class="menu-text">About</span></a>
   </li>  
 </ul>
-              <div id="quarto-search" class="" title="Search"></div>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Kriging Espacial</h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Espacial.html">Kriging Espacial</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
     </div>
   </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Espacial.html" class="sidebar-item-text sidebar-link active">Kriging Espacial</a>
+  <a href="./Espacial.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Kriging Espacial</span></a>
   </div>
 </li>
     </ul>
     </div>
 </nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -271,7 +249,7 @@ window.MathJax = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Kriging Espacial</h1>
+<h1 class="title">Kriging Espacial</h1>
 <p class="subtitle lead">Estadistica espacial</p>
 </div>
 
@@ -300,9 +278,6 @@ window.MathJax = {
 </header>
 
 <p></p>
-<div class="cell">
-
-</div>
 <p></p>
 <section id="introduccion" class="level1">
 <h1>Introduccion</h1>
@@ -387,8 +362,8 @@ Esta se da por la existencia de grandes urbes, el aire cercano a estas ciudades 
 <p></p>
 <div class="cell">
 <div class="cell-output-display">
-<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-432fccd59f76cf1d645d" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-432fccd59f76cf1d645d">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[57.1574,54.353728,55.79216,54.851491,54.861595,53.56292,51.390922,54.59965,54.572586,53.388624,52.476145,52.481346,53.80489,51.661229,50.840836,51.462839,51.457968,52.82105,53.559029,55.862281,51.54421,51.27399,51.48178,51.49096,54.885823,51.05625,51.374264,51.638094,53.244131,53.231751,50.735454,52.411628,52.407708,53.115941,51.653819,52.922983,55.002818,53.693104,53.518383,55.943197,55.070033,56.475434,51.51895,50.805778,55.94476,55.945589,55.31531,55.860936,55.85894,55.865782,53.46008,56.010319,55.944079,54.683242,54.334497,50.792287,53.74878,53.759013,53.619241,57.481308,53.40337,52.28881,52.294884,53.80378,53.819972,52.638742,52.619904,53.221432,53.34633,51.46603,51.52229,51.48879,51.49633,51.449674,51.52253,51.52105,51.425286,51.49467,54.43951,50.7937,53.48152,53.371722,54.569297,51.782616,54.97825,54.986405,51.601203,52.95473,52.969377,51.744806,55.657472,50.37167,51.58395,50.82881,50.798339,53.76559,51.454896,51.45309,51.45617,53.48481,50.411463,52.132417,53.378622,50.920265,50.908173,51.544166,51.480499,53.451826,51.518167,54.565819,54.516667,52.980436,53.02821,50.916932,54.88361,51.632696,51.558061,52.673471,51.47707,51.52253,52.605641,53.389225,52.95049,53.365391,53.54914,53.37287,50.832947,53.042282,50.5976,53.967513,53.951889],[-2.09477,-6.654558,-3.2429,-6.274961,-6.250873,-1.510436,-2.35503,-5.928833,-5.974944,-3.024942,-1.874978,-1.918235,-3.007175,-0.270671,-0.147572,-2.584482,-2.583975,-1.635718,-2.293772,-3.205782,-0.175269,1.098061,-3.17625,-3.152305,-2.964955,-2.68345,0.54797,-2.678731,-1.454946,-1.456928,-1.780888,-1.560189,-1.490082,-2.453492,-3.00637,-1.469507,-7.331179,-1.637111,-1.13806,-4.55973,-3.614233,-2.959861,-0.265617,0.271611,-3.183991,-3.182186,-3.206111,-4.238214,-4.259122,-4.243631,-2.472056,-3.704399,-4.734421,-1.203838,-0.80882,-3.196702,-0.341222,-0.305678,-0.213324,-4.241451,-1.752006,-1.533119,-1.542911,-1.546472,-1.576361,-1.124267,-1.127182,-0.534204,-2.844333,0.184806,-0.125889,-0.441614,-0.460861,-0.037418,-0.154611,-0.213492,-0.345606,-0.131931,-7.900328,0.18125,-2.237881,-2.238917,-1.220874,-4.69237,-1.610528,-1.595362,-2.977281,-1.146447,-1.188851,-1.260278,-3.196527,-4.142361,-3.770822,-1.068583,-1.095558,-2.680353,-0.940382,-0.944067,0.634889,-2.334139,-4.227678,-0.300306,-1.478096,-1.463484,-1.395757,0.678331,-0.05955,-2.742134,0.439548,-1.3159,-1.358547,-2.111898,-2.175133,-0.449548,-1.406878,-3.947374,-1.765678,-2.436692,0.317969,-0.042155,-2.030371,-2.615593,1.122017,-2.73168,-2.638139,-3.022722,-0.379916,-3.002829,-3.71651,-1.086514,-1.075861],[4,4,4,6,6,4,6,6,6,6,4,6,4,6,6,4,4,4,6,6,4,6,4,4,6,4,4,4,6,6,6,6,6,4,6,6,6,6,6,6,6,6,4,4,6,4,6,4,6,6,4,4,4,6,6,4,6,6,6,6,6,6,6,4,4,4,6,6,4,4,6,6,6,4,4,4,4,6,4,6,4,6,4,6,6,6,4,6,6,4,6,4,6,4,4,4,6,6,6,6,4,4,6,6,6,4,4,4,6,6,4,6,6,6,6,4,6,4,6,6,6,6,4,6,4,4,6,6,4,4,4],null,null,{"interactive":true,"className":"","stroke":false,"color":["#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#000080","#000080","#000080","#000080","#FF0000","#000080","#FF0000","#000080","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#000080","#FF0000","#FF0000","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#000080","#000080","#000080","#FF0000","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#FF0000","#FF0000","#000080","#FF0000","#000080","#FF0000","#000080","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#FF0000","#000080","#000080","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#FF0000","#000080","#FF0000","#000080","#FF0000","#000080","#000080","#000080","#FF0000","#000080","#000080","#FF0000","#000080","#FF0000","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#000080","#000080","#FF0000","#FF0000","#000080","#000080","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#000080","#000080","#000080","#000080","#FF0000","#000080","#FF0000","#000080","#000080","#000080","#000080","#FF0000","#000080","#FF0000","#FF0000","#000080","#000080","#FF0000","#FF0000","#FF0000"],"weight":5,"opacity":0.5,"fill":true,"fillColor":["#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#000080","#000080","#000080","#000080","#FF0000","#000080","#FF0000","#000080","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#000080","#FF0000","#FF0000","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#000080","#000080","#000080","#FF0000","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#FF0000","#FF0000","#000080","#FF0000","#000080","#FF0000","#000080","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#FF0000","#000080","#000080","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#FF0000","#000080","#FF0000","#000080","#FF0000","#000080","#000080","#000080","#FF0000","#000080","#000080","#FF0000","#000080","#FF0000","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#000080","#000080","#FF0000","#FF0000","#000080","#000080","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#000080","#000080","#000080","#000080","#FF0000","#000080","#FF0000","#000080","#000080","#000080","#000080","#FF0000","#000080","#FF0000","#FF0000","#000080","#000080","#FF0000","#FF0000","#FF0000"],"fillOpacity":0.4},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLegend","args":[{"colors":["#000080","#FF0000"],"labels":["NO2","PM10"],"na_color":null,"na_label":"NA","opacity":1,"position":"topright","type":"factor","title":"Variables","extra":null,"layerId":null,"className":"info legend","group":null}]}],"limits":{"lat":[50.37167,57.481308],"lng":[-7.900328,1.122017]}},"evals":[],"jsHooks":[]}</script>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-deb6283c79df11ae4624" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-deb6283c79df11ae4624">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[[57.1574,54.353728,55.79216,54.851491,54.861595,53.56292,51.390922,54.59965,54.572586,53.388624,52.476145,52.481346,53.80489,51.661229,50.840836,51.462839,51.457968,52.82105,53.559029,55.862281,51.54421,51.27399,51.48178,51.49096,54.885823,51.05625,51.374264,51.638094,53.244131,53.231751,50.735454,52.411628,52.407708,53.115941,51.653819,52.922983,55.002818,53.693104,53.518383,55.943197,55.070033,56.475434,51.51895,50.805778,55.94476,55.945589,55.31531,55.860936,55.85894,55.865782,53.46008,56.010319,55.944079,54.683242,54.334497,50.792287,53.74878,53.759013,53.619241,57.481308,53.40337,52.28881,52.294884,53.80378,53.819972,52.638742,52.619904,53.221432,53.34633,51.46603,51.52229,51.48879,51.49633,51.449674,51.52253,51.52105,51.425286,51.49467,54.43951,50.7937,53.48152,53.371722,54.569297,51.782616,54.97825,54.986405,51.601203,52.95473,52.969377,51.744806,50.37167,50.411058,51.58395,50.82881,50.798339,53.76559,51.454896,51.45309,53.48481,52.132417,53.58634,53.579227,53.40495,53.378622,53.41058,50.920265,50.908173,51.544166,51.480499,53.451826,51.777874,54.516667,52.980436,53.02821,54.91839,51.632696,51.558061,52.673471,51.47707,53.389225,52.508342,52.2985,53.54914,53.37287,53.042282,50.5976,53.967513,53.951889],[-2.09477,-6.654558,-3.2429,-6.274961,-6.250873,-1.510436,-2.35503,-5.928833,-5.974944,-3.024942,-1.874978,-1.918235,-3.007175,-0.270671,-0.147572,-2.584482,-2.583975,-1.635718,-2.293772,-3.205782,-0.175269,1.098061,-3.17625,-3.152305,-2.964955,-2.68345,0.54797,-2.678731,-1.454946,-1.456928,-1.780888,-1.560189,-1.490082,-2.453492,-3.00637,-1.469507,-7.331179,-1.637111,-1.13806,-4.55973,-3.614233,-2.959861,-0.265617,0.271611,-3.183991,-3.182186,-3.206111,-4.238214,-4.259122,-4.243631,-2.472056,-3.704399,-4.734421,-1.203838,-0.80882,-3.196702,-0.341222,-0.305678,-0.213324,-4.241451,-1.752006,-1.533119,-1.542911,-1.546472,-1.576361,-1.124267,-1.127182,-0.534204,-2.844333,0.184806,-0.125889,-0.441614,-0.460861,-0.037418,-0.154611,-0.213492,-0.345606,-0.131931,-7.900328,0.18125,-2.237881,-2.238917,-1.220874,-4.69237,-1.610528,-1.595362,-2.977281,-1.146447,-1.188851,-1.260278,-4.142361,-4.130288,-3.770822,-1.068583,-1.095558,-2.680353,-0.940382,-0.944067,-2.334139,-0.300306,-0.636811,-2.093844,-1.455815,-1.478096,-1.396139,-1.463484,-1.395757,0.678331,-0.05955,-2.742134,1.04901,-1.358547,-2.111898,-2.175133,-1.408391,-3.947374,-1.765678,-2.436692,0.317969,-2.615593,-1.98607,0.290917,-2.638139,-3.022722,-3.002829,-3.71651,-1.086514,-1.075861],[4,4,4,6,6,4,6,6,6,6,4,6,4,6,6,4,4,4,6,6,4,6,4,4,6,4,4,4,6,6,6,6,6,4,6,6,6,6,6,6,6,6,4,4,6,4,6,4,6,6,4,4,4,6,6,4,6,6,6,6,6,6,6,4,4,4,6,6,4,4,6,6,6,4,4,4,4,6,4,6,4,6,4,6,6,6,4,6,6,6,6,6,4,6,6,6,4,4,4,6,6,6,6,4,6,4,4,6,6,6,6,6,4,4,6,6,4,6,4,4,6,6,6,6,4,6,4,4],null,null,{"interactive":true,"className":"","stroke":false,"color":["#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#000080","#000080","#000080","#000080","#FF0000","#000080","#FF0000","#000080","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#000080","#FF0000","#FF0000","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#000080","#000080","#000080","#FF0000","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#FF0000","#FF0000","#000080","#FF0000","#000080","#FF0000","#000080","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#FF0000","#000080","#000080","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#FF0000","#000080","#FF0000","#000080","#FF0000","#000080","#000080","#000080","#FF0000","#000080","#000080","#000080","#000080","#000080","#FF0000","#000080","#000080","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#000080","#000080","#FF0000","#000080","#FF0000","#FF0000","#000080","#000080","#000080","#000080","#000080","#FF0000","#FF0000","#000080","#000080","#FF0000","#000080","#FF0000","#FF0000","#000080","#000080","#000080","#000080","#FF0000","#000080","#FF0000","#FF0000"],"weight":5,"opacity":0.5,"fill":true,"fillColor":["#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#000080","#000080","#000080","#000080","#FF0000","#000080","#FF0000","#000080","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#000080","#FF0000","#FF0000","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#000080","#000080","#000080","#FF0000","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#FF0000","#FF0000","#000080","#FF0000","#000080","#FF0000","#000080","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#000080","#000080","#000080","#000080","#000080","#000080","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#FF0000","#FF0000","#000080","#000080","#000080","#FF0000","#FF0000","#FF0000","#FF0000","#000080","#FF0000","#000080","#FF0000","#000080","#FF0000","#000080","#000080","#000080","#FF0000","#000080","#000080","#000080","#000080","#000080","#FF0000","#000080","#000080","#000080","#FF0000","#FF0000","#FF0000","#000080","#000080","#000080","#000080","#FF0000","#000080","#FF0000","#FF0000","#000080","#000080","#000080","#000080","#000080","#FF0000","#FF0000","#000080","#000080","#FF0000","#000080","#FF0000","#FF0000","#000080","#000080","#000080","#000080","#FF0000","#000080","#FF0000","#FF0000"],"fillOpacity":0.4},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLegend","args":[{"colors":["#000080","#FF0000"],"labels":["NO2","PM10"],"na_color":null,"na_label":"NA","opacity":1,"position":"topright","type":"factor","title":"Variables","extra":null,"layerId":null,"className":"info legend","group":null}]}],"limits":{"lat":[50.37167,57.481308],"lng":[-7.900328,1.098061]}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p></p>
@@ -452,7 +427,7 @@ Esta se da por la existencia de grandes urbes, el aire cercano a estas ciudades 
 <p></p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="Espacial_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+<p><img src="Espacial_files/figure-html/unnamed-chunk-6-1.png" class="quarto-discovered-preview-image img-fluid" width="672"></p>
 </div>
 </div>
 <p></p>
@@ -700,8 +675,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p></p>
 <div class="cell">
 <div class="cell-output-display">
-<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-10258aedcf25b89f047e" style="width:100%;height:406px;"></div>
-<script type="application/json" data-for="htmlwidget-10258aedcf25b89f047e">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[50.37167,-4.142361,10,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"setView":[[55,-4.8],5,[]],"limits":{"lat":[50.37167,50.37167],"lng":[-4.142361,-4.142361]}},"evals":[],"jsHooks":[]}</script>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-3a5f3125c6f5c13104b7" style="width:100%;height:406px;"></div>
+<script type="application/json" data-for="htmlwidget-3a5f3125c6f5c13104b7">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircleMarkers","args":[50.37167,-4.142361,10,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"setView":[[55,-4.8],5,[]],"limits":{"lat":[50.37167,50.37167],"lng":[-4.142361,-4.142361]}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p></p>
@@ -1005,7 +980,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </section>
 <section id="modelo-cauchy" class="level3">
 <h3 class="anchored" data-anchor-id="modelo-cauchy">3. Modelo Cauchy</h3>
-<p><span class="math display">\[                                \]</span></p>
+<p><span class="math display">\[                                                                                                                                \]</span></p>
 <section id="métodos-cuadrados-ordinarios-2" class="level4">
 <h4 class="anchored" data-anchor-id="métodos-cuadrados-ordinarios-2">Métodos Cuadrados Ordinarios</h4>
 <p></p>
@@ -1081,7 +1056,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </section>
 <section id="modelo-gaussiano" class="level3">
 <h3 class="anchored" data-anchor-id="modelo-gaussiano">4. Modelo Gaussiano</h3>
-<p><span class="math display">\[                                \]</span></p>
+<p><span class="math display">\[                                                                                                                                \]</span></p>
 <section id="métodos-cuadrados-ordinarios-3" class="level4">
 <h4 class="anchored" data-anchor-id="métodos-cuadrados-ordinarios-3">Métodos Cuadrados Ordinarios</h4>
 <p></p>
@@ -1184,6 +1159,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell-output-display">
 <p><img src="Espacial_files/figure-html/unnamed-chunk-52-1.png" class="img-fluid" width="960"></p>
 </div>
+<div class="cell-output-display">
+<p><img src="Espacial_files/figure-html/unnamed-chunk-52-2.png" class="img-fluid" width="960"></p>
+</div>
 </div>
 <p></p>
 <p></p>
@@ -1204,20 +1182,20 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </section>
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
-<div id="ref-CDCP2023" class="csl-entry" role="doc-biblioentry">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-CDCP2023" class="csl-entry" role="listitem">
 Center for Disease Control and Prevention. 2023. <em>Air Pollutants</em>.
 </div>
-<div id="ref-Anilla2022" class="csl-entry" role="doc-biblioentry">
+<div id="ref-Anilla2022" class="csl-entry" role="listitem">
 Cherian, Anilla. 2022. <em>Air Pollution, Clean Energy and Climate Change</em>. Wiley.
 </div>
-<div id="ref-Boubel1994" class="csl-entry" role="doc-biblioentry">
+<div id="ref-Boubel1994" class="csl-entry" role="listitem">
 Richard W. Boubel, Bruce Turner, Donald L. Fox. 1994. <em>Fundamentals of Air Pollution</em>. 3rd ed. Academic Press.
 </div>
-<div id="ref-WHO2006" class="csl-entry" role="doc-biblioentry">
+<div id="ref-WHO2006" class="csl-entry" role="listitem">
 WHO. 2006. <em>Air Quality Guidelines: Global Update 2005 : Particulate Matter, Ozone, Nitrogen Dioxide, and Sulfur Dioxide</em>. A EURO Publication. World Health Organization.
 </div>
-<div id="ref-WHO2015" class="csl-entry" role="doc-biblioentry">
+<div id="ref-WHO2015" class="csl-entry" role="listitem">
 ———. 2015. <em>Health and the Environment: Addressing the Health Impact of Air Pollution</em>. Governing body documents. World Health Organization.
 </div>
 </div></section></div></main> <!-- /main -->
@@ -1248,9 +1226,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -1315,6 +1307,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
