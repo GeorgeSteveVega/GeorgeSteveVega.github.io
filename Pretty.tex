@@ -1,0 +1,57 @@
+% load packages
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{eso-pic}
+\usepackage{fancyhdr}
+\usepackage{sectsty}
+\usepackage{fontspec}
+\usepackage{titlesec}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage[version=4]{mhchem} 
+\hypersetup{bookmarksnumbered, colorlinks, linkcolor = blue, urlcolor = blue,
+	citecolor = blue, bookmarksopen,%
+	pdftitle = GeorgeWork, %
+	pdfauthor = George Steven Vega \textcopyright,%
+	pdfsubject = }
+
+%% Set page size with a wider right margin
+\geometry{a4paper, total={257mm,300mm}, left=20mm, top=32mm, bottom=20mm, right=20mm}
+\bibliographystyle{apalike}
+\bibliography{Bibliografia}
+%% Let's define some colours
+%\definecolor{light}{HTML}{E6E6FA}
+%\definecolor{highlight}{HTML}{800080}
+%\definecolor{dark}{HTML}{330033}
+
+%% Let's add the border on the right hand side 
+\AddToShipoutPicture{% 
+	% logo
+	\AtPageLowerLeft{% start the bar at the bottom right of the page
+		\put(\LenToUnit{\dimexpr\paperwidth-12cm},26.8cm){% move it to the top right
+			\color{blue}\includegraphics[width=4cm,height=6cm]{UNAL1.png}
+		}%
+	}%
+}
+
+%% Style the page number
+\fancypagestyle{mystyle}{
+	\fancyhf{}
+	\renewcommand\headrulewidth{0pt}
+	\fancyfoot[C]{\thepage}
+	\fancyfootoffset{3.5cm}
+}
+\setlength{\footskip}{20pt}
+
+% left align title
+\makeatletter
+\renewcommand{\maketitle}{\bgroup\setlength{\parindent}{0pt}
+	\begin{flushleft}
+		{\sffamily\Large\textbf{\MakeUppercase{\@title}}} \vspace{0.1cm} \newline
+		{\large {\@subtitle}} \newline
+		\@author\\
+		\@date
+	\end{flushleft}\egroup
+}
+\makeatother
+

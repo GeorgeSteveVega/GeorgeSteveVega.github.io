@@ -30,6 +30,7 @@ website:
       - title: "Estadistica espacial"
         contents:
           - Espacial.qmd
+          - SpatioTemporal.qmd
           # navigation items
 
 # website:

@@ -1,0 +1,557 @@
+---
+title: Kriging Espacio-Tiempo
+subtitle: Estadistica espacial
+author: George Vega
+date-format: "MM-YYYY"
+date: 03-05-2023
+# format: 
+#   pdf:
+#     include-in-header:  "Pretty.tex"
+#     include-before-body: "pagestyle.tex"
+#     toc: false
+#     code-line-numbers: true
+#     fig-width: 8
+#     fig-height: 3.8
+#     fig-pos: "H"
+    #code-block-bg: light
+    #linkcolor: highlight
+    #urlcolor: highlight
+colorlinks: true
+#bibliography: References.bib
+cls: apa.csl
+# link-citations: yes
+#title: "Series de Tiempo de Univariadas"
+#author: "George Vega"
+#date-format: "MM-YYYY"
+#date: 03-03-2023
+#geometry:
+format:
+  html:
+    html-math-method: mathjax
+    include-in-header:
+      - text: |
+          <script>
+          window.MathJax = {
+            loader: {load:
+            ['[tex]/mhchem']},
+              tex: {packages:
+              {'[+]': ['mhchem']}}
+              };
+          </script>
+editor: visual
+toc: true
+# editor_options: 
+#   chunk_output_type: console
+---
+
+```{r}
+#| echo: false
+default_chunk_hook  <- knitr::knit_hooks$get("chunk")
+latex_font_size <- c("Huge", "huge", "LARGE", "Large", 
+                     "large", "normalsize", "small", 
+                     "footnotesize", "scriptsize", "tiny")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- default_chunk_hook(x, options)
+  if(options$size %in% latex_font_size) {
+    paste0("\n \\", options$size, "\n\n", 
+      x, 
+      "\n\n \\normalsize"
+    )
+  } else {
+    x
+  }
+})
+```
+
+# Contaminacion de aire
+
+La contaminación del aire es un problema global que afecta la salud y el bienestar de millones de personas en todo el mundo. Uno de los contaminantes más preocupantes es el material particulado, compuesto por partículas sólidas o líquidas suspendidas en el aire. Estas partículas, que varían en tamaño y composición, pueden tener efectos perjudiciales en la salud humana y el medio ambiente.
+
+El Reino Unido en los ultimos años ha implementado regulaciones para reducir las emisiones de contaminates provenientes de vehículos y las emisiones industriales, para esto genero una politica donde se inluyen estándares de calidad del aire y límites de emision más estrictos.
+
+Respecto al transporte público y movilidad el gobierno implemento politicas que tienen en cuenta el incentivo al uso de transporte público, asi como la construcción de ciclovías y la adopción de vehículos eléctricos. Adicional, se fomento a nivel industrial el uso des energías renovables y la reducción de la dependencia de combustibles fósiles en la generación de electricidad.
+
+A pesar de los esfuerzos realizados, la contaminación del aire en el Reino Unido sigue siendo un desafío importante. Se requiere una colaboración continua entre el gobierno, las autoridades locales y la sociedad en general para implementar políticas efectivas y medidas prácticas que mejoren la calidad del aire y protejan la salud de la población y el medio ambiente.
+
+En los últimos años la predicción ha tomado un rol importante para una infinidad de casos, especificamente en el aspecto ambientar la predicción de de los niveles de material particulado en el aire es fundamental para tomar medidas preventivas y mitigar los efectos adversos en la salud y el medio ambiente. En este sentido, uno de estos métodos esta relacionado con la Geoestadistica espacio-temporal la cual se ofrece una herramienta para predecir los niveles de PM en diferentes ubicaciones y períodos de tiempo. En este trabajo se explorara el kriging espacio temporal para la prediccion en una coordenada de material particulado.
+
+## Obtencion de los datos
+
+La base de datos seleccionada para este trabajo proviene del departamento de Medio Ambiente, Alimentación y Asuntos Rurales del Reino unido,de la cual se extrae [datos](https://uk-air.defra.gov.uk/data/) de la fuente de informacion del Reino Unido.
+
+El reino unido mediante su agencia ambiental posee alrededor de 300 sitios de monitoreo ambiental los cuales se subdividen en redes que adquieren informacion particular de acuerdo al contaminante. Existen dos tipos de [redes de monitoreo](https://uk-air.defra.gov.uk/networks/) en el reino unido:
+
+1.  [**Redes automaticas:**](https://uk-air.defra.gov.uk/networks/network-info?view=automatic) estas permiten la captura de datos de contaminantes que se producen por hora. La recopilación de datos comprende datos desde 1972 para algunos sitios:
+
+-   [Automatic Urban and Rural Network (AURN)](https://uk-air.defra.gov.uk/networks/network-info?view=aurn)
+-   [Automatic Hydrocarbon Network (AHN)](https://uk-air.defra.gov.uk/networks/network-info?view=hc)
+-   [Automatic London Network](https://uk-air.defra.gov.uk/networks/network-info?view=aln)
+-   [Locally-managed automatic monitoring](https://uk-air.defra.gov.uk/networks/network-info?view=nondefraaqmon)
+
+2.  [**Redes no automaticas:**](https://uk-air.defra.gov.uk/networks/network-info?view=automatic) La recopilacion de los datos se da para contaminantes que se producen con menor frecuencia (diaria,semanal, mensual) donde las muestras son recopiladas por medios físicos y son sometidas a análisis fisico-quimico que permite calcular la concentración de los resultados, a continuación se relacionan las redes de monitoreo para esta categoría:
+
+-   [UK Eutrophying & Acidifying Network (UKEAP)](https://uk-air.defra.gov.uk/networks/network-info?view=ukeap)
+-   [Upland Waters Monitoring Network](https://uk-air.defra.gov.uk/networks/network-info?view=uw)
+-   [Heavy Metals Network](https://uk-air.defra.gov.uk/networks/network-info?view=metals)
+-   [Nitrogen Dioxide Diffusion Tube (1993 to 2005)](https://uk-air.defra.gov.uk/networks/network-info?view=no2old)
+-   [Smoke and Sulphur Dioxide](https://uk-air.defra.gov.uk/networks/network-info?view=smsites)
+-   [Black Carbon Network](https://uk-air.defra.gov.uk/networks/network-info?view=ukbsn)
+-   [PAH](https://uk-air.defra.gov.uk/networks/network-info?view=pah)
+-   [Toxic Organic Micro Pollutants (TOMPs)](https://uk-air.defra.gov.uk/networks/network-info?view=tomps)
+-   [Non-Automatic Hydrocarbon Network](https://uk-air.defra.gov.uk/networks/network-info?view=nahc)
+-   [Particle Numbers and Concentrations Network](https://uk-air.defra.gov.uk/networks/network-info?view=particle)
+-   [JAQU privacy notice](https://uk-air.defra.gov.uk/library/no2ten/privacy-notice)
+-   [UK Urban NO2 Network](https://uk-air.defra.gov.uk/library/no2ten/privacy-notice)
+
+Dentro de los enlaces relacionados se puede recopilar la información disponible para cada red.
+
+El gobierno del Reino Unido permite la extracción, analisis e interpretacion de los datos de codigo abierto y libre mediante el uso del paquete [`Openair`](https://uk-air.defra.gov.uk/data/openair) usando R. Para la adecuación de los datos se realiza el procedimiento descrito en <https://rspatialdata.github.io/air_pollution.html#Installing_the_openair_packageR> mediante la integracion del paquete `tidyverse`.
+
+Para la extracción de los datos se verifican algunas de las redes de monitoreo existentes y posterior se escogen las variables $\ce{NO2}$ y PM$_{10}$ para las cuales se verifican sus redes de monitoreo:
+
+```{r}
+#| warning: false
+#| echo: false
+#http://rstudio.github.io/leaflet/markers.html
+#https://bookdown.org/david_carslaw/openair/sections/maps/maps-network.html
+#https://r-charts.com/es/espacial/mapas-interactivos-leaflet/
+library(openair)
+library(openairmaps)
+library(leaflet)
+library(dplyr)
+library(stringr)
+# import all Meta data for the AURN
+aurn_meta <- importMeta("aurn",year = 2023, all = TRUE)
+# prep data for leaflet
+map_data <- 
+  aurn_meta %>%
+  # get sites in York
+  filter(variable == c("PM10")) %>% 
+  # build a popup
+  buildPopup(
+    latitude = "latitude",
+    longitude = "longitude",
+    cols = c("code", "site", "site_type", "zone", "local_authority"), 
+    names = c("AURN Code" = "code", "Name" = "site", 
+              "Site Type" = "site_type", 
+              "Zone" = "zone", "LA" = "local_authority")
+  ) %>%
+  # get unique sites
+  distinct(site, .keep_all = TRUE)
+pal <- colorFactor(c("navy"), domain = c("PM10"))
+leaflet(map_data) %>%
+  addTiles() %>%
+addCircleMarkers(
+      radius =  6, 
+      color = ~pal(variable),
+      stroke = FALSE, fillOpacity = 0.4
+    )%>%
+addLegend(data = map_data,
+            position = "topright",
+            pal = pal, values = c("PM10"),
+            title = "Variable",
+            opacity = 1)
+```
+
+Con base en lo anterior se ejecuta el código para la extracción de los datos del 2023 y posteriormente se toman los diarios por hora del material particulado PM$_{10}$ , se guarda en un data frame y se exporta como CSV:
+
+```{r}
+#| eval: false
+#| echo: true
+library(tidyverse)
+library(openair)
+library(dplyr)
+
+importAURN()
+meta_data <- importMeta(source = "aurn", all = TRUE)
+head(meta_data, 3)
+selected_data <- meta_data %>%
+filter(variable == c("NO2","PM10"))
+head(selected_data, 3)
+
+selected_sites <- selected_data %>%
+  select(code) %>%
+  mutate_all(.funs = tolower)
+selected_sites
+
+datos <- importAURN(site = selected_sites$code, year = 2023,
+                      pollutant = c("pm10","nO2"),
+                      meta = TRUE, data_type = "monthly")
+
+Tabledata <- data.frame(Longitud = as.numeric(datos$longitude), 
+                        Latitud = as.numeric(datos$latitude),
+                        Fecha=as.character(datos$date),
+                        PM10=as.numeric(datos$pm10), 
+                        NO2=as.numeric(datos$no2), 
+                        sitio=as.character(datos$site))
+Tabla<- subset(Tabledata,subset=(Tabledata$PM10!="NA" & 
+                                   Tabledata$NO2!="NA"& 
+                                   Tabledata$Fecha=="2022-02-23"))
+head(Tabla)
+dim(Tabla)
+#write.csv(Tabla, "STPolucionUKhourly4.csv", row.names=TRUE)
+```
+
+Se extraen los datos espaciales del día 23-02-23 y posteriormente se importa el archivo CSV
+
+# Kriging Espacio Tiempo
+
+## Descripcion de los datos
+
+Para realizar la predicción en un punto desconocido y de acuerdo a las limitaciones computacionales se toman 9 ubicaciones en el espacio 13 momentos en el dia anteriormente mencionado. Como se puede observar acontinuacion:
+
+```{r}
+#| echo: true
+#| warning: false
+library(rgdal)
+library(sf)
+library(ggplot2)
+library(rgeoboundaries)
+```
+
+```{r}
+#| echo: true
+#| warning: false
+library(readxl)
+KSTPolution <- read_excel("C:/Users/GeorgeVega/Downloads/Kriging Espacio Tiempo Final.-20230619T205004Z-001/Kriging Espacio Tiempo Final 1/STPolucionUKhourly4.xlsx")
+
+UK <- map_data(map = "world", region = "UK")
+ ggplot(KSTPolution) +             # plot points
+    geom_point(aes(x = Longitud,y = Latitud,       # lon and lat
+                   colour = PM10),           # attribute color
+               size = 2) +
+geom_path(data = UK,   # add UK map
+          aes(x = long, y = lat, group = group))+
+    facet_wrap( ~ Fecha, scales="free")+
+   theme_bw() 
+```
+
+Se realiza la proyeccion de coordenadas y se reorganizan los datos:
+
+```{r}
+#| warning: false
+#| echo: false
+#| results: hide
+CRS.new <- CRS("+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +units=m +no_defs +type=crs")
+coordinates(KSTPolution)=c("Longitud","Latitud")
+proj4string(KSTPolution)<-CRS("+init=epsg:4326")
+coordenadas<-spTransform(KSTPolution, CRS.new)
+head(coordenadas)
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#| results: hide
+X<-coordinates(coordenadas)[,1]
+Y<-coordinates(coordenadas)[,2]
+Tabledata <- data.frame(X = as.numeric(X),
+                        Y = as.numeric(Y),
+                        Tiempo = KSTPolution$Tiempo,
+                        PM10=as.numeric(KSTPolution$PM10))
+```
+
+```{r}
+head(Tabledata,13)
+```
+
+Mediante un histograma de frecuencia se observa que la mayoria de los datos tiene una concentración entre 40$\mu g\cdot m^{-3}$
+
+```{r}
+#| warning: false
+#| echo: true
+par( mar= c(4,4,1,2) )
+hist(KSTPolution$PM10 ,freq=T,labels=TRUE, ylim=c(0,35),main="Distribución de material particulado PM10",
+     xlab="Material Particulado de 10 micrometros",
+     ylab="Frecuencia")
+```
+
+## Modelo de tendencia espacio-temporal
+
+Se genera un modelo de regresión que permite explicar las presencia de tendencias espaciales y temporales.El modelo se ajusto a través de mínimos cuadrados ordinarios (OLS), donde se encontraron las estimaciones de los parámetros que minimizan el suma de cuadrados residuales y nos permite obtener predicciones para la media
+
+$$Z\left(\mathbf{s}_{i} ; t_{j}\right)=\beta_{0}+\beta_{1} X_{1}\left(\mathbf{s}_{i} ; t_{j}\right)+\ldots+\beta_{p} X_{p}\left(\mathbf{s}_{i} ; t_{j}\right)+e\left(\mathbf{s}_{i} ; t_{j}\right)$$
+
+```{r}
+mod1 <- lm(PM10 ~ X + Y+Tiempo, data = Tabledata)
+mod2 <- lm(PM10 ~ (X+Y+Tiempo)^2 +., data = Tabledata)
+mod3 <- lm(PM10 ~ (X+Y+Tiempo)^2 + I(X^2)+I(Y^2)+I(Tiempo^2), data = Tabledata)
+mod4 <- lm(PM10 ~ (X+Y+Tiempo)^2 + I(X^2)+I(Y^2)+I(Tiempo^2)+ sin(Tiempo)+cos(Tiempo), data = Tabledata)
+summary(mod1)
+summary(mod2)
+summary(mod3)
+summary(mod4)
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#| results: hide
+par(mfrow=c(2, 2))
+hist(mod1$residuals)
+hist(mod2$residuals)
+hist(mod3$residuals)
+hist(mod4$residuals)
+```
+
+## Kriging espacio temporal
+
+## Estimacion de la funcion de covarianza
+
+Para la predccion espacio temporal se debe realizar la estimacion de la funcion de covarianza, en la cual se realizo mediante un metodo basado en la funcion de verosimilitud, se utilizaron 3 modelos propuestos.
+
+```{r}
+#| warning: false
+library(dplyr)
+Datos<- Tabledata[,c(1,2,3)]
+datos=cbind(Datos,mod1$residuals)
+names(datos)=c("x","y","t","z((x,y),t)")
+head(datos,10)
+tail(datos,10)
+```
+
+```{r}
+coordenada=data.frame(X,Y)
+rezagos_esp=as.matrix(dist(coordenada))
+rezagos_temp=as.matrix(dist(Tabledata$Tiempo))
+dim(rezagos_temp) 
+dim(rezagos_esp) 
+```
+
+## Modelo Gaussiano
+
+```{r}
+Gaussiano=function(p,h,u){p[1]^2*exp(-p[2]^2*u^2-p[3]^2*h^2)}
+LV<-function(p,h,u,modelo,z){0.5*(length(z)*log(2*pi)+
+    log(det(modelo(p,h=rezagos_esp,u=rezagos_temp)))+
+      t(z)%*%solve(modelo(p,h=rezagos_esp,u=rezagos_temp))%*%z)}
+```
+
+```{r}
+LV(c(1,1,1.5),
+   h=rezagos_esp,
+   u=rezagos_temp,
+   modelo=Gaussiano,
+   z=mod1$residuals) 
+```
+
+```{r}
+p0 <- c(0.1,0.8,0.5)
+lo <- c(0.03,0.008,0.01)
+hi <- c(Inf,Inf,Inf)
+estima1=optim(p0,LV,h=rezagos_esp,
+              u=rezagos_temp,
+              modelo=Gaussiano,
+              z=mod1$residuals,
+              hessian = T,
+              lower = lo,upper =hi,
+              method = "L-BFGS-B")
+estima1$par
+```
+
+```{r}
+#| warning: false
+library(fields)
+h=seq(0,1,len=50)
+u=seq(0,1,len=50)
+
+
+f<-outer(h,u,Gaussiano,p=c(9.8002594, 0.7463066, 0.5000000))
+par(mfrow = c(1, 2))
+par( mar= c(4,4,1,2) )
+drape.plot(h,u,f,main="Modelo Gaussiano:(9.8,0.75,0.50)",
+           xlab="h",ylab="u",zlab="Covarianza", 
+           theta =0,phi=0, col=tim.colors(64))
+drape.plot(h,u,f,xlab="h",ylab="u",
+           zlab="Covarianza", theta =30,phi=40,
+           col=tim.colors(64))
+```
+
+## Modelo exponencial
+
+```{r}
+#| warning: false
+Exponencial=function(p,h,u){p[1]^2*exp(-p[2]^2*u-p[3]^2*h)}
+LV(c(1,1,1),h=rezagos_esp,u=rezagos_temp,
+   modelo=Exponencial,z=mod1$residuals)
+```
+
+```{r}
+#| warning: false
+p0 <- c(1,0.8,0.5)
+lo <- c(0.03,0.008,0.01)
+hi <- c(Inf,Inf,Inf)     
+estima2=optim(p0,LV,h=rezagos_esp,
+              u=rezagos_temp,
+              modelo=Exponencial,
+              z=mod1$residuals,
+              hessian = T,
+              lower = lo,upper = hi,
+              method = "L-BFGS-B")
+estima2$par
+```
+
+```{r}
+library(fields)
+h=seq(0,5,len=50)
+u=seq(0,5,len=50)
+
+f<-outer(h,u,Exponencial,p=c( 10.3888962,  0.5146516 , 0.5000000))
+par(mfrow = c(1, 2))
+par( mar= c(4,4,1,2) )
+drape.plot(h,u,f,
+           main="Modelo Exponencial:(10.39,0.51,0.5)",
+           xlab="h",ylab="u",zlab="Covarianza", 
+           theta =0,phi=0, col=tim.colors(64))
+drape.plot(h,u,f,
+           xlab="h",ylab="u",zlab="Covarianza", 
+           theta =30,phi=40, col=tim.colors(64))
+```
+
+## Modelo Cressie-Huang
+
+```{r}
+#| warning: false
+CH_1=function(h,u,p){(p[1]^2/((p[2]^2*u^2+1)))*exp(-(p[3]^2*h^2)/(p[2]^2*u^2+1))}
+LV(c(1,1,1),h=rezagos_esp,u=rezagos_temp,
+   modelo=CH_1,z=mod1$residuals)
+```
+
+```{r}
+#| warning: false
+p0 <- c(1,0.1,0.5)
+lo <- c(1,0.2,0.1)
+hi <- c(Inf,Inf,Inf)     
+estima3=optim(p0,LV,h=rezagos_esp,u=rezagos_temp,
+              modelo=CH_1,z=mod1$residuals,
+              hessian = T,
+              lower = lo,upper = hi,
+              method = "L-BFGS-B")
+estima3$par
+```
+
+```{r}
+library(fields)
+h=seq(0,1,len=50)
+u=seq(0,1,len=50)
+
+
+f<-outer(h,u,CH_1,p=c(8.993838,0.6844711,0.5))
+par(mfrow = c(1, 2))
+par( mar= c(4,4,1,2) )
+drape.plot(h,u,f,main="Modelo Exponencial:(8.99, 0.68, 0.5)",
+           xlab="h",ylab="u",zlab="Covarianza",
+           theta =10,phi=10, col=tim.colors(64))
+drape.plot(h,u,f,xlab="h",ylab="u",zlab="Covarianza",
+           theta =30,phi=40, col=tim.colors(64))
+```
+
+Mediante kriging simple se busca realizar la predicción en el día estipulado y en el tiempo $t=15$, en las coordenadas longitudinales Long=0.1 y Lat=52.5, como se observa en el siguiente mapa
+
+```{r}
+#| warning: false
+#| echo: false
+library(leaflet)
+longi<-c(-0.270671,
+-2.293772,
+1.098061,
+-2.68345,
+-1.454946,
+0.271611,
+-0.80882,
+-4.142361,
+-1.068583)
+lati<-c(51.661229,
+53.559029,
+51.27399,
+51.05625,
+53.244131,
+50.805778,
+54.334497,
+50.37167,
+50.82881
+)
+pred <- data.frame(lng = c(0.1),
+                       lat = c(52.5))
+leaflet() %>%
+  addTiles() %>%
+  setView(lng = -4.8, lat = 55, zoom = 5) %>%
+  addCircleMarkers(data = data.frame(lng = longi, lat = lati),radius = 6)%>%
+  addCircleMarkers(data = pred, color = "red")
+```
+
+Se realiza la proyeccion de las coordenas:
+
+```{r}
+#| warning: false
+#| echo: false
+library(rgdal)
+CRS.new <- CRS("+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +units=m +no_defs +type=crs")
+pred <- data.frame(Longitud = 0.1,Latitud = 52.5)
+coordinates(pred)=c("Longitud","Latitud")
+proj4string(pred)<-CRS("+init=epsg:4326")
+coordenadasPred<-spTransform(pred , CRS.new)
+```
+
+```{r}
+XPred<-coordinates(coordenadasPred)[,1]
+YPred<-coordinates(coordenadasPred)[,2]
+XPred
+YPred
+```
+
+Se genera la grilla
+
+```{r}
+grillaSpT0=rbind(cbind(X,Y,Tabledata$Tiempo),c(XPred,YPred,15))
+grillaSpT0[c(1,16,31,46,61,76,91,106,121,136),]
+```
+
+```{r}
+matDistSp0=as.matrix(dist(grillaSpT0[,1:2]))
+matDistT0=as.matrix(dist(grillaSpT0[,3:3]))
+dim(matDistSp0)
+dim(matDistT0)
+```
+
+## Predicicion Modelo Exponencial
+
+```{r}
+sigmaExp=Exponencial(rezagos_esp,rezagos_temp,p=estima2$par)
+sigmaExp0=Exponencial(matDistSp0,matDistT0,p=estima2$par)
+lambdaExp=solve(sigmaExp)%*%sigmaExp0[135,-135]
+z_predExp0=t(lambdaExp)%*%datos[,4]
+Varianzaz_predExp0=sigmaExp[1,1]-t(sigmaExp0[135,-135])%*%solve(sigmaExp)%*%sigmaExp0[135,-135]
+```
+
+## Predicicion Modelo Gaussiano
+
+```{r}
+sigmaG=Gaussiano(rezagos_esp,rezagos_temp,p=estima1$par)
+sigmaG0=Gaussiano(matDistSp0,matDistT0,p=estima1$par)
+lambdaG=solve(sigmaG)%*%sigmaG0[135,-135]
+z_predG0=t(lambdaG)%*%datos[,4]
+Varianzasz_predG0=sigmaG[1,1]-t(sigmaG0[135,-135])%*%solve(sigmaG)%*%sigmaG0[135,-135]
+```
+
+## Predicicion Modelo Cressie-Huang
+
+```{r}
+sigmaCH=CH_1(rezagos_esp,rezagos_temp,p=estima3$par)
+sigmaCH0=CH_1(matDistSp0,matDistT0,p=estima3$par)
+lambdaCH=solve(sigmaCH)%*%sigmaCH0[135,-135]
+z_predCH0=t(lambdaCH)%*%datos[,4]
+Varianzasz_predCH0= sigmaCH[1,1]-t(sigmaCH0[135,-135])%*%solve(sigmaCH)%*%sigmaCH0[135,-135]
+```
+
+Los resultados obtenidos para los 3 modelos se observan en la siguiente tabla:
+
+```{r}
+Modelo<-c("Exponencial","Gaussiano","Cressie-Huang")
+Pred<-c(z_predExp0,z_predG0,z_predCH0 )
+Var.Pred<-c(Varianzaz_predExp0,Varianzasz_predG0,Varianzasz_predCH0)
+df<-data.frame(Modelo=Modelo, Predicción=Pred, Varianza_Prediccion=Var.Pred)
+pander::pander(df)
+```
+
+Se puede observar que las predicciones son similares en magnitud, sin embargo la varianza de prediccion es menor para el modelo de covarianza de Cressie-Huang. Se debe tener en cuenta que el modelo exponencial y el modelo gaussiano los cuales pueden resultar modelos no validos ya que son modelos separables donde se modela de forma separada los componentes espaciales y temporales.
