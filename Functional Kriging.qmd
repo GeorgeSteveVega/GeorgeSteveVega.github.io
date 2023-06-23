@@ -1,0 +1,676 @@
+---
+title: Kriging Funcional # Cambiar
+subtitle: Estadistica espacial
+author: George Vega
+#date-format: "MM-YYYY"
+#date: 05-05-2023
+# format: 
+#   pdf:
+#     include-in-header:  "Pretty.tex"
+#     include-before-body: "pagestyle.tex"
+#     toc: false
+#     code-line-numbers: true
+#     fig-width: 8
+#     fig-height: 3.8
+#     fig-pos: "H"
+    #code-block-bg: light
+    #linkcolor: highlight
+    #urlcolor: highlight
+colorlinks: true
+#bibliography: References.bib
+cls: apa.csl
+# link-citations: yes
+#title: "Series de Tiempo de Univariadas"
+#author: "George Vega"
+#date-format: "MM-YYYY"
+#date: 03-03-2023
+#geometry:
+format:
+  html:
+    html-math-method: mathjax
+    include-in-header:
+      - text: |
+          <script>
+          window.MathJax = {
+            loader: {load:
+            ['[tex]/mhchem']},
+              tex: {packages:
+              {'[+]': ['mhchem']}}
+              };
+          </script>
+editor: visual
+toc: true
+# editor_options: 
+#   chunk_output_type: console
+---
+
+```{r}
+#| echo: false
+default_chunk_hook  <- knitr::knit_hooks$get("chunk")
+latex_font_size <- c("Huge", "huge", "LARGE", "Large", 
+                     "large", "normalsize", "small", 
+                     "footnotesize", "scriptsize", "tiny")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- default_chunk_hook(x, options)
+  if(options$size %in% latex_font_size) {
+    paste0("\n \\", options$size, "\n\n", 
+      x, 
+      "\n\n \\normalsize"
+    )
+  } else {
+    x
+  }
+})
+```
+
+# Contaminacion de aire
+
+La contaminación en el Reino Unido es un desafío ambiental que requiere atención y acción. Aunque el país ha tomado medidas para reducir las emisiones y mejorar la calidad del aire, aún se enfrenta a problemas significativos. Las principales fuentes de contaminación en el Reino Unido incluyen las emisiones de gases de efecto invernadero de los sectores de transporte y energía, así como la contaminación del aire debido al tráfico vehicular y la quema de combustibles fósiles. Estos problemas tienen impactos negativos en la salud humana, la calidad del aire y el medio ambiente en general, lo que ha llevado a la implementación de políticas y regulaciones más estrictas para abordar la contaminación y avanzar hacia una economía más limpia y sostenible.
+
+En los últimos años la predicción ha tomado un rol importante para una infinidad de casos, especificamente en el aspecto ambientar la predicción de de los niveles de material particulado en el aire es fundamental para tomar medidas preventivas y mitigar los efectos adversos en la salud y el medio ambiente. Existen varios metodos de prediccion, Debido a las limitaciones en cuanto a dimensionalidad y limites computacionales del modelado espacio temporal se abordara la geoestadistica como solucion a estas limitaciones.
+
+## Obtencion de los datos
+
+La base de datos seleccionada para este trabajo proviene del departamento de Medio Ambiente, Alimentación y Asuntos Rurales del Reino unido,de la cual se extrae [datos](https://uk-air.defra.gov.uk/data/) de la fuente de informacion del Reino Unido.
+
+El reino unido mediante su agencia ambiental posee alrededor de 300 sitios de monitoreo ambiental los cuales se subdividen en redes que adquieren informacion particular de acuerdo al contaminante. Existen dos tipos de [redes de monitoreo](https://uk-air.defra.gov.uk/networks/) en el reino unido:
+
+1.  [**Redes automaticas:**](https://uk-air.defra.gov.uk/networks/network-info?view=automatic) estas permiten la captura de datos de contaminantes que se producen por hora. La recopilación de datos comprende datos desde 1972 para algunos sitios:
+
+-   [Automatic Urban and Rural Network (AURN)](https://uk-air.defra.gov.uk/networks/network-info?view=aurn)
+-   [Automatic Hydrocarbon Network (AHN)](https://uk-air.defra.gov.uk/networks/network-info?view=hc)
+-   [Automatic London Network](https://uk-air.defra.gov.uk/networks/network-info?view=aln)
+-   [Locally-managed automatic monitoring](https://uk-air.defra.gov.uk/networks/network-info?view=nondefraaqmon)
+
+2.  [**Redes no automaticas:**](https://uk-air.defra.gov.uk/networks/network-info?view=automatic) La recopilacion de los datos se da para contaminantes que se producen con menor frecuencia (diaria,semanal, mensual) donde las muestras son recopiladas por medios físicos y son sometidas a análisis fisico-quimico que permite calcular la concentración de los resultados, a continuación se relacionan las redes de monitoreo para esta categoría:
+
+-   [UK Eutrophying & Acidifying Network (UKEAP)](https://uk-air.defra.gov.uk/networks/network-info?view=ukeap)
+-   [Upland Waters Monitoring Network](https://uk-air.defra.gov.uk/networks/network-info?view=uw)
+-   [Heavy Metals Network](https://uk-air.defra.gov.uk/networks/network-info?view=metals)
+-   [Nitrogen Dioxide Diffusion Tube (1993 to 2005)](https://uk-air.defra.gov.uk/networks/network-info?view=no2old)
+-   [Smoke and Sulphur Dioxide](https://uk-air.defra.gov.uk/networks/network-info?view=smsites)
+-   [Black Carbon Network](https://uk-air.defra.gov.uk/networks/network-info?view=ukbsn)
+-   [PAH](https://uk-air.defra.gov.uk/networks/network-info?view=pah)
+-   [Toxic Organic Micro Pollutants (TOMPs)](https://uk-air.defra.gov.uk/networks/network-info?view=tomps)
+-   [Non-Automatic Hydrocarbon Network](https://uk-air.defra.gov.uk/networks/network-info?view=nahc)
+-   [Particle Numbers and Concentrations Network](https://uk-air.defra.gov.uk/networks/network-info?view=particle)
+-   [JAQU privacy notice](https://uk-air.defra.gov.uk/library/no2ten/privacy-notice)
+-   [UK Urban NO2 Network](https://uk-air.defra.gov.uk/library/no2ten/privacy-notice)
+
+Dentro de los enlaces relacionados se puede recopilar la información disponible para cada red.
+
+El gobierno del Reino Unido permite la extracción, analisis e interpretacion de los datos de codigo abierto y libre mediante el uso del paquete [`Openair`](https://uk-air.defra.gov.uk/data/openair) usando R. Para la adecuación de los datos se realiza el procedimiento descrito en <https://rspatialdata.github.io/air_pollution.html#Installing_the_openair_packageR> mediante la integracion del paquete `tidyverse`.
+
+Para la extracción de los datos se verifican algunas de las redes de monitoreo existentes y posterior se escogen las variables $\ce{NO2}$ y PM$_{10}$ para las cuales se verifican sus redes de monitoreo:
+
+## Analisis exploratorio
+
+El Reino Unido se caracteriza por tener una red integral de monitoreo ambiental que proporciona gran cantidad de datos cruciales para comprender y abordar los desafíos ambientales y proteger la salud de las personas y el entorno natural. Se realiza la exploración datos diarios de 10 a través del 2022 de estaciones aleatorias dentro del reino unido.
+
+```{r}
+#| warning: false
+#| echo: false
+library(rgdal)
+library(sf)
+library(ggplot2)
+library(rgeoboundaries)
+library(lubridate)
+library(sp)
+library(spacetime)
+library(dplyr)
+STPolutionUK <- read.csv("STPolucionUK.csv")
+Estaciones <- unique(STPolutionUK$sitio)
+Estaciones_sub <- sample(Estaciones, 10)                # sample 10 IDs
+STPolutionUK_sub <- filter(STPolutionUK, sitio %in% Estaciones_sub)
+ggplot(STPolutionUK_sub) +
+    geom_line(aes(x = X, y = PM10)) + # line plot of z against t
+    facet_wrap(~sitio, ncol = 5) +    # facet by station
+    xlab("Dias del año") +    # x label
+    ylab("Concentración de PM10") +          # y label
+    theme_bw()
+```
+
+Al verificar los datos, esto no permite un modelado adecuado de los datos, ya que estos cambian a través del día por lo cual es conveniente tomar los datos por hora de 50 estaciones aleatorias por 7 dias, para esto obtiene los datos del 2023-01-01 00:00:00 al dia 2023-01-07 23:59:59.
+
+```{r}
+#| eval: false
+#| echo: false
+library(tidyverse)
+library(openair)
+library(dplyr)
+
+importAURN()
+meta_data <- importMeta(source = "aurn", all = TRUE)
+head(meta_data, 3)
+selected_data <- meta_data %>%
+filter(variable == c("PM10"))
+head(selected_data, 3)
+
+selected_sites <- selected_data %>%
+  select(code) %>%
+  mutate_all(.funs = tolower)
+selected_sites
+
+datos <- importAURN(site = selected_sites$code, year = 2023,
+                      pollutant = c("pm10"),
+                      meta = TRUE, data_type = "hourly")
+names(datos)
+Tabledata <- data.frame(Fecha=as.POSIXct(datos$date),
+                        sitio=as.factor(datos$site),
+                        Longitud = as.numeric(datos$longitude),
+                        Latitud = as.numeric(datos$latitude),
+                        PM10=as.numeric(datos$pm10))
+```
+
+```{r}
+#| eval: false
+#| echo: false
+Tabla<- subset(Tabledata,subset=(Tabledata$PM10!="NA"))
+Tabla <-Tabla[order(Tabla$sitio, Tabla$Fecha),]
+
+Tabla <- Tabla %>%
+  filter(Tabla$Fecha>= ymd_hms("2023-01-01  00:00:00") &
+         Tabla$Fecha <= ymd_hms("2023-01-07 23:59:59") & 
+         Tabla$PM10 >0.5#& 
+         #Tabla$PM10 <=100)
+         )
+
+
+Tabla <- Tabla %>%
+  group_by(Tabla$sitio) %>%
+  filter(n() == 168) %>%
+  ungroup()
+
+
+Estaciones <- unique(Tabla$sitio)
+Estaciones_sub <- sample(Estaciones, 50)                
+PolutionData <- filter(Tabla, sitio %in% Estaciones_sub)
+write.csv(PolutionData, "PolutionData.csv", row.names=TRUE)
+```
+
+A continuación se observan los datos del día 01-02-23 por hora.
+
+```{r}
+#| warning: false
+#| echo: false
+PolutionData <- read.csv("PolutionData.csv")
+fecha <- ymd("2023-01-02")
+
+Mapa  <- PolutionData %>%
+  filter(date(PolutionData$Fecha) == fecha, hour(PolutionData$Fecha) >= 0, hour(PolutionData$Fecha) < 8)
+
+
+UK <- map_data(map = "world", region = "UK")
+ ggplot(Mapa) +             # plot points
+    geom_point(aes(x = Longitud,y = Latitud,       # lon and lat
+                   colour = PM10),           # attribute color
+               size = 2) +
+geom_path(data = UK,   # add US states map
+          aes(x = long, y = lat, group = group))+
+    facet_wrap( ~ Fecha, scales="free", ncol = 4)+
+   theme_bw() 
+```
+
+```{r}
+#| warning: false
+#| echo: false
+fecha <- ymd("2023-01-02")
+
+Mapa  <- PolutionData %>%
+  filter(date(PolutionData$Fecha) == fecha, hour(PolutionData$Fecha) >= 8, hour(PolutionData$Fecha) < 16)
+
+
+UK <- map_data(map = "world", region = "UK")
+ ggplot(Mapa) +             # plot points
+    geom_point(aes(x = Longitud,y = Latitud,       # lon and lat
+                   colour = PM10),           # attribute color
+               size = 2) +
+geom_path(data = UK,   # add US states map
+          aes(x = long, y = lat, group = group))+
+    facet_wrap( ~ Fecha, scales="free", ncol = 4)+
+   theme_bw() 
+```
+
+```{r}
+#| warning: false
+#| echo: false
+fecha <- ymd("2023-01-02")
+
+Mapa  <- PolutionData %>%
+  filter(date(PolutionData$Fecha) == fecha, hour(PolutionData$Fecha) >= 16, hour(PolutionData$Fecha) < 24)
+
+
+UK <- map_data(map = "world", region = "UK")
+ ggplot(Mapa) +             # plot points
+    geom_point(aes(x = Longitud,y = Latitud,       # lon and lat
+                   colour = PM10),           # attribute color
+               size = 2) +
+geom_path(data = UK,   # add US states map
+          aes(x = long, y = lat, group = group))+
+    facet_wrap( ~ Fecha, scales="free", ncol = 4)+
+   theme_bw() 
+```
+
+Para las 50 estaciones obtenidas se evalua el material particulado de 10 micras en funcion del tiempo
+
+```{r}
+#| warning: false
+#| echo: false
+
+
+nestaciones<-50
+maxtiempo<-(length(PolutionData$PM10)/nestaciones)
+tiempo<-1:maxtiempo
+PM10<-matrix(PolutionData$PM10,nrow = maxtiempo,nestaciones)
+colnames(PM10)<-c(1:nestaciones)
+plot(tiempo, PM10[,1], type="l",ylim=c(0,max(PM10)), xlab="Datos tomados por hora x 1 semana", ylab="Material particulado de 10 micrometros")
+for(i in 2:ncol(PM10))
+  lines(tiempo, PM10[,i], type="l", col=i)
+```
+
+```{r}
+#| warning: false
+#| echo: false
+library(rainbow)
+PMTs = sfts(ts(as.numeric(PM10), start = c(1,1),frequency = maxtiempo), xname = "Hora",
+            yname = "PM10")
+#plot(PMTs)
+```
+
+De igual se identifican que existe curvas atipicas dentro de los datos las cuales corresponden las curvas 1, 2 y 38 como se observa a continuación
+
+```{r}
+#| warning: false
+#| echo: false
+par(mfrow=c(1,2))
+fboxplot(data= PMTs, plot.type = "functional", type = "bag", projmethod = "PCAproj")
+
+fboxplot(data= PMTs, plot.type = "bivariate", type = "bag", projmethod = "PCAproj",
+         ylim = c(-100,100), xlim = c(-200,200))
+
+```
+
+Si bien se identifican como posibles curvas atípicas, dentro de este estudio se tendrán en cuenta ya que no conoce la naturaleza del fenómeno, los valores de la curva 1 y 2 pueden estar asociadas a múltiples factores como error en la medición, falla en lectura o en el instrumento de medición
+
+```{r}
+#| warning: false
+#| eval: false
+#| echo: false
+library(fda)
+fbplot(fit= PM10, method = "BD2", xlab = "Hora", ylab = "PM10")
+```
+
+Para el suavizamiento de las curvas de material particulado se utiliza el metodo no parametrico B-splines- Como se observa en la grafica de material particulado en función del tiempo, estas curvas presentan una alta rugosidad, sin embargo al ajustar una cantidad de bases muy altas, estas presentaban valores de material particulado por debajo de 0, lo cual no tiene sentido fisico, razón por la cual se definieron un total de 10 bases y un alto parametro de penalizacion $\lambda=10$
+
+```{r}
+#| warning: false
+#| eval: false
+#| echo: false
+library(fda)
+BSpl <- create.bspline.basis(norder=10, breaks=seq(0,168,length=7))
+FPM10 <- Data2fd(PM10, basisobj=BSpl)
+plot(FPM10, ylim=c(0,200),main="Datos suavizados PM10", xlab = "Mes", ylab = "Concentracion de Material Particulado PM10")
+```
+
+<!-- # ```{r} -->
+
+<!-- # loglam <- seq(0, 0.1, 0.001) -->
+
+<!-- # nlam <- length(loglam) -->
+
+<!-- # dfsave <- rep(NA, nlam) -->
+
+<!-- # gcvsave <- rep(NA, nlam) -->
+
+<!-- #  -->
+
+<!-- # for (ilam in 1:nlam) { -->
+
+<!-- #   lambda <- loglam[ilam] -->
+
+<!-- #   fdParobj <- fdPar(BSpl, Lfdobj = NULL, lambda = lambda) -->
+
+<!-- #   smoothlist <- smooth.basis(1:164, PM10[1:164], fdParobj) -->
+
+<!-- #   dfsave[ilam] <- smoothlist$df -->
+
+<!-- #   gcvsave[ilam] <- sum(smoothlist$gcv) -->
+
+<!-- # } -->
+
+<!-- #  -->
+
+<!-- # # Find the minimum of gcvsave and the corresponding loglam value -->
+
+<!-- # min_index <- which.min(gcvsave) -->
+
+<!-- # min_gcv <- gcvsave[min_index] -->
+
+<!-- # min_loglam <- loglam[min_index] -->
+
+<!-- #  -->
+
+<!-- # # Plot the results -->
+
+<!-- # plot(loglam, gcvsave, xlab = expression(lambda), ylab = expression(GCV(lambda)), -->
+
+<!-- #      main = "Parámetros de suavizamiento versus GCV", type = "b", cex = 0.7) -->
+
+<!-- # points(min_loglam, min_gcv, col = "red", pch = 19) -->
+
+<!-- # ``` -->
+
+```{r}
+#| warning: false
+library(fda)
+nbasis <-10
+hourange <- c(1,nrow(PM10))
+lambda=0.1
+harmaccelLfd <- vec2Lfd(c(1,10), hourange)
+hourbasis_Bsplines <- create.bspline.basis(hourange,nbasis)
+PM10_fdPar_Bspline<-fdPar(fdobj=hourbasis_Bsplines,Lfdobj=harmaccelLfd,lambda)
+PM10_fd_Bspline <- smooth.basis(argvals=1:nrow(PM10),PM10,PM10_fdPar_Bspline)
+PM10_fd_Bspl=PM10_fd_Bspline$fd
+par(mfrow=c(1,1))
+plot(PM10_fd_Bspl)
+lines(PM10_fd_Bspl,col=rainbow(10),lwd=2,lty=1)
+```
+
+```{r}
+PCA=pca.fd(PM10_fd_Bspl,centerfns=T)
+PCA=pca.fd(PM10_fd_Bspl,3,centerfns=T)
+par(mfrow=c(2,2),mar = c(2.5, 2.5, 2.5, 2.5))
+plot(PCA,cex.main=0.8)
+```
+
+Con el fin de reducir la dimensionalidad, se utiliza el análisis de componentes principales, para esto se tomaron 3 componentes principales las cuales ajustan el 88% de la variabilidad espacial del campo aleatorio. Esto se puede observar en la siguiente gráfica.
+
+```{r}
+PCA$varprop
+head(PCA$scores)
+```
+
+Los puntajes obtenidos para la primera componente se adjuntan a las coordenas de cada lugar
+
+```{r}
+fecha <- ymd("2023-01-01")
+
+PolutionUK  <- PolutionData[,3:5] %>%
+  filter(date(PolutionData$Fecha) == fecha, hour(PolutionData$Fecha) == 0)
+
+PolutionUK <-data.frame(PolutionUK,PCA$scores[,1]) %>%
+  rename(Scores = PCA.scores...1.)
+
+head(PolutionUK,50)
+```
+
+Los puntos espaciales donde se utilizara el puntaje obtenido de la primera componente principal se observa en el siguiente mapa,
+
+```{r}
+#| warning: false
+#| echo: false
+#| fig-width: 8
+#| fig-height: 8
+library(rgdal)
+library(sf)
+library(ggplot2)
+library(rgeoboundaries)
+PolutionUK1 <- as.data.frame(PolutionUK)
+
+uk_boundary <- geoboundaries(country = "GBR")
+ggplot() +
+  geom_sf(data = uk_boundary, fill = NA, color = "black") + 
+  geom_point(data = PolutionUK1, aes(x = Longitud, y = Latitud), shape=21, size=3, fill = "blue",color="black") +
+  theme(text = element_text(size = 16)) +
+  labs(title = "Scores- Analisis de Componentes Principales \n50 Estaciones Aleatorias \n Medición PM10 Reino Unido") +
+  theme(plot.title = element_text(hjust = 0.6)) +
+  labs(x = "Longitud", y = "Latitud")
+```
+
+```{r}
+#| warning: false
+#| echo: false
+#OSGB 1936 / British National Grid
+CRS.new <- CRS("+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +units=m +no_defs +type=crs")
+coordinates(PolutionUK1)=c("Longitud","Latitud")
+proj4string(PolutionUK1)<-CRS("+init=epsg:4326")
+coordenadas<-spTransform(PolutionUK1, CRS.new)
+head(coordenadas)
+```
+
+Se realiza el cambio de coordenadas.
+
+```{r}
+#| warning: false
+#| echo: false
+#| fig-width: 5
+#| fig-height: 5
+#| results: hide
+library(maptools)
+X<-coordinates(coordenadas)[,1]
+Y<-coordinates(coordenadas)[,2]
+Coordenadas <- data.frame(X = as.numeric(X), Y = as.numeric(Y))
+
+UKshape = readShapePoly("NUTS1_Jan_2018_SGCB_in_the_UK.shp") 
+poligonos = polygons(UKshape) 
+xy = SpatialPoints(Coordenadas[c("X", "Y")])
+```
+
+```{r}
+#| echo: false
+PolutionUK2<-data.frame(PolutionUK1,Coordenadas)
+PolutionUK2<-PolutionUK2[,c(6,7,4)]
+
+```
+
+Para la predicción en un tiempo y espacio definido, es necesario modelar la variabilidad es pacial mediante el semivariograma del campo aleatorio utilizando los puntajes obtenidos del ACP, para esto se consideran 3 modelos de semivariograma, el modelo exponencia, gaussiano y el modelo wave.
+
+Inicialmente se genera el semivariograma considerando las distancias disponibles.
+
+```{r}
+#| warning: false
+library(gstat)
+PolutionUK_sf <- st_as_sf(PolutionUK2, coords = c("X", "Y"))
+var <- variogram(PolutionUK_sf$Scores ~ 1, PolutionUK_sf)
+plot(var, pl = T)
+
+```
+
+Sin embargo se realiza un ajuste de distancia con el fin de obtener una cota superior en el semivariograma
+
+```{r}
+var2 <- variogram(PolutionUK_sf$Scores ~ 1, PolutionUK_sf, cutoff=160000)
+plot(var2, pl = T)
+```
+
+Una vez definidos la distancia, se realiza el ajuste de los modelos propuestos. Inicialmente se realiza un ajuste de cada función a ojo, y mediante la función `fit.variogram` del paquete `gstat` se realiza el ajuste la función
+
+## Modelo exponencial
+
+```{r}
+#| warning: false
+variog1 <- vgm("Exp",
+                  psill = 1650,
+                  range = 130000)
+plot(var2, variog1 , pl = T)
+
+variog1fit <- fit.variogram(object = var2,
+                             model = variog1)
+variog1fit
+plot(var2, variog1fit, pl = T)
+```
+
+## Modelo Gaussiano
+
+```{r}
+#| warning: false
+variog2 <- vgm("Gau",
+                  psill = 1450,
+                  range = 120000)
+plot(var2, variog2, pl = T)
+
+variog2fit <- fit.variogram(object = var2,
+                             model = variog2)
+variog2fit
+plot(var2, variog2fit, pl = T)
+```
+
+## Modelo Wave
+
+```{r}
+#| warning: false
+variog3 <- vgm("Wav",
+                  psill = 1150,
+                  range = 140000)
+plot(var2, variog3, pl = T)
+
+variog3fit <- fit.variogram(object = var2,
+                             model = variog3)
+variog3fit
+plot(var2, variog3fit, pl = T)
+```
+
+## Seleccion del modelo
+
+El método seleccionado se realiza teniendo en cuenta el error cuadrático medio de cada modelo.
+
+```{r}
+#| warning: false
+#| echo: false
+library(geoR)
+var2$fitted1 <- variogramLine(variog1fit, dist_vector = var2$dist)$gamma
+var2$fitted2 <- variogramLine(variog2fit, dist_vector = var2$dist)$gamma
+var2$fitted3 <- variogramLine(variog3fit, dist_vector = var2$dist)$gamma
+
+mse <- function(obs, fit) {
+  return(mean((obs - fit)**2))
+}
+
+tabla <- data.frame(rbind(variog1fit,
+                          variog2fit,
+                          variog3fit),
+MSE =
+  c(mse(var2$gamma, var2$fitted1),
+    mse(var2$gamma, var2$fitted2),
+    mse(var2$gamma, var2$fitted3)
+  ))
+
+pander::pander(tabla[c(1:3,10)])
+```
+
+Posterior se realiza el ajuste del semivariograma y la grilla de predicción para el puntaje de la primera componente.
+
+```{r}
+#| warning: false
+variog4 <- gstat::gstat(id = "Scores",
+               formula = Scores ~ 1,
+               model = variog1fit, 
+               data = PolutionUK_sf)
+
+```
+
+```{r}
+#| warning: false
+#| echo: false
+library(sp)
+library(maptools)
+
+UKshape = readShapePoly("NUTS1_Jan_2018_SGCB_in_the_UK.shp") 
+poligonos = polygons(UKshape) 
+muestra = spsample(poligonos, n = 8000, "regular") 
+muestra1 = as.data.frame(muestra) 
+names(muestra1) = c("x", "y") 
+gridded(muestra1) = c("x", "y")
+par(mar = c(0.5, 0.5, 0.5, 0.5))
+plot(muestra1)
+```
+
+Es asi como se obtiene el mapa de predicción para los puntajes junto a la varianza de predicción.
+
+```{r}
+#| warning: false
+#| echo: false
+library(viridis)
+library(gridExtra)
+predic <- predict(variog4, newdata = muestra1)
+names(predic)
+li = list("sp.polygons", poligonos) 
+#pts = list("sp.points", Data, pch = 18, col = "blue") 
+
+
+grid.arrange(
+spplot(predic, c("Scores.pred"), as.table = TRUE, main = " Scores - Pred ", sp.layout = list(li), contour = FALSE, labels = FALSE, pretty = TRUE, col = "black", col.regions = viridis(64)),
+spplot(predic, c("Scores.var"), as.table = TRUE, main = " Scores - Var ", sp.layout = list(li), contour = FALSE, labels = FALSE, pretty = TRUE, col = "black", col.regions = viridis(64)),ncol=2)
+```
+
+Con los puntajes predichos y la representación de las curvas obtenidas mediante ACP se obtienen las funciones para toda la grilla de predicción.
+
+```{r}
+#| echo: false
+#| warning: false
+#| results: hide
+
+coef_scores=(PCA$harmonics$coefs[,1]%*% t(PolutionUK_sf$Scores))
+vec<-PCA$meanfd$coefs
+M<-NULL
+MM<-NULL
+for (i in 1:ncol(coef_scores)) {
+  M<-coef_scores[,i]+vec
+  MM<-cbind(MM,M)
+}
+
+par(mfrow=c(1,1))
+
+v1=(fd(MM, PCA$harmonics$basis))
+
+
+coef_scores2=PCA$harmonics$coefs[,1] %*%t(predic$Scores.pred)
+
+N<-NULL
+NN<-NULL
+for (j in 1:ncol(coef_scores2)) {
+  N<-coef_scores2[,j]+vec
+  NN<-cbind(NN,N)
+}
+v2=(fd(NN, PCA$harmonics$basis))
+plot(v2)
+```
+
+## Mapa de predicciones
+
+Con curva predicha en los lugares no muestreados se genera el mapa de predicción de material particulado para todo el campo aleatorio espacial para el tiempo 11. El mapa de predicción se obtiene a continuación:
+
+```{r}
+#| echo: false
+#| warning: false
+#| results: hide
+#| fig-height: 6
+#| fig-width: 6
+library(rcartocolor)
+library(sf)
+
+time<-seq(1:168)
+FDVal = eval.fd(time,v2)
+FDVa1= FDVal[11,]
+
+date1<-PolutionData$Fecha[11]
+S<-data.frame(FDVa1,predic)
+S1 <- st_as_sf(S, coords = c("x", "y"))
+S1 <- S1 %>% mutate(FacetVariable = date1)
+
+
+
+
+plot1<-ggplot()+
+  geom_sf(aes(col = FDVa1), data = S1, fill = NA)+
+  scale_color_viridis_c(na.value = '#111111')+
+  labs(color = "Concetración PM10")+
+  facet_wrap(~ FacetVariable)+
+   theme_bw() +
+  theme(legend.position = "bottom")+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5))+
+  scale_x_continuous(labels = function(x) format(x, scientific = FALSE))
+
+plot1
+
+```

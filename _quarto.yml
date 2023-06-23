@@ -31,6 +31,7 @@ website:
         contents:
           - Espacial.qmd
           - SpatioTemporal.qmd
+          - Functional Kriging.qmd
           # navigation items
 
 # website:

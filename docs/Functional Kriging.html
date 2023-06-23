@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.283">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="George Vega">
+
+<title>George Steven Vega - Kriging Funcional</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script>
+window.MathJax = {
+  loader: {load:
+  ['[tex]/mhchem']},
+    tex: {packages:
+    {'[+]': ['mhchem']}}
+    };
+</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">George Steven Vega</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Series.html" rel="" target="">
+ <span class="menu-text">Series de Tiempo</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./Espacial.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Estadistica espacial</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Functional Kriging.html">Kriging Funcional</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Espacial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Kriging Espacial</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./SpatioTemporal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Kriging Espacio-Tiempo</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Functional Kriging.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Kriging Funcional</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#contaminacion-de-aire" id="toc-contaminacion-de-aire" class="nav-link active" data-scroll-target="#contaminacion-de-aire">Contaminacion de aire</a>
+  <ul class="collapse">
+  <li><a href="#obtencion-de-los-datos" id="toc-obtencion-de-los-datos" class="nav-link" data-scroll-target="#obtencion-de-los-datos">Obtencion de los datos</a></li>
+  <li><a href="#analisis-exploratorio" id="toc-analisis-exploratorio" class="nav-link" data-scroll-target="#analisis-exploratorio">Analisis exploratorio</a></li>
+  <li><a href="#modelo-exponencial" id="toc-modelo-exponencial" class="nav-link" data-scroll-target="#modelo-exponencial">Modelo exponencial</a></li>
+  <li><a href="#modelo-gaussiano" id="toc-modelo-gaussiano" class="nav-link" data-scroll-target="#modelo-gaussiano">Modelo Gaussiano</a></li>
+  <li><a href="#modelo-wave" id="toc-modelo-wave" class="nav-link" data-scroll-target="#modelo-wave">Modelo Wave</a></li>
+  <li><a href="#seleccion-del-modelo" id="toc-seleccion-del-modelo" class="nav-link" data-scroll-target="#seleccion-del-modelo">Seleccion del modelo</a></li>
+  <li><a href="#mapa-de-predicciones" id="toc-mapa-de-predicciones" class="nav-link" data-scroll-target="#mapa-de-predicciones">Mapa de predicciones</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Kriging Funcional</h1>
+<p class="subtitle lead">Estadistica espacial</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>George Vega </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p></p>
+<p></p>
+<section id="contaminacion-de-aire" class="level1">
+<h1>Contaminacion de aire</h1>
+<p>La contaminación en el Reino Unido es un desafío ambiental que requiere atención y acción. Aunque el país ha tomado medidas para reducir las emisiones y mejorar la calidad del aire, aún se enfrenta a problemas significativos. Las principales fuentes de contaminación en el Reino Unido incluyen las emisiones de gases de efecto invernadero de los sectores de transporte y energía, así como la contaminación del aire debido al tráfico vehicular y la quema de combustibles fósiles. Estos problemas tienen impactos negativos en la salud humana, la calidad del aire y el medio ambiente en general, lo que ha llevado a la implementación de políticas y regulaciones más estrictas para abordar la contaminación y avanzar hacia una economía más limpia y sostenible.</p>
+<p>En los últimos años la predicción ha tomado un rol importante para una infinidad de casos, especificamente en el aspecto ambientar la predicción de de los niveles de material particulado en el aire es fundamental para tomar medidas preventivas y mitigar los efectos adversos en la salud y el medio ambiente. Existen varios metodos de prediccion, Debido a las limitaciones en cuanto a dimensionalidad y limites computacionales del modelado espacio temporal se abordara la geoestadistica como solucion a estas limitaciones.</p>
+<section id="obtencion-de-los-datos" class="level2">
+<h2 class="anchored" data-anchor-id="obtencion-de-los-datos">Obtencion de los datos</h2>
+<p>La base de datos seleccionada para este trabajo proviene del departamento de Medio Ambiente, Alimentación y Asuntos Rurales del Reino unido,de la cual se extrae <a href="https://uk-air.defra.gov.uk/data/">datos</a> de la fuente de informacion del Reino Unido.</p>
+<p>El reino unido mediante su agencia ambiental posee alrededor de 300 sitios de monitoreo ambiental los cuales se subdividen en redes que adquieren informacion particular de acuerdo al contaminante. Existen dos tipos de <a href="https://uk-air.defra.gov.uk/networks/">redes de monitoreo</a> en el reino unido:</p>
+<ol type="1">
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=automatic"><strong>Redes automaticas:</strong></a> estas permiten la captura de datos de contaminantes que se producen por hora. La recopilación de datos comprende datos desde 1972 para algunos sitios:</li>
+</ol>
+<ul>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=aurn">Automatic Urban and Rural Network (AURN)</a></li>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=hc">Automatic Hydrocarbon Network (AHN)</a></li>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=aln">Automatic London Network</a></li>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=nondefraaqmon">Locally-managed automatic monitoring</a></li>
+</ul>
+<ol start="2" type="1">
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=automatic"><strong>Redes no automaticas:</strong></a> La recopilacion de los datos se da para contaminantes que se producen con menor frecuencia (diaria,semanal, mensual) donde las muestras son recopiladas por medios físicos y son sometidas a análisis fisico-quimico que permite calcular la concentración de los resultados, a continuación se relacionan las redes de monitoreo para esta categoría:</li>
+</ol>
+<ul>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=ukeap">UK Eutrophying &amp; Acidifying Network (UKEAP)</a></li>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=uw">Upland Waters Monitoring Network</a></li>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=metals">Heavy Metals Network</a></li>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=no2old">Nitrogen Dioxide Diffusion Tube (1993 to 2005)</a></li>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=smsites">Smoke and Sulphur Dioxide</a></li>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=ukbsn">Black Carbon Network</a></li>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=pah">PAH</a></li>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=tomps">Toxic Organic Micro Pollutants (TOMPs)</a></li>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=nahc">Non-Automatic Hydrocarbon Network</a></li>
+<li><a href="https://uk-air.defra.gov.uk/networks/network-info?view=particle">Particle Numbers and Concentrations Network</a></li>
+<li><a href="https://uk-air.defra.gov.uk/library/no2ten/privacy-notice">JAQU privacy notice</a></li>
+<li><a href="https://uk-air.defra.gov.uk/library/no2ten/privacy-notice">UK Urban NO2 Network</a></li>
+</ul>
+<p>Dentro de los enlaces relacionados se puede recopilar la información disponible para cada red.</p>
+<p>El gobierno del Reino Unido permite la extracción, analisis e interpretacion de los datos de codigo abierto y libre mediante el uso del paquete <a href="https://uk-air.defra.gov.uk/data/openair"><code>Openair</code></a> usando R. Para la adecuación de los datos se realiza el procedimiento descrito en <a href="https://rspatialdata.github.io/air_pollution.html#Installing_the_openair_packageR" class="uri">https://rspatialdata.github.io/air_pollution.html#Installing_the_openair_packageR</a> mediante la integracion del paquete <code>tidyverse</code>.</p>
+<p>Para la extracción de los datos se verifican algunas de las redes de monitoreo existentes y posterior se escogen las variables <span class="math inline">\(\ce{NO2}\)</span> y PM<span class="math inline">\(_{10}\)</span> para las cuales se verifican sus redes de monitoreo:</p>
+</section>
+<section id="analisis-exploratorio" class="level2">
+<h2 class="anchored" data-anchor-id="analisis-exploratorio">Analisis exploratorio</h2>
+<p>El Reino Unido se caracteriza por tener una red integral de monitoreo ambiental que proporciona gran cantidad de datos cruciales para comprender y abordar los desafíos ambientales y proteger la salud de las personas y el entorno natural. Se realiza la exploración datos diarios de 10 a través del 2022 de estaciones aleatorias dentro del reino unido.</p>
+<p></p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Functional-Kriging_files/figure-html/unnamed-chunk-2-1.png" class="quarto-discovered-preview-image img-fluid" width="672"></p>
+</div>
+</div>
+<p></p>
+<p>Al verificar los datos, esto no permite un modelado adecuado de los datos, ya que estos cambian a través del día por lo cual es conveniente tomar los datos por hora de 50 estaciones aleatorias por 7 dias, para esto obtiene los datos del 2023-01-01 00:00:00 al dia 2023-01-07 23:59:59.</p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p>A continuación se observan los datos del día 01-02-23 por hora.</p>
+<p></p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Functional-Kriging_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Functional-Kriging_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Functional-Kriging_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p></p>
+<p>Para las 50 estaciones obtenidas se evalua el material particulado de 10 micras en funcion del tiempo</p>
+<p></p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Functional-Kriging_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p></p>
+<p></p>
+<p></p>
+<p>De igual se identifican que existe curvas atipicas dentro de los datos las cuales corresponden las curvas 1, 2 y 38 como se observa a continuación</p>
+<p></p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Functional-Kriging_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p></p>
+<p>Si bien se identifican como posibles curvas atípicas, dentro de este estudio se tendrán en cuenta ya que no conoce la naturaleza del fenómeno, los valores de la curva 1 y 2 pueden estar asociadas a múltiples factores como error en la medición, falla en lectura o en el instrumento de medición</p>
+<p></p>
+<p></p>
+<p>Para el suavizamiento de las curvas de material particulado se utiliza el metodo no parametrico B-splines- Como se observa en la grafica de material particulado en función del tiempo, estas curvas presentan una alta rugosidad, sin embargo al ajustar una cantidad de bases muy altas, estas presentaban valores de material particulado por debajo de 0, lo cual no tiene sentido fisico, razón por la cual se definieron un total de 10 bases y un alto parametro de penalizacion <span class="math inline">\(\lambda=10\)</span></p>
+<p></p>
+<p></p>
+<!-- # ```{r} -->
+<!-- # loglam <- seq(0, 0.1, 0.001) -->
+<!-- # nlam <- length(loglam) -->
+<!-- # dfsave <- rep(NA, nlam) -->
+<!-- # gcvsave <- rep(NA, nlam) -->
+<!-- #  -->
+<!-- # for (ilam in 1:nlam) { -->
+<!-- #   lambda <- loglam[ilam] -->
+<!-- #   fdParobj <- fdPar(BSpl, Lfdobj = NULL, lambda = lambda) -->
+<!-- #   smoothlist <- smooth.basis(1:164, PM10[1:164], fdParobj) -->
+<!-- #   dfsave[ilam] <- smoothlist$df -->
+<!-- #   gcvsave[ilam] <- sum(smoothlist$gcv) -->
+<!-- # } -->
+<!-- #  -->
+<!-- # # Find the minimum of gcvsave and the corresponding loglam value -->
+<!-- # min_index <- which.min(gcvsave) -->
+<!-- # min_gcv <- gcvsave[min_index] -->
+<!-- # min_loglam <- loglam[min_index] -->
+<!-- #  -->
+<!-- # # Plot the results -->
+<!-- # plot(loglam, gcvsave, xlab = expression(lambda), ylab = expression(GCV(lambda)), -->
+<!-- #      main = "Parámetros de suavizamiento versus GCV", type = "b", cex = 0.7) -->
+<!-- # points(min_loglam, min_gcv, col = "red", pch = 19) -->
+<!-- # ``` -->
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fda)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>nbasis <span class="ot">&lt;-</span><span class="dv">10</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>hourange <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="fu">nrow</span>(PM10))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>lambda<span class="ot">=</span><span class="fl">0.1</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>harmaccelLfd <span class="ot">&lt;-</span> <span class="fu">vec2Lfd</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">10</span>), hourange)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>hourbasis_Bsplines <span class="ot">&lt;-</span> <span class="fu">create.bspline.basis</span>(hourange,nbasis)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>PM10_fdPar_Bspline<span class="ot">&lt;-</span><span class="fu">fdPar</span>(<span class="at">fdobj=</span>hourbasis_Bsplines,<span class="at">Lfdobj=</span>harmaccelLfd,lambda)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>PM10_fd_Bspline <span class="ot">&lt;-</span> <span class="fu">smooth.basis</span>(<span class="at">argvals=</span><span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(PM10),PM10,PM10_fdPar_Bspline)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>PM10_fd_Bspl<span class="ot">=</span>PM10_fd_Bspline<span class="sc">$</span>fd</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(PM10_fd_Bspl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "done"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(PM10_fd_Bspl,<span class="at">col=</span><span class="fu">rainbow</span>(<span class="dv">10</span>),<span class="at">lwd=</span><span class="dv">2</span>,<span class="at">lty=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Functional-Kriging_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>PCA<span class="ot">=</span><span class="fu">pca.fd</span>(PM10_fd_Bspl,<span class="at">centerfns=</span>T)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>PCA<span class="ot">=</span><span class="fu">pca.fd</span>(PM10_fd_Bspl,<span class="dv">3</span>,<span class="at">centerfns=</span>T)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>),<span class="at">mar =</span> <span class="fu">c</span>(<span class="fl">2.5</span>, <span class="fl">2.5</span>, <span class="fl">2.5</span>, <span class="fl">2.5</span>))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(PCA,<span class="at">cex.main=</span><span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Functional-Kriging_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p></p>
+<p>Con el fin de reducir la dimensionalidad, se utiliza el análisis de componentes principales, para esto se tomaron 3 componentes principales las cuales ajustan el 88% de la variabilidad espacial del campo aleatorio. Esto se puede observar en la siguiente gráfica.</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>PCA<span class="sc">$</span>varprop</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.65291339 0.15537652 0.07543315</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(PCA<span class="sc">$</span>scores)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           [,1]       [,2]        [,3]
+[1,]   3.803601  68.048593  12.6645150
+[2,]  22.923667  74.659762 -16.2869376
+[3,]  -4.346688  17.259694   0.7487753
+[4,]  68.996534 -18.534415 -12.3475882
+[5,] -30.078440  -7.716014  -2.2322568
+[6,]  16.796767  -8.786296 -11.2852024</code></pre>
+</div>
+</div>
+<p></p>
+<p>Los puntajes obtenidos para la primera componente se adjuntan a las coordenas de cada lugar</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fecha <span class="ot">&lt;-</span> <span class="fu">ymd</span>(<span class="st">"2023-01-01"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>PolutionUK  <span class="ot">&lt;-</span> PolutionData[,<span class="dv">3</span><span class="sc">:</span><span class="dv">5</span>] <span class="sc">%&gt;%</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">date</span>(PolutionData<span class="sc">$</span>Fecha) <span class="sc">==</span> fecha, <span class="fu">hour</span>(PolutionData<span class="sc">$</span>Fecha) <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>PolutionUK <span class="ot">&lt;-</span><span class="fu">data.frame</span>(PolutionUK,PCA<span class="sc">$</span>scores[,<span class="dv">1</span>]) <span class="sc">%&gt;%</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Scores =</span> PCA.scores...<span class="fl">1.</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(PolutionUK,<span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                          sitio  Longitud  Latitud      Scores
+1                Belfast Centre -5.928833 54.59965   3.8036012
+2       Belfast Stockman's Lane -5.974944 54.57259  22.9236669
+3     Birmingham A4540 Roadside -1.874978 52.47615  -4.3466875
+4             Bristol St Paul's -2.584482 51.46284  68.9965341
+5    Burton-on-Trent Horninglow -1.635718 52.82105 -30.0784398
+6                    Canterbury  1.098061 51.27399  16.7967674
+7                Cardiff Centre -3.176250 51.48178  67.7122976
+8          Cardiff Newport Road -3.152305 51.49096  76.5641660
+9          Carlisle Morton A595 -2.964955 54.88582   0.2299276
+10                 Chepstow A48 -2.678731 51.63809  69.6942643
+11 Chesterfield Loundsley Green -1.454946 53.24413 -45.2608231
+12        Chesterfield Roadside -1.456928 53.23175 -32.4985241
+13       Chilbolton Observatory -1.438228 51.14962  -5.0571812
+14            Coventry Allesley -1.560189 52.41163 -18.0916231
+15             Crewe Coppenhall -2.453492 53.11594 -42.4225404
+16              Derry Rosemount -7.331179 55.00282  25.4592968
+17      Dewsbury Ashworth Grove -1.637111 53.69310 -40.2938997
+18                   Eastbourne  0.271611 50.80578  49.1998599
+19          Glasgow High Street -4.238214 55.86094 -63.4351591
+20         Greenock A8 Roadside -4.734421 55.94408 -61.3513781
+21      Hartlepool St Abbs Walk -1.203838 54.68324 -46.9584604
+22                 High Muffles -0.808820 54.33450 -68.7157065
+23   Immingham Woodlands Avenue -0.213324 53.61924 -40.5954818
+24                    Inverness -4.241451 57.48131 -37.0564166
+25                 Leeds Centre -1.546472 53.80378 -27.3825830
+26         Leicester University -1.127182 52.61990 -30.5708855
+27              Liverpool Speke -2.844333 53.34633 -29.8037958
+28            London Bloomsbury -0.125889 51.52229  32.8331549
+29            London Harlington -0.441614 51.48879 -11.8843938
+30            London Hillingdon -0.460861 51.49633  14.0959344
+31        London Honor Oak Park -0.037418 51.44967   6.4769433
+32             Lullington Heath  0.181250 50.79370  43.2001436
+33        Manchester Piccadilly -2.237881 53.48152 -16.0251742
+34                     Narberth -4.692370 51.78262  54.0680614
+35                      Newport -2.977281 51.60120  43.4726071
+36          Norwich Lakenfields  1.302686 52.61482  -9.0290639
+37              Oxford St Ebbes -1.260278 51.74481  15.2291434
+38     Portsmouth Anglesea Road -1.095558 50.79834 121.7484448
+39          Reading London Road -0.940382 51.45490  71.3638502
+40               Salford Eccles -2.334139 53.48481 -22.7471685
+41           Southampton Centre -1.395757 50.90817  68.1645929
+42              Southend-on-Sea  0.678331 51.54417  -5.0042761
+43                     St Osyth  1.049010 51.77787   8.5535058
+44        Sunderland Silksworth -1.406878 54.88361 -57.4494241
+45               Swindon Walcot -1.765678 51.55806  17.0650882
+46                    Weybourne  1.122017 52.95049 -51.7005099
+47                   Wicken Fen  0.290917 52.29850 -24.1135891
+48                 Wigan Centre -2.638139 53.54914 -28.3802029
+49              Wirral Tranmere -3.022722 53.37287 -40.2110742
+50                  Yarner Wood -3.716510 50.59760  -7.1873894</code></pre>
+</div>
+</div>
+<p></p>
+<p>Los puntos espaciales donde se utilizara el puntaje obtenido de la primera componente principal se observa en el siguiente mapa,</p>
+<p></p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Functional-Kriging_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>           coordinates                      sitio     Scores
+1 (146272.1, 529828.1)             Belfast Centre   3.803601
+2 (143125.3, 526986.9)    Belfast Stockman's Lane  22.923667
+3 (408490.7, 286516.8)  Birmingham A4540 Roadside  -4.346688
+4 (359400.6, 173979.1)          Bristol St Paul's  68.996534
+5 (424545.7, 324933.8) Burton-on-Trent Horninglow -30.078440
+6   (616063.3, 157376)                 Canterbury  16.796767</code></pre>
+</div>
+</div>
+<p></p>
+<p>Se realiza el cambio de coordenadas.</p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p>Para la predicción en un tiempo y espacio definido, es necesario modelar la variabilidad es pacial mediante el semivariograma del campo aleatorio utilizando los puntajes obtenidos del ACP, para esto se consideran 3 modelos de semivariograma, el modelo exponencia, gaussiano y el modelo wave.</p>
+<p>Inicialmente se genera el semivariograma considerando las distancias disponibles.</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gstat)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>PolutionUK_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(PolutionUK2, <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"X"</span>, <span class="st">"Y"</span>))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>var <span class="ot">&lt;-</span> <span class="fu">variogram</span>(PolutionUK_sf<span class="sc">$</span>Scores <span class="sc">~</span> <span class="dv">1</span>, PolutionUK_sf)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(var, <span class="at">pl =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Functional-Kriging_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p></p>
+<p>Sin embargo se realiza un ajuste de distancia con el fin de obtener una cota superior en el semivariograma</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>var2 <span class="ot">&lt;-</span> <span class="fu">variogram</span>(PolutionUK_sf<span class="sc">$</span>Scores <span class="sc">~</span> <span class="dv">1</span>, PolutionUK_sf, <span class="at">cutoff=</span><span class="dv">160000</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(var2, <span class="at">pl =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Functional-Kriging_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p></p>
+<p>Una vez definidos la distancia, se realiza el ajuste de los modelos propuestos. Inicialmente se realiza un ajuste de cada función a ojo, y mediante la función <code>fit.variogram</code> del paquete <code>gstat</code> se realiza el ajuste la función</p>
+</section>
+<section id="modelo-exponencial" class="level2">
+<h2 class="anchored" data-anchor-id="modelo-exponencial">Modelo exponencial</h2>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>variog1 <span class="ot">&lt;-</span> <span class="fu">vgm</span>(<span class="st">"Exp"</span>,</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">psill =</span> <span class="dv">1650</span>,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">range =</span> <span class="dv">130000</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(var2, variog1 , <span class="at">pl =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Functional-Kriging_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>variog1fit <span class="ot">&lt;-</span> <span class="fu">fit.variogram</span>(<span class="at">object =</span> var2,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                             <span class="at">model =</span> variog1)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>variog1fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  model    psill    range
+1   Exp 935.0562 38369.86</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(var2, variog1fit, <span class="at">pl =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Functional-Kriging_files/figure-html/unnamed-chunk-23-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p></p>
+</section>
+<section id="modelo-gaussiano" class="level2">
+<h2 class="anchored" data-anchor-id="modelo-gaussiano">Modelo Gaussiano</h2>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>variog2 <span class="ot">&lt;-</span> <span class="fu">vgm</span>(<span class="st">"Gau"</span>,</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">psill =</span> <span class="dv">1450</span>,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">range =</span> <span class="dv">120000</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(var2, variog2, <span class="at">pl =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Functional-Kriging_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>variog2fit <span class="ot">&lt;-</span> <span class="fu">fit.variogram</span>(<span class="at">object =</span> var2,</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>                             <span class="at">model =</span> variog2)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>variog2fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  model    psill    range
+1   Gau 554.4821 8335.315</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(var2, variog2fit, <span class="at">pl =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Functional-Kriging_files/figure-html/unnamed-chunk-24-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p></p>
+</section>
+<section id="modelo-wave" class="level2">
+<h2 class="anchored" data-anchor-id="modelo-wave">Modelo Wave</h2>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>variog3 <span class="ot">&lt;-</span> <span class="fu">vgm</span>(<span class="st">"Wav"</span>,</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">psill =</span> <span class="dv">1150</span>,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">range =</span> <span class="dv">140000</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(var2, variog3, <span class="at">pl =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Functional-Kriging_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>variog3fit <span class="ot">&lt;-</span> <span class="fu">fit.variogram</span>(<span class="at">object =</span> var2,</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>                             <span class="at">model =</span> variog3)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>variog3fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  model    psill  range
+1   Wav 1022.421 140000</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(var2, variog3fit, <span class="at">pl =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Functional-Kriging_files/figure-html/unnamed-chunk-25-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p></p>
+</section>
+<section id="seleccion-del-modelo" class="level2">
+<h2 class="anchored" data-anchor-id="seleccion-del-modelo">Seleccion del modelo</h2>
+<p>El método seleccionado se realiza teniendo en cuenta el error cuadrático medio de cada modelo.</p>
+<p></p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">model</th>
+<th style="text-align: center;">psill</th>
+<th style="text-align: center;">range</th>
+<th style="text-align: center;">MSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Exp</td>
+<td style="text-align: center;">935.1</td>
+<td style="text-align: center;">38370</td>
+<td style="text-align: center;">60883</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Gau</td>
+<td style="text-align: center;">554.5</td>
+<td style="text-align: center;">8335</td>
+<td style="text-align: center;">146571</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Wav</td>
+<td style="text-align: center;">1022</td>
+<td style="text-align: center;">140000</td>
+<td style="text-align: center;">88937</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p></p>
+<p>Posterior se realiza el ajuste del semivariograma y la grilla de predicción para el puntaje de la primera componente.</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>variog4 <span class="ot">&lt;-</span> gstat<span class="sc">::</span><span class="fu">gstat</span>(<span class="at">id =</span> <span class="st">"Scores"</span>,</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">formula =</span> Scores <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">model =</span> variog1fit, </span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> PolutionUK_sf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p></p>
+<p></p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Functional-Kriging_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p></p>
+<p>Es asi como se obtiene el mapa de predicción para los puntajes junto a la varianza de predicción.</p>
+<p></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[using ordinary kriging]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Scores.pred" "Scores.var" </code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Functional-Kriging_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p></p>
+<p>Con los puntajes predichos y la representación de las curvas obtenidas mediante ACP se obtienen las funciones para toda la grilla de predicción.</p>
+<p></p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Functional-Kriging_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p></p>
+</section>
+<section id="mapa-de-predicciones" class="level2">
+<h2 class="anchored" data-anchor-id="mapa-de-predicciones">Mapa de predicciones</h2>
+<p>Con curva predicha en los lugares no muestreados se genera el mapa de predicción de material particulado para todo el campo aleatorio espacial para el tiempo 11. El mapa de predicción se obtiene a continuación:</p>
+<p></p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Functional-Kriging_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid" width="576"></p>
+</div>
+</div>
+<p></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
