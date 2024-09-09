@@ -1,0 +1,20 @@
+---
+title: "Georgie Steven Vega Cano"
+image: Georgie.jpg
+resources: Georgie_CV.pdf
+about: 
+  template: jolla
+  image-shape: round
+  image-width: 15em
+  links:
+    - text: Mail
+      icon: envelope
+      href: mailto:gvegac@unal.edu.co
+    - text: Github
+      icon: github
+      href: https://github.com/GeorgeSteveVega
+    - text: Hoja de Vida
+      icon: file-text
+      href: Georgie_CV.pdf    
+---
+
