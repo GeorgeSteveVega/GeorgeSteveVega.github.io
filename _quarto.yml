@@ -12,7 +12,7 @@ website:
       - href: index.qmd
         text: Home
       - text: "TalentoTECH 2024"
-        file: about.qmd  
+        file: TalentoTECH/TalentoTECH.qmd  
       # - text: "Series de Tiempo"
       #   file: Series.qmd
       # - text: "Estadistica espacial"
