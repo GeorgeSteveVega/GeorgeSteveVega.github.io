@@ -1,5 +1,5 @@
 ---
-title: "Georgie Steven Vega Cano"
+title: "George Steven Vega Cano"
 image: Georgie.jpg
 resources: Georgie_CV.pdf
 about: 

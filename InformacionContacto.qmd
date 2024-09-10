@@ -1,0 +1,146 @@
+---
+title: Información del Contacto
+#subtitle: Inteligencia Artificial
+#author: George Vega
+#date-format: "MM-YYYY"
+#date: 16-08-2024
+cls: apa.csl
+colorlinks: true
+#bibliography: References.bib
+engine: knitr
+jupyter: python3
+execute:
+  echo: true
+  warning: false
+  error: false
+format:
+ html:
+   toc: true
+   grid:
+      sidebar-width: 200px
+      body-width: 900px
+      margin-width: 100px
+      gutter-width: 1em
+   toc-location: left
+   #fig-width: 5
+   #fig-height: 5
+   code-fold: show
+   embed-resources: true
+   self-contained-math: true
+   # other-links:
+   #    - text: Resultados Saber 11 2019-2
+   #      href: https://www.datos.gov.co/Educaci-n/2019-2-Desempe-o-en-Matem-ticas-de-los-estudiantes/3qm6-df8e
+ipynb-shell-interactivity: last
+knitr:
+  opts_chunk: 
+    collapse: true
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+```{=html}
+<style scoped>
+table {
+  font-size: 11px;
+
+}
+</style>
+```
+```{r}
+#| label: reticulate
+#| echo: false
+#| warning: false
+#| results: hide
+library(reticulate)
+reticulate::conda_list()
+Sys.setenv(RETICULATE_PYTHON = "C:/Users/GeorgeVega/anaconda3/envs/TalentoTECH")
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "E:/17. TalentoTECH/Proyecto")
+getwd()
+```
+
+```{python}
+#| label: paquetes
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+import plotly.express as pex
+import plotly.graph_objects as go
+import plotly.io as pio
+import seaborn as sb
+import plotly.figure_factory as ff
+```
+
+```{python}
+#| label: lectura datos
+#| warning: false
+#| echo: false
+df2 = pd.read_csv('Saber1120192_Mod.csv', header='infer')
+```
+
+Se contempla 4 variables que permiten identificar la ubicación de residencia de la persona.
+
+| N°  | VARIABLE              | DESCRIPCION         | ITEMS                                      |
+|------------------|------------------|------------------|-------------------|
+| 11  | ESTU_DEPTO_RESIDE     | Departamento        | Departamento de residencia                 |
+| 12  | ESTU_COD_RESIDE_DEPTO | Codigo Departamento | Código Dane del departamento de residencia |
+| 13  | ESTU_MCPIO_RESIDE     | Municipio           | Municipio de residencia                    |
+| 14  | ESTU_COD_RESIDE_MCPIO | Codigo Municipio    | Código Dane del municipio de residencia    |
+
+```{python}
+#| cache: true
+df3=df2[["ESTU_NACIONALIDAD",'ESTU_PAIS_RESIDE', 'ESTU_DEPTO_RESIDE']].value_counts().reset_index()
+df3
+```
+
+```{python}
+#| cache: true
+#| echo: false
+import plotly.graph_objects as go
+
+y1=df2["PUNT_MATEMATICAS"]
+y2=df2["PUNT_LECTURA_CRITICA"]
+x=df2["ESTU_DEPTO_RESIDE"]
+
+fig3 = go.Figure()
+fig3 = fig3.add_trace(go.Box(
+    x=x,
+    y=y1,
+    name='Puntaje matemáticas',
+    marker_color='blue',
+    boxmean=True,
+))
+fig3 = fig3.add_trace(go.Box(
+    x=x,
+    y=y2,
+    name='Puntaje lectura critica',
+    marker_color='green',
+    boxmean=True
+))
+fig3 = fig3.update_layout(
+     legend=dict(
+        x=0.8,
+        y=-0.5,
+        traceorder="normal",
+        font=dict(
+            family="sans-serif",
+            size=12,
+            color="black"
+        ),
+    ),
+    title="Resultados por departamento",
+    margin=dict(t=30, b=4, l=5, r=5),
+    yaxis=dict(title='Puntaje'),
+    xaxis=dict(title='Departamento', zeroline=False),
+    boxmode='group',height=600, width=700,boxgap = .1,
+)
+
+
+fig3 = fig3.update_xaxes(tickangle=-90)
+fig3.show()
+```

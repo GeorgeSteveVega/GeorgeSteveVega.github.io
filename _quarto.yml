@@ -4,7 +4,8 @@ project:
 
 
 website:
-  title: "George Steven Vega"
+  title: "Georgie Steven Vega"
+  page-navigation: true
   navbar:
     background: primary
     search: true
@@ -28,6 +29,8 @@ website:
         contents:
           - Descripcion.qmd
           - InformacionPersonal.qmd
+          - InformacionContacto.qmd
+          - InformacionSocioEco.qmd
          
           # navigation items
 

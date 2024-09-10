@@ -1,0 +1,236 @@
+---
+title: Información socioeconomica
+#subtitle: Inteligencia Artificial
+#author: George Vega
+#date-format: "MM-YYYY"
+#date: 16-08-2024
+cls: apa.csl
+colorlinks: true
+#bibliography: References.bib
+engine: knitr
+jupyter: python3
+execute:
+  echo: true
+  warning: false
+  error: false
+format:
+ html:
+   toc: true
+   grid:
+      sidebar-width: 200px
+      body-width: 900px
+      margin-width: 100px
+      gutter-width: 1em
+   toc-location: left
+   #fig-width: 5
+   #fig-height: 5
+   code-fold: show
+   embed-resources: true
+   self-contained-math: true
+   # other-links:
+   #    - text: Resultados Saber 11 2019-2
+   #      href: https://www.datos.gov.co/Educaci-n/2019-2-Desempe-o-en-Matem-ticas-de-los-estudiantes/3qm6-df8e
+ipynb-shell-interactivity: last
+knitr:
+  opts_chunk: 
+    collapse: true
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+```{=html}
+<style scoped>
+table {
+  font-size: 11px;
+
+}
+</style>
+```
+```{r}
+#| label: reticulate
+#| echo: false
+#| warning: false
+#| results: hide
+library(reticulate)
+reticulate::conda_list()
+Sys.setenv(RETICULATE_PYTHON = "C:/Users/GeorgeVega/anaconda3/envs/TalentoTECH")
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "E:/17. TalentoTECH/Proyecto")
+getwd()
+```
+
+```{python}
+#| label: paquetes
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+import plotly.express as pex
+import plotly.graph_objects as go
+import plotly.io as pio
+import seaborn as sb
+import plotly.figure_factory as ff
+```
+
+```{python}
+#| label: lectura datos
+#| warning: false
+#| echo: false
+df2 = pd.read_csv('Saber1120192_Mod.csv', header='infer')
+```
+
+
+## Información socioeconómica
+
+Se tienen en cuenta 24 variables que permiten identificar las condiciones de vivienda, formación académica de los padres, tipo de trabajo, ingreso, bienes, hábitos de lectura y regularidad de ingesta de algunos alimentos.
+
+| N°  | VARIABLE                      | DESCRIPCION              | ITEMS                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+|------------------|------------------|------------------|--------------------|
+| 15  | FAMI_ESTRATOVIVIENDA          | Estrato                  | Estrato socioeconómico de su vivienda según recibo de energía eléctrica<br>Estrato 1<br>Estrato 2<br>Estrato 3<br>Estrato 4<br>Estrato 5<br>Estrato 6<br>Sin Estrato                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| 16  | FAMI_PERSONASHOGAR            | Personas Hogar           | ¿Cuántas personas conforman el hogar donde vive actualmente, incluido usted?<br>1 a 2<br>3 a 4<br>5 a 6<br>7 a 8<br>9 o más                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| 17  | FAMI_CUARTOSHOGAR             | Cuarto Hogar             | En total, ¿en cuántos cuartos duermen las personas de su hogar?<br>Uno<br>Dos<br>Tres<br>Cuatro<br>Cinco<br>Seis o más                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| 18  | FAMI_EDUCACIONPADRE           | Educacion Padre          | Ninguno<br>Primaria incompleta<br>Primaria completa<br>Secundaria (Bachillerato) incompleta<br>Secundaria (Bachillerato) completa<br>Técnica o tecnológica incompleta<br>Técnica o tecnológica completa<br>Educación profesional incompleta<br>Educación profesional completa<br>Postgrado<br>No sabe                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| 19  | FAMI_EDUCACIONMADRE           | Educacion Madre          | Ninguno<br>Primaria incompleta<br>Primaria completa<br>Secundaria (Bachillerato) incompleta<br>Secundaria (Bachillerato) completa<br>Técnica o tecnológica incompleta<br>Técnica o tecnológica completa<br>Educación profesional incompleta<br>Educación profesional completa<br>Postgrado<br>No sabe                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| 20  | FAMI_TRABAJOLABORPADRE        | Labor Padre              | Es agricultor, pesquero o jornalero.<br>Es dueño de un negocio grande, tiene un cargo de nivel directivo o gerencial.<br>Es dueño de un negocio pequeño (tiene pocos empleados o no tiene, por ejemplo, tienda, papelería, etc.<br>Es operario de máquinas o conduce vehículos (taxista, chofer).<br>Es vendedor o trabaja en atención al público.<br>Tiene un trabajo de tipo auxiliar administrativo (por ejemplo, secretario o asistente).<br>Trabaja como personal de limpieza, mantenimiento, seguridad o construcción.<br>Trabaja como profesional (por ejemplo, médico, abogado, ingeniero).<br>Trabaja en el hogar, no trabaja o estudia.<br>Trabaja por cuenta propia (por ejemplo, plomero, electricista).<br>Pensionado.<br>No sabe.<br>No aplica |
+| 21  | FAMI_TRABAJOLABORMADRE        | Labor Madre              | Es agricultor, pesquero o jornalero.<br>Es dueño de un negocio grande, tiene un cargo de nivel directivo o gerencial.<br>Es dueño de un negocio pequeño (tiene pocos empleados o no tiene, por ejemplo, tienda, papelería, etc.<br>Es operario de máquinas o conduce vehículos (taxista, chofer).<br>Es vendedor o trabaja en atención al público.<br>Tiene un trabajo de tipo auxiliar administrativo (por ejemplo, secretario o asistente).<br>Trabaja como personal de limpieza, mantenimiento, seguridad o construcción.<br>Trabaja como profesional (por ejemplo, médico, abogado, ingeniero).<br>Trabaja en el hogar, no trabaja o estudia.<br>Trabaja por cuenta propia (por ejemplo, plomero, electricista).<br>Pensionado.<br>No sabe.<br>No aplica |
+| 22  | FAMI_TIENEINTERNET            | Internet                 | ¿Su hogar cuenta con servicio o conexión a internet?<br>NO<br>SI                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| 23  | FAMI_TIENESERVICIOTV          | TV                       | ¿Su hogar cuenta con servicio cerrado de televisión?<br>SI<br>NO                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| 24  | FAMI_TIENECOMPUTADOR          | Computador               | ¿Cuáles de los siguientes bienes posee su hogar?: Computador                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| 25  | FAMI_TIENELAVADORA            | Lavadora                 | ¿Cuáles de los siguientes bienes posee su hogar?: Máquina lavadora de ropa                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| 26  | FAMI_TIENEHORNOMICROOGAS      | Microhondas              | ¿Cuáles de los siguientes bienes posee su hogar?: Horno Microondas u Horno eléctrico o a gas                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| 27  | FAMI_TIENEAUTOMOVIL           | Automovil                | ¿Cuáles de los siguientes bienes posee su hogar?: Automóvil particular                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| 28  | FAMI_TIENEMOTOCICLETA         | Motocicleta              | ¿Cuáles de los siguientes bienes posee su hogar?: Motocicleta                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| 29  | FAMI_TIENECONSOLAVIDEOJUEGOS  | Consola videojuegos      | ¿Cuáles de los siguientes bienes posee su hogar?: Consola para juegos electrónicos (PlayStation, Xbox, Nintendo, etc.)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| 30  | FAMI_NUMLIBROS                | N° de libros             | ¿Cuántos libros físicos o electrónicos hay en su hogar excluyendo periódicos, revistas, directorios telefónicos y libros del colegio?                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| 31  | FAMI_COMELECHEDERIVADOS       | Consumo derivados leche  | ¿Cuántas veces por semana se comen los siguientes alimentos en su hogar? Leche o derivados (queso, yogurt, etc.)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| 32  | FAMI_COMECARNEPESCADOHUEVO    | Consumo Proteina         | ¿Cuántas veces por semana se comen los siguientes alimentos en su hogar? Carne (pollo, pavo, res, cordero, cerdo, conejo, etc.), pescados o huevos                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| 33  | FAMI_COMECEREALFRUTOSLEGUMBRE | Consumo Verduras         | ¿Cuántas veces por semana se comen los siguientes alimentos en su hogar? Cereales (avena, granola), frutos secos (almendras, maní) o legumbres (frijoles, garbanzos, lentejas)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| 34  | FAMI_SITUACIONECONOMICA       | Situacion Economica      | Con respecto al año inmediatamente anterior, la situación económica de su hogar es:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| 35  | ESTU_DEDICACIONLECTURADIARIA  | Tiempo Lectura diaria    | Usualmente, ¿cuánto tiempo al día dedica a leer por entretenimiento?                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| 36  | ESTU_DEDICACIONINTERNET       | Tiempo dedicado Internet | Usualmente, ¿cuánto tiempo al día dedica a navegar en internet? Excluya actividades académicas                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| 37  | ESTU_HORASSEMANATRABAJA       | Horas laborales          | ¿Cuántas horas trabajó usted durante la semana pasada?                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| 38  | ESTU_TIPOREMUNERACION         | Tipo de remuneracion     | ¿Usted recibe algún tipo de remuneración por trabajar?                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+
+```{python}
+#| layout-ncol: 2
+#| column: body-outset-right
+#| cache: true
+#| echo: false
+
+
+import plotly.figure_factory as ff
+import numpy as np
+
+x1= df2[df2["FAMI_ESTRATOVIVIENDA"]=="Estrato 1"]["PUNT_MATEMATICAS"]
+x2= df2[df2["FAMI_ESTRATOVIVIENDA"]=="Estrato 2"]["PUNT_MATEMATICAS"]
+x3= df2[df2["FAMI_ESTRATOVIVIENDA"]=="Estrato 3"]["PUNT_MATEMATICAS"]
+x4= df2[df2["FAMI_ESTRATOVIVIENDA"]=="Estrato 4"]["PUNT_MATEMATICAS"]
+x5= df2[df2["FAMI_ESTRATOVIVIENDA"]=="Estrato 5"]["PUNT_MATEMATICAS"]
+x6= df2[df2["FAMI_ESTRATOVIVIENDA"]=="Estrato 6"]["PUNT_MATEMATICAS"]
+#x7= df2[df2["FAMI_ESTRATOVIVIENDA"]=="Sin estrato"]["PUNT_MATEMATICAS"]
+
+hist_data = [x1, x2, x3, x4,x5,x6,#x7
+             ]
+
+group_labels = ['Estrato 1', 'Estrato 2', 'Estrato 3', 'Estrato 4','Estrato 5','Estrato 6', #'Sin estrato'
+                ]
+
+# Create distplot with custom bin_size
+fig4=ff.create_distplot(hist_data, group_labels, show_hist=False, show_rug=False)
+fig4=fig4.update_layout(title="Puntaje Matemáticas",
+     legend=dict(
+        x=0.4,
+        y=-0.7,
+        traceorder="normal",
+        font=dict(
+            family="sans-serif",
+            size=11,
+            color="black"
+        ),
+    ),
+     margin=dict(t=30, b=5, l=5, r=5),
+     height=500, width=400)
+fig4.show()
+
+
+y1= df2[df2["FAMI_ESTRATOVIVIENDA"]=="Estrato 1"]["PUNT_LECTURA_CRITICA"]
+y2= df2[df2["FAMI_ESTRATOVIVIENDA"]=="Estrato 2"]["PUNT_LECTURA_CRITICA"]
+y3= df2[df2["FAMI_ESTRATOVIVIENDA"]=="Estrato 3"]["PUNT_LECTURA_CRITICA"]
+y4= df2[df2["FAMI_ESTRATOVIVIENDA"]=="Estrato 4"]["PUNT_LECTURA_CRITICA"]
+y5= df2[df2["FAMI_ESTRATOVIVIENDA"]=="Estrato 5"]["PUNT_LECTURA_CRITICA"]
+y6= df2[df2["FAMI_ESTRATOVIVIENDA"]=="Estrato 6"]["PUNT_LECTURA_CRITICA"]
+#y7= df2[df2["FAMI_ESTRATOVIVIENDA"]=="Sin estrato"]["PUNT_LECTURA_CRITICA"]
+
+hist_data2 = [y1, y2, y3, y4,y5,y6,#y7
+             ]
+
+
+# Create distplot with custom bin_size
+fig5=ff.create_distplot(hist_data2, group_labels, show_hist=False, show_rug=False)
+fig5=fig5.update_layout(title="Puntaje Lectura crítica",
+     legend=dict(
+        x=0.4,
+        y=-0.7,
+        traceorder="normal",
+        font=dict(
+            family="sans-serif",
+            size=11,
+            color="black"
+        ),
+    ),
+    margin=dict(t=30, b=5, l=5, r=5),
+    height=500, width=400)
+fig5.show()
+```
+
+```{python}
+#| cache: true
+#| echo: false
+
+my_list = []
+a={}
+i=1
+for i in range(21,29,1):
+    a[i]=df2.iloc[:,i].name
+    my_list.append(a[i])
+nombres=['¿Tiene internet?',
+ '¿Tiene servicio de tv?',
+ '¿Tiene computador?',
+ '¿Tiene lavadora?',
+ '¿Tiene horno/micro/gas?',
+ '¿Tiene automovil?',
+ '¿Tiene motocicleta?',
+ '¿Tiene consola de videojuegos?']
+
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
+
+
+fig6 = make_subplots(rows=2, cols=4,
+                    #   , row_heights =[0.6, 0.4]
+#                     , shared_xaxes = True
+                    #,subplot_titles = ["" + var1 for var1 in nombres],shared_yaxes=True,
+                    vertical_spacing=0.08)
+
+
+matrix = np.array(range(0,8)).reshape((2, 4)) ## matriz de índices
+
+
+for i, var  in enumerate(my_list):
+  fig6=fig6.add_trace(
+        go.Box(x=df2[var]
+                     , y = df2["PUNT_LECTURA_CRITICA"]
+               ,name=df2[var].name
+                     )
+        , row=np.where(matrix == i)[0][0]+1
+        , col=np.where(matrix == i)[1][0]+1
+    )
+
+fig6=fig6.update_layout(showlegend=True)
+fig6=fig6.update_layout(height=700, width=800, title_text="Boxplots for price vs the main variables")
+fig6.show()
+```
