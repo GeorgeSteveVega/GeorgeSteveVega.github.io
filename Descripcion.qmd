@@ -1,0 +1,167 @@
+---
+title: Proyecto Desempeño en Matemáticas - Lectura crítica 2019
+subtitle: Inteligencia Artificial
+author: George Vega
+date-format: "MM-YYYY"
+date: 16-08-2024
+cls: apa.csl
+colorlinks: true
+#bibliography: References.bib
+engine: knitr
+jupyter: python3
+execute:
+  echo: true
+  warning: false
+  error: false
+format:
+ html:
+   toc: true
+   grid:
+      sidebar-width: 250px
+      body-width: 900px
+      margin-width: 100px
+      gutter-width: 1em
+   toc-location: left
+   #fig-width: 5
+   #fig-height: 5
+   code-fold: show
+   embed-resources: true
+   self-contained-math: true
+   other-links:
+      - text: Resultados Saber 11 2019-2
+        href: https://www.datos.gov.co/Educaci-n/2019-2-Desempe-o-en-Matem-ticas-de-los-estudiantes/3qm6-df8e
+ipynb-shell-interactivity: last
+knitr:
+  opts_chunk: 
+    collapse: true
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+```{=html}
+<style scoped>
+table {
+  font-size: 11px;
+
+}
+</style>
+```
+```{r}
+#| label: reticulate
+#| echo: false
+#| warning: false
+#| results: hide
+library(reticulate)
+reticulate::conda_list()
+Sys.setenv(RETICULATE_PYTHON = "C:/Users/GeorgeVega/anaconda3/envs/TalentoTECH")
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "E:/17. TalentoTECH/Proyecto")
+getwd()
+```
+
+# Desempeño en Matemáticas - Lectura crítica 2019
+
+La evaluación del desempeño académico de los estudiantes es fundamental para entender las brechas existentes en el sistema educativo y orientar políticas que mejoren la calidad de la educación. Según información de la Organización para la Cooperación y el Desarrollo Económicos (OCDE), en los resultados de la pruebas PISA 2022 Colombia ha alcanzado un promedio de 26 puntos en evaluaciones internacionales tuvo los peores resultados en pensamiento creativo, reflejando un bajo desempeño en áreas clave como matemáticas y lectura. Este resultado sitúa al país en una posición preocupante en comparación con otros países miembros de la OCDE, lo que subraya la necesidad de abordar los factores que están contribuyendo a estos bajos rendimientos.
+
+Los bajos resultados en matemáticas y lectura tienen implicaciones profundas para el desarrollo personal, social y económico del país. Un rendimiento deficiente en estas áreas limita las oportunidades educativas y laborales de los individuos, perpetuando ciclos de pobreza y desigualdad. Además, afecta la competitividad del país en un mundo globalizado donde las habilidades analíticas y de comprensión lectora son cada vez más valoradas.
+
+Uno de los factores clave que influye en el desempeño académico es el contexto socioeconómico de los estudiantes. Factores como el nivel de ingreso familiar, el nivel educativo de los padres, el acceso a recursos educativos, y las condiciones de vida en general, pueden tener un impacto significativo en la capacidad de aprendizaje y rendimiento de los estudiantes. Comprender cómo estos factores afectan el desempeño en matemáticas y lectura es esencial para desarrollar estrategias efectivas que puedan mejorar la calidad de la educación y cerrar las brechas existentes.
+
+## Antecedentes
+
+-   [Resultados OCDE](https://www.portafolio.co/economia/regiones/colombia-con-los-peores-resultados-de-las-pruebas-pisa-de-la-ocde-606991)
+
+### Relación del pensamiento crítico con la lectura y las matemáticas
+
+El pensamiento crítico radica en la capacidad de los seres humanos para resolver problemas, generar ideas y soluciones que permitan enfrentar las situaciones que se presentan; por lo tanto, este va más allá del esquema del pensamiento convencional, explorando y combinando los conceptos existentes. Una de las actividades importantes que desarrolla y potencializa el pensamiento crítico es la lectura, no solo por la adquisición de conocimientos, sino por la oportunidad que brinda de explorar realidades diferentes a las cotidianas. [Pensamiento crítico aplicado a la investigación](https://http://scielo.sld.cu/pdf/rus/v10n1/2218-3620-rus-10-01-336.pdf)
+
+Algunos conceptos importantes y que caracterizan el pensamiento crítico son la flexibilidad, originalidad, imaginación, curiosidad y asociación, que finalmente son las que permiten concatenar las ideas y generar las posibles soluciones. Todos estos conceptos son reforzados con la lectura crítica.
+
+Adicionalmente, las matemáticas juegan un papel importante en el desarrollo del pensamiento crítico debido a que esta desarrolla habilidades de razonamiento, fortaleciendo la capacidad de analizar y evaluar argumentos de manera estructurada siguiendo un orden lógico y secuencial. La resolución de problemas, capacidad de abstracción, pensamiento lógico y analítico, estableciendo las relaciones de los conceptos para generar conclusiones basadas en pruebas, el uso de datos y estadísticas, desarrollo de la precisión y la habilidad para formar y evaluar hipótesis son de las habilidades que se adquieren con el uso de las matemáticas.
+
+```{python}
+#| label: paquetes
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+import plotly.express as pex
+import plotly.graph_objects as go
+import plotly.io as pio
+import seaborn as sb
+import plotly.figure_factory as ff
+```
+
+```{python}
+#| label: wd
+#| echo: false
+#| warning: false
+#| results: hide
+os.chdir("E:/17. TalentoTECH/Proyecto")
+#os.chdir("C:/Users/ocamp/Downloads/Proyecto")
+os.getcwd()
+```
+
+```{python}
+#| label: lectura datos
+#| warning: false
+#| echo: false
+df = pd.read_csv('Saber1120192.csv', header='infer')
+```
+
+## Variables
+
+```{python}
+#| cache: true
+df.info()
+```
+
+## Pre-procesamiento de datos
+
+```{python}
+#| label: Eliminar NA
+df2=df.dropna()
+df2.shape
+```
+
+```{python}
+#| label: Ajuste etnia
+df2 = df2[["ESTU_ETNIA"] + [col for col in df2.columns if col != "ESTU_ETNIA"]]
+```
+
+```{python}
+#| label: ajustar etnia
+i=0
+for column in df2:
+    i=column
+    if i == "ESTU_ETNIA":
+      continue
+    df2.drop(df2[df2[i] == "-"].index, inplace=True)
+```
+
+```{python}
+#| label: ajuste etnia 2
+df2.ESTU_ETNIA = df.ESTU_ETNIA.replace({"-":"Ninguno"})
+```
+
+```{python}
+#df2.shape
+#df2.info()
+```
+
+```{python}
+#| label: ajuste etnia 3
+col = df2.pop("ESTU_ETNIA")
+df2.insert(9, col.name, col)
+#df2.info()
+```
+
+```{python}
+#| label: ajuste residencia
+df2=df2[df2["ESTU_PAIS_RESIDE"] =="COLOMBIA"]
+df2.shape
+```

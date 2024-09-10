@@ -1,0 +1,237 @@
+---
+title: Informacion personal
+#subtitle: Inteligencia Artificial
+#author: George Vega
+#date-format: "MM-YYYY"
+#date: 16-08-2024
+cls: apa.csl
+colorlinks: true
+#bibliography: References.bib
+engine: knitr
+jupyter: python3
+execute:
+  echo: true
+  warning: false
+  error: false
+format:
+ html:
+   toc: true
+   grid:
+      sidebar-width: 100px
+      body-width: 900px
+      margin-width: 100px
+      gutter-width: 1em
+   toc-location: left
+   #fig-width: 5
+   #fig-height: 5
+   code-fold: show
+   embed-resources: true
+   self-contained-math: true
+   # other-links:
+   #    - text: Resultados Saber 11 2019-2
+   #      href: https://www.datos.gov.co/Educaci-n/2019-2-Desempe-o-en-Matem-ticas-de-los-estudiantes/3qm6-df8e
+ipynb-shell-interactivity: last
+knitr:
+  opts_chunk: 
+    collapse: true
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+```{=html}
+<style scoped>
+table {
+  font-size: 11px;
+
+}
+</style>
+```
+```{r}
+#| label: reticulate
+#| echo: false
+#| warning: false
+#| results: hide
+library(reticulate)
+reticulate::conda_list()
+Sys.setenv(RETICULATE_PYTHON = "C:/Users/GeorgeVega/anaconda3/envs/TalentoTECH")
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "E:/17. TalentoTECH/Proyecto")
+getwd()
+```
+
+```{python}
+#| label: paquetes
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+import plotly.express as pex
+import plotly.graph_objects as go
+import plotly.io as pio
+import seaborn as sb
+import plotly.figure_factory as ff
+```
+
+```{python}
+#| label: lectura datos
+#| warning: false
+#| echo: false
+df2 = pd.read_csv('Saber1120192_Mod.csv', header='infer')
+```
+
+Se incluyen 10 varibles incluyendo la información personal del colaborador, entre las cuales se incluye identificación, género, etnia, entre otros.
+
+| N°  | VARIABLE             | DESCRIPCION      | ITEMS                                                                                                                                                                                                                                                                                                                                                                                         |
+|------------------|------------------|------------------|-------------------|
+| 1   | ESTU_TIPODOCUMENTO   | Documento        | CC – Cédula de ciudadanía<br>CE – Cédula extranjera<br>CR – Certificado registraduría<br>CCB – Certificado de cabildo<br>NES – Número establecido por la SE<br>PC – Pasaporte colombiano<br>PE – Pasaporte extranjero<br>RC – Registro civil<br>PEP– Permiso Especial de<br>Permanencia<br>NUIP - Número único de<br>Identificación Persona<br>V - Por verificar<br>TI – Tarjeta de identidad |
+| 2   | ESTU_NACIONALIDAD    | Nacionalidad     | Nacionalidad                                                                                                                                                                                                                                                                                                                                                                                  |
+| 3   | ESTU_GENERO          | Genero           | F - Femenino<br>M - Masculino                                                                                                                                                                                                                                                                                                                                                                 |
+| 4   | ESTU_FECHANACIMIENTO | Fecha Nacimiento | \[DD/MM/AAAA\]                                                                                                                                                                                                                                                                                                                                                                                |
+| 5   | PERIODO              | Periodo          | Periodo del examen                                                                                                                                                                                                                                                                                                                                                                            |
+| 6   | ESTU_CONSECUTIVO     | Consecutivo      | Id público del estudiante en Saber Pro                                                                                                                                                                                                                                                                                                                                                        |
+| 7   | ESTU_ESTUDIANTE      | Estudiante       | ESTUDIANTE<br>INDIVIDUAL                                                                                                                                                                                                                                                                                                                                                                      |
+| 8   | ESTU_TIENEETNIA      | Tiene etnia      | ¿Pertenece usted a un grupo<br>étnico minoritario?<br>SI<br>NO                                                                                                                                                                                                                                                                                                                                |
+| 9   | ESTU_PAIS_RESIDE     | Pais residencia  | Pais de residencia                                                                                                                                                                                                                                                                                                                                                                            |
+| 10  | ESTU_ETNIA           | Etnia            | ¿Cuál es el grupo étnico minoritario al que pertenece?<br>Arhuaco<br>Cancuamo<br>Comunidad afrodescendiente<br>Comunidades Rom (Gitanas)<br>Cubeo<br>Emberá<br>Guambiano<br>Huitoto<br>Inga<br>Paez<br>Palenquero<br>Pasto<br>Pijao<br>Raizal<br>Sikuani<br>Tucano<br>Wayúu<br>Zenú<br>Otro grupo étnico minoritario<br>Ninguno                                                               |
+
+```{python}
+#| label: fig-gapminder
+#| echo: false
+#| fig-cap: "Analisis por genero"
+#| layout-ncol: 2
+#| column: body
+#| fig-height: 3
+#| fig-width: 3
+#| cache: true
+
+values=df2['ESTU_GENERO'].value_counts()
+labels=["Femenino","Masculino"]
+fig0=go.Figure(data=[go.Pie(                             # fuente de datos
+          values=values,
+          labels=labels,
+          textinfo='label+percent+value',           # columna x
+          insidetextorientation='radial'
+                            )])
+fig0=fig0.update_layout(legend=dict(
+        x=0.35,
+        y=-0.15,
+        traceorder="normal",
+        font=dict(
+            family="sans-serif",
+            size=12,
+            color="black"
+        ),
+    ),
+    margin=dict(t=5, b=0, l=0, r=0),
+    #height=250, 
+    width=150,
+                      showlegend=False)
+fig0.show(renderer="svg")
+
+fig1=pex.scatter(df2                                # fuente de datos
+          , x="PUNT_MATEMATICAS"               # columna x
+          , y="PUNT_LECTURA_CRITICA"           # columna y
+          , width = 450, height=400            # tamaño del gráfico
+          , hover_data= ["ESTU_GENERO"]        # información a despelegar de manera emergente al pasar el cursor
+          , color="ESTU_GENERO"  # color de los puntos
+          #, title = "Energía consumida por el sector Comercial primario vs Energía generada por fuentes nucleares"
+          ,labels= { "PUNT_MATEMATICAS" : "Puntaje matematicas", "PUNT_LECTURA_CRITICA": "Puntaje lectura critica"}
+          ,marginal_x = "box"
+          ,marginal_y = "box"
+          # ,range_x = [20000, 40000]
+            )
+
+fig1=fig1.update_layout(legend=dict(
+    yanchor="bottom",
+    y=-0.2,
+    xanchor="right",
+    x=0.98,
+    traceorder="normal",
+    font=dict(
+        family="sans-serif",
+        size=12,
+        color="black"
+    ),),
+    margin=dict(t=5, b=0, l=0, r=0)
+)
+
+fig1.show()
+
+```
+
+```{python}
+#| cache: true
+
+values2=df2['ESTU_ETNIA'].value_counts()
+print(values2)
+print("Total=                          ",values2.sum())
+```
+
+```{python}
+#| fig-cap: "Analisis por etnia"
+#| echo: false
+#| warning: false
+#| cache: true
+
+
+import plotly.graph_objects as go
+
+y1=df2["PUNT_MATEMATICAS"]
+y2=df2["PUNT_LECTURA_CRITICA"]
+x=df2["ESTU_ETNIA"]
+
+fig2 = go.Figure()
+fig2=fig2.add_trace(go.Box(
+    x=x,
+    y=y1,
+    name='Puntaje matemáticas',
+    marker_color='#3D9970'
+))
+fig2=fig2.add_trace(go.Box(
+    x=x,
+    y=y2,
+    name='Puntaje lectura critica',
+    marker_color='#FF4136'
+))
+fig2=fig2.update_layout(legend=dict(
+        x=0.65,
+        y=-0.5,
+        traceorder="normal",
+        font=dict(
+            family="sans-serif",
+            size=12,
+            color="black"
+        ),
+    ),title="Puntajes discriminados por Etnia",
+    margin=dict(t=30, b=10, l=5, r=5),
+    yaxis=dict(title='Puntaje'),
+    xaxis=dict(title='Etnia', zeroline=False),
+    boxmode='group',height=600, width=600
+)
+
+fig2=fig2.update_xaxes(tickangle=-90)
+fig2.show()
+```
+
+```{python}
+#| cache: true
+#| echo: false
+
+## ## Versión interactiva del diagrama de dispersión
+pex.scatter(df2                                # fuente de datos
+          , x="PUNT_MATEMATICAS"               # columna x
+          , y="PUNT_LECTURA_CRITICA"           # columna y
+          , width = 600, height=600            # tamaño del gráfico
+          , hover_data= ["ESTU_ETNIA"]        # información a despelegar de manera emergente al pasar el cursor
+          , color="ESTU_ETNIA"  # color de los puntos
+          #, title = "Energía consumida por el sector Comercial primario vs Energía generada por fuentes nucleares"
+          ,labels= { "PUNT_MATEMATICAS" : "Puntaje matematicas", "PUNT_LECTURA_CRITICA": "Puntaje lectura critica"}
+          ,marginal_x = "box"
+          ,marginal_y = "box"
+          # ,range_x = [20000, 40000]
+            )
+```

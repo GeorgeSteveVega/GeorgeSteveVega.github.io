@@ -1,9 +1,0 @@
----
-title: "About"
-navbar: false
-format: html
-editor: visual
-toc: true
----
-
-George Steven Vega

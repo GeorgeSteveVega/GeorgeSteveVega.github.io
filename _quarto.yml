@@ -12,7 +12,7 @@ website:
       - href: index.qmd
         text: Home
       - text: "TalentoTECH 2024"
-        file: TalentoTECH/Descripcion.qmd  
+        file: Descripcion.qmd
       # - text: "Series de Tiempo"
       #   file: Series.qmd
       # - text: "Estadistica espacial"
@@ -20,40 +20,19 @@ website:
       - about.qmd
 
   sidebar:
-      - title: "Series de Tiempo"
+      - title: "TalentoTECH 2024"
         style: "floating"
         collapse-level: 3
         sidebar: false
         background: light
         contents:
-          - file: talentoTECH/Descripcion.qmd
-          - about.qmd
+          - Descripcion.qmd
+          - InformacionPersonal.qmd
          
           # navigation items
 
-# website:
-#   title: "George Steven Vega"
-#   navbar:
-#     background: primary
-#     search: true
-#     left:
-#       - href: index.qmd
-#         text: Home
-#       - sidebar:Series de Tiempo
-#       - sidebar:Estadistica espacial
-#       - sidebar:about
-#       
-#   sidebar:
-#       - id: Series de Tiempo
-#         title: "Series de Tiempo"
-#         style: "docked"
-#         sidebar: false
-#         background: light
-#         collapse-level: 2
-#         contents:
-#           - Series.qmd
-#           - Presentacion.qmd
-#           
+
+           
 #       - id: Estadistica espacial
 #         title: "Estadistica espacial"
 #         contents:
