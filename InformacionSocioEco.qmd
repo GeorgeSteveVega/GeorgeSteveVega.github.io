@@ -17,7 +17,7 @@ format:
  html:
    toc: true
    grid:
-      sidebar-width: 200px
+      sidebar-width: 250px
       body-width: 900px
       margin-width: 100px
       gutter-width: 1em
@@ -83,13 +83,12 @@ import plotly.figure_factory as ff
 df2 = pd.read_csv('Saber1120192_Mod.csv', header='infer')
 ```
 
-
 ## Información socioeconómica
 
 Se tienen en cuenta 24 variables que permiten identificar las condiciones de vivienda, formación académica de los padres, tipo de trabajo, ingreso, bienes, hábitos de lectura y regularidad de ingesta de algunos alimentos.
 
 | N°  | VARIABLE                      | DESCRIPCION              | ITEMS                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|------------------|------------------|------------------|--------------------|
+|------------------|------------------|------------------|-------------------|
 | 15  | FAMI_ESTRATOVIVIENDA          | Estrato                  | Estrato socioeconómico de su vivienda según recibo de energía eléctrica<br>Estrato 1<br>Estrato 2<br>Estrato 3<br>Estrato 4<br>Estrato 5<br>Estrato 6<br>Sin Estrato                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | 16  | FAMI_PERSONASHOGAR            | Personas Hogar           | ¿Cuántas personas conforman el hogar donde vive actualmente, incluido usted?<br>1 a 2<br>3 a 4<br>5 a 6<br>7 a 8<br>9 o más                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | 17  | FAMI_CUARTOSHOGAR             | Cuarto Hogar             | En total, ¿en cuántos cuartos duermen las personas de su hogar?<br>Uno<br>Dos<br>Tres<br>Cuatro<br>Cinco<br>Seis o más                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
