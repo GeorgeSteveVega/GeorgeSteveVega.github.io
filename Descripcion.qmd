@@ -1,7 +1,7 @@
 ---
 title: Proyecto Desempeño en Matemáticas - Lectura crítica 2019
 subtitle: Inteligencia Artificial
-author: George Vega
+author: Georgie Vega
 date-format: "MM-YYYY"
 date: 16-08-2024
 cls: apa.csl
