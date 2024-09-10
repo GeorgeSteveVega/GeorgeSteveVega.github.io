@@ -19,21 +19,16 @@ website:
       #   file: Espacial.qmd
       - about.qmd
 
-  # sidebar:
-  #     - title: "Series de Tiempo"
-  #       style: "floating"
-  #       collapse-level: 3
-  #       sidebar: false
-  #       background: light
-  #       contents:
-  #         - Series.qmd
-  #         - Presentacion.qmd
-  # 
-  #     - title: "Estadistica espacial"
-  #       contents:
-  #         - Espacial.qmd
-  #         - SpatioTemporal.qmd
-  #         - Functional Kriging.qmd
+  sidebar:
+      - title: "Series de Tiempo"
+        style: "floating"
+        collapse-level: 3
+        sidebar: false
+        background: light
+        contents:
+          - file: talentoTECH/Descripcion.qmd
+          - about.qmd
+         
           # navigation items
 
 # website:
