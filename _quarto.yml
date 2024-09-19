@@ -31,6 +31,8 @@ website:
           - InformacionPersonal.qmd
           - InformacionContacto.qmd
           - InformacionSocioEco.qmd
+          - InformacionSocioEco2.qmd
+          - InformacionSocioEco3.qmd
          
           # navigation items
 

@@ -86,6 +86,7 @@ df2 = pd.read_csv('Saber1120192_Mod.csv', header='infer')
 ```
 
 ```{python}
+#| echo: false
 df3=df2.loc[:,["FAMI_EDUCACIONPADRE",	"FAMI_EDUCACIONMADRE", "PUNT_MATEMATICAS","PUNT_LECTURA_CRITICA"]]
 df3["Profesiones"] = "P-"+df3["FAMI_EDUCACIONPADRE"] +"__"+"M-"+df3["FAMI_EDUCACIONMADRE"]
 df3 = df3[['Profesiones'] + [col for col in df3.columns if col != 'Profesiones']]
@@ -100,154 +101,156 @@ df4=df4.sort_values(by='PUNT_MATEMATICAS', ascending=False)
 print(df4.to_markdown())
 ```
 
-| Profesiones                                                                    |   PUNT_LECTURA_CRITICA |   PUNT_MATEMATICAS |
-|:-------------------------------------------------------------------------------|-----------------------:|-------------------:|
-| P-Secundaria (Bachillerato) completa__M-Secundaria (Bachillerato) completa     |                  43275 |              43275 |
-| P-Primaria incompleta__M-Primaria incompleta                                   |                  30925 |              30925 |
-| P-Secundaria (Bachillerato) incompleta__M-Secundaria (Bachillerato) incompleta |                  17897 |              17897 |
-| P-Educación profesional completa__M-Educación profesional completa             |                  17088 |              17088 |
-| P-Secundaria (Bachillerato) incompleta__M-Secundaria (Bachillerato) completa   |                  14254 |              14254 |
-| P-Primaria completa__M-Primaria completa                                       |                  12777 |              12777 |
-| P-Primaria incompleta__M-Secundaria (Bachillerato) completa                    |                  12526 |              12526 |
-| P-Primaria incompleta__M-Secundaria (Bachillerato) incompleta                  |                  11307 |              11307 |
-| P-Secundaria (Bachillerato) completa__M-Secundaria (Bachillerato) incompleta   |                  11123 |              11123 |
-| P-Secundaria (Bachillerato) completa__M-Técnica o tecnológica completa         |                  10695 |              10695 |
-| P-Primaria incompleta__M-Primaria completa                                     |                  10525 |              10525 |
-| P-Técnica o tecnológica completa__M-Técnica o tecnológica completa             |                  10135 |              10135 |
-| P-Primaria completa__M-Secundaria (Bachillerato) completa                      |                   9326 |               9326 |
-| P-Secundaria (Bachillerato) completa__M-Educación profesional completa         |                   7480 |               7480 |
-| P-Técnica o tecnológica completa__M-Secundaria (Bachillerato) completa         |                   6471 |               6471 |
-| P-Primaria completa__M-Primaria incompleta                                     |                   6329 |               6329 |
-| P-Secundaria (Bachillerato) incompleta__M-Primaria incompleta                  |                   5947 |               5947 |
-| P-Primaria completa__M-Secundaria (Bachillerato) incompleta                    |                   5929 |               5929 |
-| P-No sabe__M-Secundaria (Bachillerato) completa                                |                   5834 |               5834 |
-| P-Educación profesional completa__M-Secundaria (Bachillerato) completa         |                   5596 |               5596 |
-| P-Secundaria (Bachillerato) completa__M-Primaria completa                      |                   5187 |               5187 |
-| P-Educación profesional completa__M-Técnica o tecnológica completa             |                   5125 |               5125 |
-| P-Secundaria (Bachillerato) completa__M-Primaria incompleta                    |                   5072 |               5072 |
-| P-Secundaria (Bachillerato) incompleta__M-Primaria completa                    |                   4665 |               4665 |
-| P-Secundaria (Bachillerato) incompleta__M-Técnica o tecnológica completa       |                   4424 |               4424 |
-| P-Técnica o tecnológica completa__M-Educación profesional completa             |                   4364 |               4364 |
-| P-Ninguno__M-Primaria incompleta                                               |                   3954 |               3954 |
-| P-No sabe__M-No sabe                                                           |                   3916 |               3916 |
-| P-Ninguno__M-Ninguno                                                           |                   3818 |               3818 |
-| P-Postgrado__M-Postgrado                                                       |                   3522 |               3522 |
-| P-Secundaria (Bachillerato) completa__M-Técnica o tecnológica incompleta       |                   3333 |               3333 |
-| P-No sabe__M-Secundaria (Bachillerato) incompleta                              |                   3310 |               3310 |
-| P-Secundaria (Bachillerato) incompleta__M-Educación profesional completa       |                   2903 |               2903 |
-| P-No sabe__M-Educación profesional completa                                    |                   2611 |               2611 |
-| P-No sabe__M-Primaria incompleta                                               |                   2608 |               2608 |
-| P-No sabe__M-Técnica o tecnológica completa                                    |                   2554 |               2554 |
-| P-Primaria incompleta__M-Técnica o tecnológica completa                        |                   2514 |               2514 |
-| P-Primaria incompleta__M-Ninguno                                               |                   2284 |               2284 |
-| P-Postgrado__M-Educación profesional completa                                  |                   2247 |               2247 |
-| P-Técnica o tecnológica incompleta__M-Secundaria (Bachillerato) completa       |                   2123 |               2123 |
-| P-Educación profesional completa__M-Educación profesional incompleta           |                   2112 |               2112 |
-| P-Técnica o tecnológica completa__M-Secundaria (Bachillerato) incompleta       |                   2051 |               2051 |
-| P-Primaria completa__M-Técnica o tecnológica completa                          |                   2038 |               2038 |
-| P-Educación profesional completa__M-Postgrado                                  |                   1973 |               1973 |
-| P-Educación profesional incompleta__M-Educación profesional completa           |                   1858 |               1858 |
-| P-Secundaria (Bachillerato) completa__M-Educación profesional incompleta       |                   1823 |               1823 |
-| P-No sabe__M-Primaria completa                                                 |                   1745 |               1745 |
-| P-Educación profesional completa__M-Secundaria (Bachillerato) incompleta       |                   1735 |               1735 |
-| P-Técnica o tecnológica incompleta__M-Técnica o tecnológica incompleta         |                   1712 |               1712 |
-| P-Ninguno__M-Primaria completa                                                 |                   1597 |               1597 |
-| P-Ninguno__M-Secundaria (Bachillerato) completa                                |                   1564 |               1564 |
-| P-Secundaria (Bachillerato) incompleta__M-Técnica o tecnológica incompleta     |                   1515 |               1515 |
-| P-Ninguno__M-Secundaria (Bachillerato) incompleta                              |                   1468 |               1468 |
-| P-Técnica o tecnológica completa__M-Técnica o tecnológica incompleta           |                   1455 |               1455 |
-| P-Educación profesional incompleta__M-Secundaria (Bachillerato) completa       |                   1441 |               1441 |
-| P-Técnica o tecnológica incompleta__M-Técnica o tecnológica completa           |                   1413 |               1413 |
-| P-Educación profesional incompleta__M-Educación profesional incompleta         |                   1408 |               1408 |
-| P-Primaria incompleta__M-Educación profesional completa                        |                   1406 |               1406 |
-| P-No Aplica__M-Secundaria (Bachillerato) completa                              |                   1300 |               1300 |
-| P-Educación profesional incompleta__M-Técnica o tecnológica completa           |                   1277 |               1277 |
-| P-Primaria completa__M-Educación profesional completa                          |                   1116 |               1116 |
-| P-Técnica o tecnológica completa__M-Educación profesional incompleta           |                   1102 |               1102 |
-| P-Educación profesional completa__M-Técnica o tecnológica incompleta           |                   1019 |               1019 |
-| P-Primaria incompleta__M-Técnica o tecnológica incompleta                      |                    945 |                945 |
-| P-Técnica o tecnológica incompleta__M-Educación profesional completa           |                    922 |                922 |
-| P-Secundaria (Bachillerato) completa__M-Postgrado                              |                    886 |                886 |
-| P-Secundaria (Bachillerato) incompleta__M-Educación profesional incompleta     |                    829 |                829 |
-| P-Técnica o tecnológica incompleta__M-Secundaria (Bachillerato) incompleta     |                    812 |                812 |
-| P-Secundaria (Bachillerato) completa__M-No sabe                                |                    741 |                741 |
-| P-No sabe__M-Técnica o tecnológica incompleta                                  |                    728 |                728 |
-| P-Primaria completa__M-Ninguno                                                 |                    714 |                714 |
-| P-No Aplica__M-Secundaria (Bachillerato) incompleta                            |                    712 |                712 |
-| P-Primaria completa__M-Técnica o tecnológica incompleta                        |                    704 |                704 |
-| P-No Aplica__M-Primaria incompleta                                             |                    694 |                694 |
-| P-Postgrado__M-Técnica o tecnológica completa                                  |                    691 |                691 |
-| P-No Aplica__M-Técnica o tecnológica completa                                  |                    684 |                684 |
-| P-Técnica o tecnológica completa__M-Postgrado                                  |                    666 |                666 |
-| P-Técnica o tecnológica completa__M-Primaria completa                          |                    654 |                654 |
-| P-Técnica o tecnológica completa__M-Primaria incompleta                        |                    643 |                643 |
-| P-No sabe__M-Educación profesional incompleta                                  |                    605 |                605 |
-| P-Educación profesional completa__M-Primaria incompleta                        |                    588 |                588 |
-| P-Educación profesional incompleta__M-Secundaria (Bachillerato) incompleta     |                    583 |                583 |
-| P-No Aplica__M-Educación profesional completa                                  |                    569 |                569 |
-| P-Secundaria (Bachillerato) incompleta__M-Ninguno                              |                    549 |                549 |
-| P-Postgrado__M-Secundaria (Bachillerato) completa                              |                    548 |                548 |
-| P-Educación profesional completa__M-Primaria completa                          |                    497 |                497 |
-| P-No sabe__M-Postgrado                                                         |                    451 |                451 |
-| P-Primaria incompleta__M-No sabe                                               |                    436 |                436 |
-| P-No Aplica__M-Primaria completa                                               |                    434 |                434 |
-| P-Educación profesional completa__M-No sabe                                    |                    433 |                433 |
-| P-Secundaria (Bachillerato) completa__M-Ninguno                                |                    432 |                432 |
-| P-Secundaria (Bachillerato) incompleta__M-No sabe                              |                    402 |                402 |
-| P-Educación profesional incompleta__M-Técnica o tecnológica incompleta         |                    400 |                400 |
-| P-Técnica o tecnológica incompleta__M-Educación profesional incompleta         |                    369 |                369 |
-| P-Secundaria (Bachillerato) incompleta__M-Postgrado                            |                    363 |                363 |
-| P-Primaria incompleta__M-Educación profesional incompleta                      |                    358 |                358 |
-| P-Educación profesional incompleta__M-Postgrado                                |                    354 |                354 |
-| P-Postgrado__M-Educación profesional incompleta                                |                    325 |                325 |
-| P-Técnica o tecnológica incompleta__M-Primaria incompleta                      |                    323 |                323 |
-| P-Primaria completa__M-Educación profesional incompleta                        |                    312 |                312 |
-| P-Técnica o tecnológica incompleta__M-Primaria completa                        |                    306 |                306 |
-| P-Técnica o tecnológica completa__M-No sabe                                    |                    305 |                305 |
-| P-Ninguno__M-Técnica o tecnológica completa                                    |                    273 |                273 |
-| P-Primaria completa__M-No sabe                                                 |                    237 |                237 |
-| P-No sabe__M-Ninguno                                                           |                    235 |                235 |
-| P-No Aplica__M-No Aplica                                                       |                    226 |                226 |
-| P-Ninguno__M-Educación profesional completa                                    |                    209 |                209 |
-| P-Técnica o tecnológica incompleta__M-Postgrado                                |                    183 |                183 |
-| P-No Aplica__M-Técnica o tecnológica incompleta                                |                    181 |                181 |
-| P-Educación profesional incompleta__M-Primaria completa                        |                    163 |                163 |
-| P-Educación profesional incompleta__M-Primaria incompleta                      |                    160 |                160 |
-| P-Ninguno__M-Técnica o tecnológica incompleta                                  |                    158 |                158 |
-| P-No Aplica__M-Educación profesional incompleta                                |                    155 |                155 |
-| P-Primaria incompleta__M-Postgrado                                             |                    142 |                142 |
-| P-Primaria completa__M-Postgrado                                               |                    141 |                141 |
-| P-No Aplica__M-Postgrado                                                       |                    139 |                139 |
-| P-Postgrado__M-Secundaria (Bachillerato) incompleta                            |                    120 |                120 |
-| P-Postgrado__M-Técnica o tecnológica incompleta                                |                    119 |                119 |
-| P-Ninguno__M-No sabe                                                           |                    118 |                118 |
-| P-Educación profesional incompleta__M-No sabe                                  |                     93 |                 93 |
-| P-Secundaria (Bachillerato) completa__M-No Aplica                              |                     92 |                 92 |
-| P-No Aplica__M-Ninguno                                                         |                     82 |                 82 |
-| P-No Aplica__M-No sabe                                                         |                     82 |                 82 |
-| P-Postgrado__M-No sabe                                                         |                     76 |                 76 |
-| P-Primaria incompleta__M-No Aplica                                             |                     76 |                 76 |
-| P-Ninguno__M-Educación profesional incompleta                                  |                     73 |                 73 |
-| P-Técnica o tecnológica incompleta__M-No sabe                                  |                     65 |                 65 |
-| P-Educación profesional completa__M-Ninguno                                    |                     62 |                 62 |
-| P-Educación profesional completa__M-No Aplica                                  |                     57 |                 57 |
-| P-Técnica o tecnológica completa__M-No Aplica                                  |                     57 |                 57 |
-| P-No sabe__M-No Aplica                                                         |                     56 |                 56 |
-| P-Secundaria (Bachillerato) incompleta__M-No Aplica                            |                     54 |                 54 |
-| P-Técnica o tecnológica completa__M-Ninguno                                    |                     49 |                 49 |
-| P-Técnica o tecnológica incompleta__M-Ninguno                                  |                     47 |                 47 |
-| P-Primaria completa__M-No Aplica                                               |                     47 |                 47 |
-| P-Postgrado__M-Primaria completa                                               |                     44 |                 44 |
-| P-Postgrado__M-Primaria incompleta                                             |                     41 |                 41 |
-| P-Ninguno__M-No Aplica                                                         |                     28 |                 28 |
-| P-Ninguno__M-Postgrado                                                         |                     27 |                 27 |
-| P-Educación profesional incompleta__M-Ninguno                                  |                     24 |                 24 |
-| P-Postgrado__M-No Aplica                                                       |                     17 |                 17 |
-| P-Educación profesional incompleta__M-No Aplica                                |                     15 |                 15 |
-| P-Técnica o tecnológica incompleta__M-No Aplica                                |                     11 |                 11 |
-| P-Postgrado__M-Ninguno                                                         |                      8 |                  8 |
+| Profesiones                                                                      | PUNT_LECTURA_CRITICA | PUNT_MATEMATICAS |
+|:-----------------------------------------|--------------:|--------------:|
+| P-Secundaria (Bachillerato) completa\_\_M-Secundaria (Bachillerato) completa     |                43275 |            43275 |
+| P-Primaria incompleta\_\_M-Primaria incompleta                                   |                30925 |            30925 |
+| P-Secundaria (Bachillerato) incompleta\_\_M-Secundaria (Bachillerato) incompleta |                17897 |            17897 |
+| P-Educación profesional completa\_\_M-Educación profesional completa             |                17088 |            17088 |
+| P-Secundaria (Bachillerato) incompleta\_\_M-Secundaria (Bachillerato) completa   |                14254 |            14254 |
+| P-Primaria completa\_\_M-Primaria completa                                       |                12777 |            12777 |
+| P-Primaria incompleta\_\_M-Secundaria (Bachillerato) completa                    |                12526 |            12526 |
+| P-Primaria incompleta\_\_M-Secundaria (Bachillerato) incompleta                  |                11307 |            11307 |
+| P-Secundaria (Bachillerato) completa\_\_M-Secundaria (Bachillerato) incompleta   |                11123 |            11123 |
+| P-Secundaria (Bachillerato) completa\_\_M-Técnica o tecnológica completa         |                10695 |            10695 |
+| P-Primaria incompleta\_\_M-Primaria completa                                     |                10525 |            10525 |
+| P-Técnica o tecnológica completa\_\_M-Técnica o tecnológica completa             |                10135 |            10135 |
+| P-Primaria completa\_\_M-Secundaria (Bachillerato) completa                      |                 9326 |             9326 |
+| P-Secundaria (Bachillerato) completa\_\_M-Educación profesional completa         |                 7480 |             7480 |
+| P-Técnica o tecnológica completa\_\_M-Secundaria (Bachillerato) completa         |                 6471 |             6471 |
+| P-Primaria completa\_\_M-Primaria incompleta                                     |                 6329 |             6329 |
+| P-Secundaria (Bachillerato) incompleta\_\_M-Primaria incompleta                  |                 5947 |             5947 |
+| P-Primaria completa\_\_M-Secundaria (Bachillerato) incompleta                    |                 5929 |             5929 |
+| P-No sabe\_\_M-Secundaria (Bachillerato) completa                                |                 5834 |             5834 |
+| P-Educación profesional completa\_\_M-Secundaria (Bachillerato) completa         |                 5596 |             5596 |
+| P-Secundaria (Bachillerato) completa\_\_M-Primaria completa                      |                 5187 |             5187 |
+| P-Educación profesional completa\_\_M-Técnica o tecnológica completa             |                 5125 |             5125 |
+| P-Secundaria (Bachillerato) completa\_\_M-Primaria incompleta                    |                 5072 |             5072 |
+| P-Secundaria (Bachillerato) incompleta\_\_M-Primaria completa                    |                 4665 |             4665 |
+| P-Secundaria (Bachillerato) incompleta\_\_M-Técnica o tecnológica completa       |                 4424 |             4424 |
+| P-Técnica o tecnológica completa\_\_M-Educación profesional completa             |                 4364 |             4364 |
+| P-Ninguno\_\_M-Primaria incompleta                                               |                 3954 |             3954 |
+| P-No sabe\_\_M-No sabe                                                           |                 3916 |             3916 |
+| P-Ninguno\_\_M-Ninguno                                                           |                 3818 |             3818 |
+| P-Postgrado\_\_M-Postgrado                                                       |                 3522 |             3522 |
+| P-Secundaria (Bachillerato) completa\_\_M-Técnica o tecnológica incompleta       |                 3333 |             3333 |
+| P-No sabe\_\_M-Secundaria (Bachillerato) incompleta                              |                 3310 |             3310 |
+| P-Secundaria (Bachillerato) incompleta\_\_M-Educación profesional completa       |                 2903 |             2903 |
+| P-No sabe\_\_M-Educación profesional completa                                    |                 2611 |             2611 |
+| P-No sabe\_\_M-Primaria incompleta                                               |                 2608 |             2608 |
+| P-No sabe\_\_M-Técnica o tecnológica completa                                    |                 2554 |             2554 |
+| P-Primaria incompleta\_\_M-Técnica o tecnológica completa                        |                 2514 |             2514 |
+| P-Primaria incompleta\_\_M-Ninguno                                               |                 2284 |             2284 |
+| P-Postgrado\_\_M-Educación profesional completa                                  |                 2247 |             2247 |
+| P-Técnica o tecnológica incompleta\_\_M-Secundaria (Bachillerato) completa       |                 2123 |             2123 |
+| P-Educación profesional completa\_\_M-Educación profesional incompleta           |                 2112 |             2112 |
+| P-Técnica o tecnológica completa\_\_M-Secundaria (Bachillerato) incompleta       |                 2051 |             2051 |
+| P-Primaria completa\_\_M-Técnica o tecnológica completa                          |                 2038 |             2038 |
+| P-Educación profesional completa\_\_M-Postgrado                                  |                 1973 |             1973 |
+| P-Educación profesional incompleta\_\_M-Educación profesional completa           |                 1858 |             1858 |
+| P-Secundaria (Bachillerato) completa\_\_M-Educación profesional incompleta       |                 1823 |             1823 |
+| P-No sabe\_\_M-Primaria completa                                                 |                 1745 |             1745 |
+| P-Educación profesional completa\_\_M-Secundaria (Bachillerato) incompleta       |                 1735 |             1735 |
+| P-Técnica o tecnológica incompleta\_\_M-Técnica o tecnológica incompleta         |                 1712 |             1712 |
+| P-Ninguno\_\_M-Primaria completa                                                 |                 1597 |             1597 |
+| P-Ninguno\_\_M-Secundaria (Bachillerato) completa                                |                 1564 |             1564 |
+| P-Secundaria (Bachillerato) incompleta\_\_M-Técnica o tecnológica incompleta     |                 1515 |             1515 |
+| P-Ninguno\_\_M-Secundaria (Bachillerato) incompleta                              |                 1468 |             1468 |
+| P-Técnica o tecnológica completa\_\_M-Técnica o tecnológica incompleta           |                 1455 |             1455 |
+| P-Educación profesional incompleta\_\_M-Secundaria (Bachillerato) completa       |                 1441 |             1441 |
+| P-Técnica o tecnológica incompleta\_\_M-Técnica o tecnológica completa           |                 1413 |             1413 |
+| P-Educación profesional incompleta\_\_M-Educación profesional incompleta         |                 1408 |             1408 |
+| P-Primaria incompleta\_\_M-Educación profesional completa                        |                 1406 |             1406 |
+| P-No Aplica\_\_M-Secundaria (Bachillerato) completa                              |                 1300 |             1300 |
+| P-Educación profesional incompleta\_\_M-Técnica o tecnológica completa           |                 1277 |             1277 |
+| P-Primaria completa\_\_M-Educación profesional completa                          |                 1116 |             1116 |
+| P-Técnica o tecnológica completa\_\_M-Educación profesional incompleta           |                 1102 |             1102 |
+| P-Educación profesional completa\_\_M-Técnica o tecnológica incompleta           |                 1019 |             1019 |
+| P-Primaria incompleta\_\_M-Técnica o tecnológica incompleta                      |                  945 |              945 |
+| P-Técnica o tecnológica incompleta\_\_M-Educación profesional completa           |                  922 |              922 |
+| P-Secundaria (Bachillerato) completa\_\_M-Postgrado                              |                  886 |              886 |
+| P-Secundaria (Bachillerato) incompleta\_\_M-Educación profesional incompleta     |                  829 |              829 |
+| P-Técnica o tecnológica incompleta\_\_M-Secundaria (Bachillerato) incompleta     |                  812 |              812 |
+| P-Secundaria (Bachillerato) completa\_\_M-No sabe                                |                  741 |              741 |
+| P-No sabe\_\_M-Técnica o tecnológica incompleta                                  |                  728 |              728 |
+| P-Primaria completa\_\_M-Ninguno                                                 |                  714 |              714 |
+| P-No Aplica\_\_M-Secundaria (Bachillerato) incompleta                            |                  712 |              712 |
+| P-Primaria completa\_\_M-Técnica o tecnológica incompleta                        |                  704 |              704 |
+| P-No Aplica\_\_M-Primaria incompleta                                             |                  694 |              694 |
+| P-Postgrado\_\_M-Técnica o tecnológica completa                                  |                  691 |              691 |
+| P-No Aplica\_\_M-Técnica o tecnológica completa                                  |                  684 |              684 |
+| P-Técnica o tecnológica completa\_\_M-Postgrado                                  |                  666 |              666 |
+| P-Técnica o tecnológica completa\_\_M-Primaria completa                          |                  654 |              654 |
+| P-Técnica o tecnológica completa\_\_M-Primaria incompleta                        |                  643 |              643 |
+| P-No sabe\_\_M-Educación profesional incompleta                                  |                  605 |              605 |
+| P-Educación profesional completa\_\_M-Primaria incompleta                        |                  588 |              588 |
+| P-Educación profesional incompleta\_\_M-Secundaria (Bachillerato) incompleta     |                  583 |              583 |
+| P-No Aplica\_\_M-Educación profesional completa                                  |                  569 |              569 |
+| P-Secundaria (Bachillerato) incompleta\_\_M-Ninguno                              |                  549 |              549 |
+| P-Postgrado\_\_M-Secundaria (Bachillerato) completa                              |                  548 |              548 |
+| P-Educación profesional completa\_\_M-Primaria completa                          |                  497 |              497 |
+| P-No sabe\_\_M-Postgrado                                                         |                  451 |              451 |
+| P-Primaria incompleta\_\_M-No sabe                                               |                  436 |              436 |
+| P-No Aplica\_\_M-Primaria completa                                               |                  434 |              434 |
+| P-Educación profesional completa\_\_M-No sabe                                    |                  433 |              433 |
+| P-Secundaria (Bachillerato) completa\_\_M-Ninguno                                |                  432 |              432 |
+| P-Secundaria (Bachillerato) incompleta\_\_M-No sabe                              |                  402 |              402 |
+| P-Educación profesional incompleta\_\_M-Técnica o tecnológica incompleta         |                  400 |              400 |
+| P-Técnica o tecnológica incompleta\_\_M-Educación profesional incompleta         |                  369 |              369 |
+| P-Secundaria (Bachillerato) incompleta\_\_M-Postgrado                            |                  363 |              363 |
+| P-Primaria incompleta\_\_M-Educación profesional incompleta                      |                  358 |              358 |
+| P-Educación profesional incompleta\_\_M-Postgrado                                |                  354 |              354 |
+| P-Postgrado\_\_M-Educación profesional incompleta                                |                  325 |              325 |
+| P-Técnica o tecnológica incompleta\_\_M-Primaria incompleta                      |                  323 |              323 |
+| P-Primaria completa\_\_M-Educación profesional incompleta                        |                  312 |              312 |
+| P-Técnica o tecnológica incompleta\_\_M-Primaria completa                        |                  306 |              306 |
+| P-Técnica o tecnológica completa\_\_M-No sabe                                    |                  305 |              305 |
+| P-Ninguno\_\_M-Técnica o tecnológica completa                                    |                  273 |              273 |
+| P-Primaria completa\_\_M-No sabe                                                 |                  237 |              237 |
+| P-No sabe\_\_M-Ninguno                                                           |                  235 |              235 |
+| P-No Aplica\_\_M-No Aplica                                                       |                  226 |              226 |
+| P-Ninguno\_\_M-Educación profesional completa                                    |                  209 |              209 |
+| P-Técnica o tecnológica incompleta\_\_M-Postgrado                                |                  183 |              183 |
+| P-No Aplica\_\_M-Técnica o tecnológica incompleta                                |                  181 |              181 |
+| P-Educación profesional incompleta\_\_M-Primaria completa                        |                  163 |              163 |
+| P-Educación profesional incompleta\_\_M-Primaria incompleta                      |                  160 |              160 |
+| P-Ninguno\_\_M-Técnica o tecnológica incompleta                                  |                  158 |              158 |
+| P-No Aplica\_\_M-Educación profesional incompleta                                |                  155 |              155 |
+| P-Primaria incompleta\_\_M-Postgrado                                             |                  142 |              142 |
+| P-Primaria completa\_\_M-Postgrado                                               |                  141 |              141 |
+| P-No Aplica\_\_M-Postgrado                                                       |                  139 |              139 |
+| P-Postgrado\_\_M-Secundaria (Bachillerato) incompleta                            |                  120 |              120 |
+| P-Postgrado\_\_M-Técnica o tecnológica incompleta                                |                  119 |              119 |
+| P-Ninguno\_\_M-No sabe                                                           |                  118 |              118 |
+| P-Educación profesional incompleta\_\_M-No sabe                                  |                   93 |               93 |
+| P-Secundaria (Bachillerato) completa\_\_M-No Aplica                              |                   92 |               92 |
+| P-No Aplica\_\_M-Ninguno                                                         |                   82 |               82 |
+| P-No Aplica\_\_M-No sabe                                                         |                   82 |               82 |
+| P-Postgrado\_\_M-No sabe                                                         |                   76 |               76 |
+| P-Primaria incompleta\_\_M-No Aplica                                             |                   76 |               76 |
+| P-Ninguno\_\_M-Educación profesional incompleta                                  |                   73 |               73 |
+| P-Técnica o tecnológica incompleta\_\_M-No sabe                                  |                   65 |               65 |
+| P-Educación profesional completa\_\_M-Ninguno                                    |                   62 |               62 |
+| P-Educación profesional completa\_\_M-No Aplica                                  |                   57 |               57 |
+| P-Técnica o tecnológica completa\_\_M-No Aplica                                  |                   57 |               57 |
+| P-No sabe\_\_M-No Aplica                                                         |                   56 |               56 |
+| P-Secundaria (Bachillerato) incompleta\_\_M-No Aplica                            |                   54 |               54 |
+| P-Técnica o tecnológica completa\_\_M-Ninguno                                    |                   49 |               49 |
+| P-Técnica o tecnológica incompleta\_\_M-Ninguno                                  |                   47 |               47 |
+| P-Primaria completa\_\_M-No Aplica                                               |                   47 |               47 |
+| P-Postgrado\_\_M-Primaria completa                                               |                   44 |               44 |
+| P-Postgrado\_\_M-Primaria incompleta                                             |                   41 |               41 |
+| P-Ninguno\_\_M-No Aplica                                                         |                   28 |               28 |
+| P-Ninguno\_\_M-Postgrado                                                         |                   27 |               27 |
+| P-Educación profesional incompleta\_\_M-Ninguno                                  |                   24 |               24 |
+| P-Postgrado\_\_M-No Aplica                                                       |                   17 |               17 |
+| P-Educación profesional incompleta\_\_M-No Aplica                                |                   15 |               15 |
+| P-Técnica o tecnológica incompleta\_\_M-No Aplica                                |                   11 |               11 |
+| P-Postgrado\_\_M-Ninguno                                                         |                    8 |                8 |
 
 ```{python}
+#| cache: true
+#| echo: false
 values = ["P-Secundaria (Bachillerato) completa__M-Secundaria (Bachillerato) completa",
          "P-Educación profesional completa__M-Educación profesional completa",
          "P-Primaria completa__M-Primaria completa",

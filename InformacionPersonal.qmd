@@ -54,12 +54,14 @@ table {
 #| results: hide
 library(reticulate)
 reticulate::conda_list()
-Sys.setenv(RETICULATE_PYTHON = "C:/Users/GeorgeVega/anaconda3/envs/TalentoTECH")
+#Sys.setenv(RETICULATE_PYTHON = "C:/Users/GeorgeVega/anaconda3/envs/TalentoTECH")
+Sys.setenv(RETICULATE_PYTHON = "C:/Users/ocamp/.conda/envs/TalentoTECH")
 ```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_knit$set(root.dir = "E:/17. TalentoTECH/Proyecto")
+#knitr::opts_knit$set(root.dir = "E:/17. TalentoTECH/Proyecto")
+knitr::opts_knit$set(root.dir = "C:/Users/ocamp/Downloads/Proyecto")
 getwd()
 ```
 
@@ -165,11 +167,35 @@ fig1.show()
 
 ```{python}
 #| cache: true
-
+#| eval: false
 values2=df2['ESTU_ETNIA'].value_counts()
 print(values2)
 print("Total=                          ",values2.sum())
 ```
+
+| ESTU_ETNIA                    |        count |
+|:------------------------------|-------------:|
+| Ninguno                       |       365782 |
+| Comunidad afrodescendiente    |        13009 |
+| Zenú                          |         2115 |
+| Otro grupo étnico minoritario |         1895 |
+| Wayúu                         |         1379 |
+| Pasto                         |         1190 |
+| Paez                          |          981 |
+| Emberá                        |          507 |
+| Pijao                         |          438 |
+| Raizal                        |          278 |
+| Inga                          |          141 |
+| Cancuamo                      |          132 |
+| Sikuani                       |          110 |
+| Guambiano                     |           94 |
+| Cubeo                         |           72 |
+| Palenquero                    |           55 |
+| Arhuaco                       |           54 |
+| Huitoto                       |           45 |
+| Tucano                        |           24 |
+| Comunidades Rom (Gitanas)     |            9 |
+| **Total**                     | **38388310** |
 
 ```{python}
 #| fig-cap: "Analisis por etnia"

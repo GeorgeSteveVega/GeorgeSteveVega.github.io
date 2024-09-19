@@ -54,12 +54,14 @@ table {
 #| results: hide
 library(reticulate)
 reticulate::conda_list()
-Sys.setenv(RETICULATE_PYTHON = "C:/Users/GeorgeVega/anaconda3/envs/TalentoTECH")
+#Sys.setenv(RETICULATE_PYTHON = "C:/Users/GeorgeVega/anaconda3/envs/TalentoTECH")
+Sys.setenv(RETICULATE_PYTHON = "C:/Users/ocamp/.conda/envs/TalentoTECH")
 ```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_knit$set(root.dir = "E:/17. TalentoTECH/Proyecto")
+#knitr::opts_knit$set(root.dir = "E:/17. TalentoTECH/Proyecto")
+knitr::opts_knit$set(root.dir = "C:/Users/ocamp/Downloads/Proyecto")
 getwd()
 ```
 
@@ -101,8 +103,8 @@ import plotly.figure_factory as ff
 #| echo: false
 #| warning: false
 #| results: hide
-os.chdir("E:/17. TalentoTECH/Proyecto")
-#os.chdir("C:/Users/ocamp/Downloads/Proyecto")
+#os.chdir("E:/17. TalentoTECH/Proyecto")
+os.chdir("C:/Users/ocamp/Downloads/Proyecto")
 os.getcwd()
 ```
 

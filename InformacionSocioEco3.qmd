@@ -1,0 +1,184 @@
+---
+title: Información socioeconomica
+#subtitle: Inteligencia Artificial
+#author: George Vega
+#date-format: "MM-YYYY"
+#date: 16-08-2024
+cls: apa.csl
+colorlinks: true
+#bibliography: References.bib
+engine: knitr
+jupyter: python3
+execute:
+  echo: true
+  warning: false
+  error: false
+format:
+ html:
+   toc: true
+   grid:
+      sidebar-width: 200px
+      body-width: 900px
+      margin-width: 100px
+      gutter-width: 1em
+   toc-location: left
+   #fig-width: 5
+   #fig-height: 5
+   code-fold: show
+   embed-resources: true
+   self-contained-math: true
+   # other-links:
+   #    - text: Resultados Saber 11 2019-2
+   #      href: https://www.datos.gov.co/Educaci-n/2019-2-Desempe-o-en-Matem-ticas-de-los-estudiantes/3qm6-df8e
+ipynb-shell-interactivity: last
+knitr:
+  opts_chunk: 
+    collapse: true
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+```{=html}
+<style scoped>
+table {
+  font-size: 11px;
+
+}
+</style>
+```
+```{r}
+#| label: reticulate
+#| echo: false
+#| warning: false
+#| results: hide
+library(reticulate)
+reticulate::conda_list()
+#Sys.setenv(RETICULATE_PYTHON = "C:/Users/GeorgeVega/anaconda3/envs/TalentoTECH")
+Sys.setenv(RETICULATE_PYTHON = "C:/Users/ocamp/.conda/envs/TalentoTECH")
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#knitr::opts_knit$set(root.dir = "E:/17. TalentoTECH/Proyecto")
+knitr::opts_knit$set(root.dir = "C:/Users/ocamp/Downloads/Proyecto")
+getwd()
+```
+
+```{python}
+#| label: paquetes
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+import plotly.express as pex
+import plotly.graph_objects as go
+import plotly.io as pio
+import seaborn as sb
+import plotly.figure_factory as ff
+```
+
+```{python}
+#| label: lectura datos
+#| warning: false
+#| echo: false
+df2 = pd.read_csv('Saber1120192_Mod.csv', header='infer')
+```
+
+
+
+```{python}
+#| cache: true
+#| echo: false
+Libros = ["0 A 10 LIBROS","11 A 25 LIBROS","26 A 100 LIBROS", "MÁS DE 100 LIBROS"]
+df6= pd.Categorical(df2["FAMI_NUMLIBROS"],categories= Libros)
+df6 =  df2.sort_values(by='FAMI_NUMLIBROS')
+df6[["FAMI_NUMLIBROS"]].value_counts().reset_index()
+```
+
+```{python}
+#| cache: true
+#| echo: false
+LEER = ["No leo por entretenimiento","30 minutos o menos","Entre 30 y 60 minutos","Entre 1 y 2 horas", "Más de 2 horas"]
+df2["ESTU_DEDICACIONLECTURADIARIA"]= pd.Categorical(df2["ESTU_DEDICACIONLECTURADIARIA"],categories= LEER)
+df8 =  df2.sort_values(by='ESTU_DEDICACIONLECTURADIARIA')
+df8[["ESTU_DEDICACIONLECTURADIARIA"]].value_counts().reset_index()
+```
+
+```{python}
+#| cache: true
+#| echo: false
+import plotly.graph_objects as go
+
+import pandas as pd
+
+fig = go.Figure()
+
+fig=fig.add_trace(go.Violin(x=df6['FAMI_NUMLIBROS'],
+                        y=df6['PUNT_MATEMATICAS'],
+                        legendgroup='Matematicas', scalegroup='Puntaje Matematicas', name='Puntaje Matematicas',
+                        side='negative',
+                        line_color='blue')
+             )
+fig=fig.add_trace(go.Violin(x=df6['FAMI_NUMLIBROS'],
+                         y=df6['PUNT_LECTURA_CRITICA'],
+                        legendgroup='Puntaje Lectura critica', scalegroup='Puntaje Lectura critica', name='Puntaje Lectura critica',
+                        side='positive',
+                        line_color='orange')
+)
+
+
+fig=fig.update_traces(meanline_visible=True)
+fig=fig.update_layout(legend=dict(
+        x=-0.1,
+        y=-0.2,
+        traceorder="normal",
+        font=dict(
+            family="sans-serif",
+            size=12,
+            color="black"
+        ),
+    ),title="Puntajes discriminados por profesion de los padres",
+    margin=dict(t=50, b=10, l=20, r=20),
+    yaxis=dict(title='Puntaje'),
+    violingap=0, violinmode='overlay',height=500, width=700
+)
+fig=fig.update_xaxes(range=[-0.5, 3.5])
+fig=fig.update_xaxes()
+fig.show()
+
+fig1 = go.Figure()
+
+fig1=fig1.add_trace(go.Violin(x=df8['ESTU_DEDICACIONLECTURADIARIA'],
+                        y=df8['PUNT_MATEMATICAS'],
+                        legendgroup='Matematicas', scalegroup='Puntaje Matematicas', name='Puntaje Matematicas',
+                        side='negative',
+                        line_color='red')
+             )
+fig1=fig1.add_trace(go.Violin(x=df8["ESTU_DEDICACIONLECTURADIARIA"],
+                         y=df8['PUNT_LECTURA_CRITICA'],
+                        legendgroup='Puntaje Lectura critica', scalegroup='Puntaje Lectura critica', name='Puntaje Lectura critica',
+                        side='positive',
+                        line_color='green')
+)
+
+
+fig1=fig1.update_traces(meanline_visible=True)
+fig1=fig1.update_layout(legend=dict(
+        x=-0.1,
+        y=-0.35,
+        traceorder="normal",
+        font=dict(
+            family="sans-serif",
+            size=12,
+            color="black"
+        ),
+    ),title="Puntajes discriminados por profesion de los padres",
+    margin=dict(t=50, b=10, l=20, r=20),
+    yaxis=dict(title='Puntaje'),
+    violingap=0, violinmode='overlay',height=500, width=700
+)
+fig1=fig1.update_xaxes(range=[-0.5, 4.5])
+fig1=fig1.update_xaxes()
+fig1.show()
+```
