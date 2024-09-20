@@ -24,7 +24,7 @@ format:
    toc-location: left
    #fig-width: 5
    #fig-height: 5
-   code-fold: show
+   code-fold: false
    embed-resources: true
    self-contained-math: true
    # other-links:
@@ -95,6 +95,12 @@ df4=df3.pivot_table(index=["Profesiones"], values={"Profesiones",'PUNT_MATEMATIC
 df4=df4.sort_values(by='PUNT_MATEMATICAS', ascending=False)
 ```
 
+**Análisis por profesión de los padres:**
+
+-   Se realiza el análisis teniendo en cuenta  todas las combinaciones de los posibles estudios realizados por los padres, con base en lo anterior se evidencia la combinación que más se repite es  donde el padre bachiller y la madre también con 43275 conteos
+
+-   En segundo lugar se encuentran los padres los cuales no completaron sus estudios de primaria y en tercer lugar se encuentran los padres que no terminaron la secundaria esto se debe a que años atrás el culminar los estudios no presentaba una relevancia importante en el desarrollo personal.
+
 ```{python}
 #| echo: false
 #| eval: false
@@ -102,7 +108,7 @@ print(df4.to_markdown())
 ```
 
 | Profesiones                                                                      | PUNT_LECTURA_CRITICA | PUNT_MATEMATICAS |
-|:--------------------------------------|----------------:|----------------:|
+|:------------------------------------|-----------------:|-----------------:|
 | P-Secundaria (Bachillerato) completa\_\_M-Secundaria (Bachillerato) completa     |                43275 |            43275 |
 | P-Primaria incompleta\_\_M-Primaria incompleta                                   |                30925 |            30925 |
 | P-Secundaria (Bachillerato) incompleta\_\_M-Secundaria (Bachillerato) incompleta |                17897 |            17897 |
@@ -260,6 +266,10 @@ values = ["P-Secundaria (Bachillerato) completa__M-Secundaria (Bachillerato) com
          ]
 df5=df3[df3['Profesiones'].isin(values)]
 ```
+
+-   Aún así en cuarta posición se presentan conteos donde ambos padres tienen al menos educación profesional en la gráfica obtenido se realiza el análisis donde ambos padres presentan los mismos estudios para conocer su influencia sobre los resultados de sus hijos en las pruebas saber Pro :
+
+    -   Para los estudiantes cuyos padres no estudiaron se presentan resultados aproximadamente de 40 puntos en promedio para matemáticas y 44 puntos para lectura crítica. Se observa una tendencia creciente a medida de que los padres obtienen títulos de mayor grado 67 puntos para matemáticas y 66 puntos de lectura.
 
 ```{python}
 #| cache: true

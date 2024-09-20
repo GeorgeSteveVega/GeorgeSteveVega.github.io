@@ -24,7 +24,7 @@ format:
    toc-location: left
    #fig-width: 5
    #fig-height: 5
-   code-fold: show
+   code-fold: false
    embed-resources: true
    self-contained-math: true
    # other-links:
@@ -101,41 +101,51 @@ df3=df2[["ESTU_NACIONALIDAD",'ESTU_PAIS_RESIDE', 'ESTU_DEPTO_RESIDE']].value_cou
 df3
 ```
 
-|    | ESTU_NACIONALIDAD   | ESTU_PAIS_RESIDE   | ESTU_DEPTO_RESIDE   |   count |
-|---:|:--------------------|:-------------------|:--------------------|--------:|
-|  0 | COLOMBIA            | COLOMBIA           | BOGOTÁ              |   61201 |
-|  1 | COLOMBIA            | COLOMBIA           | ANTIOQUIA           |   53579 |
-|  2 | COLOMBIA            | COLOMBIA           | VALLE               |   27616 |
-|  3 | COLOMBIA            | COLOMBIA           | CUNDINAMARCA        |   25539 |
-|  4 | COLOMBIA            | COLOMBIA           | ATLANTICO           |   22395 |
-|  5 | COLOMBIA            | COLOMBIA           | SANTANDER           |   19080 |
-|  6 | COLOMBIA            | COLOMBIA           | BOLIVAR             |   16976 |
-|  7 | COLOMBIA            | COLOMBIA           | BOYACA              |   13305 |
-|  8 | COLOMBIA            | COLOMBIA           | CORDOBA             |   13284 |
-|  9 | COLOMBIA            | COLOMBIA           | TOLIMA              |   12331 |
-| 10 | COLOMBIA            | COLOMBIA           | NARIÑO              |   11941 |
-| 11 | COLOMBIA            | COLOMBIA           | NORTE SANTANDER     |   11895 |
-| 12 | COLOMBIA            | COLOMBIA           | MAGDALENA           |   10808 |
-| 13 | COLOMBIA            | COLOMBIA           | HUILA               |    9527 |
-| 14 | COLOMBIA            | COLOMBIA           | CESAR               |    9368 |
-| 15 | COLOMBIA            | COLOMBIA           | CAUCA               |    8639 |
-| 16 | COLOMBIA            | COLOMBIA           | META                |    8468 |
-| 17 | COLOMBIA            | COLOMBIA           | RISARALDA           |    8248 |
-| 18 | COLOMBIA            | COLOMBIA           | CALDAS              |    7947 |
-| 19 | COLOMBIA            | COLOMBIA           | SUCRE               |    7550 |
-| 20 | COLOMBIA            | COLOMBIA           | LA GUAJIRA          |    5644 |
-| 21 | COLOMBIA            | COLOMBIA           | QUINDIO             |    4835 |
-| 22 | COLOMBIA            | COLOMBIA           | CASANARE            |    4323 |
-| 23 | COLOMBIA            | COLOMBIA           | CAQUETA             |    3174 |
-| 24 | COLOMBIA            | COLOMBIA           | CHOCO               |    2987 |
-| 25 | COLOMBIA            | COLOMBIA           | PUTUMAYO            |    2837 |
-| 26 | COLOMBIA            | COLOMBIA           | ARAUCA              |    2463 |
-| 27 | COLOMBIA            | COLOMBIA           | GUAVIARE            |     637 |
-| 28 | COLOMBIA            | COLOMBIA           | SAN ANDRES          |     505 |
-| 29 | COLOMBIA            | COLOMBIA           | AMAZONAS            |     497 |
-| 30 | COLOMBIA            | COLOMBIA           | VICHADA             |     345 |
-| 31 | COLOMBIA            | COLOMBIA           | VAUPES              |     208 |
-| 32 | COLOMBIA            | COLOMBIA           | GUAINIA             |     158 |
+|     | ESTU_NACIONALIDAD | ESTU_PAIS_RESIDE | ESTU_DEPTO_RESIDE | count |
+|----:|:------------------|:-----------------|:------------------|------:|
+|   0 | COLOMBIA          | COLOMBIA         | BOGOTÁ            | 61201 |
+|   1 | COLOMBIA          | COLOMBIA         | ANTIOQUIA         | 53579 |
+|   2 | COLOMBIA          | COLOMBIA         | VALLE             | 27616 |
+|   3 | COLOMBIA          | COLOMBIA         | CUNDINAMARCA      | 25539 |
+|   4 | COLOMBIA          | COLOMBIA         | ATLANTICO         | 22395 |
+|   5 | COLOMBIA          | COLOMBIA         | SANTANDER         | 19080 |
+|   6 | COLOMBIA          | COLOMBIA         | BOLIVAR           | 16976 |
+|   7 | COLOMBIA          | COLOMBIA         | BOYACA            | 13305 |
+|   8 | COLOMBIA          | COLOMBIA         | CORDOBA           | 13284 |
+|   9 | COLOMBIA          | COLOMBIA         | TOLIMA            | 12331 |
+|  10 | COLOMBIA          | COLOMBIA         | NARIÑO            | 11941 |
+|  11 | COLOMBIA          | COLOMBIA         | NORTE SANTANDER   | 11895 |
+|  12 | COLOMBIA          | COLOMBIA         | MAGDALENA         | 10808 |
+|  13 | COLOMBIA          | COLOMBIA         | HUILA             |  9527 |
+|  14 | COLOMBIA          | COLOMBIA         | CESAR             |  9368 |
+|  15 | COLOMBIA          | COLOMBIA         | CAUCA             |  8639 |
+|  16 | COLOMBIA          | COLOMBIA         | META              |  8468 |
+|  17 | COLOMBIA          | COLOMBIA         | RISARALDA         |  8248 |
+|  18 | COLOMBIA          | COLOMBIA         | CALDAS            |  7947 |
+|  19 | COLOMBIA          | COLOMBIA         | SUCRE             |  7550 |
+|  20 | COLOMBIA          | COLOMBIA         | LA GUAJIRA        |  5644 |
+|  21 | COLOMBIA          | COLOMBIA         | QUINDIO           |  4835 |
+|  22 | COLOMBIA          | COLOMBIA         | CASANARE          |  4323 |
+|  23 | COLOMBIA          | COLOMBIA         | CAQUETA           |  3174 |
+|  24 | COLOMBIA          | COLOMBIA         | CHOCO             |  2987 |
+|  25 | COLOMBIA          | COLOMBIA         | PUTUMAYO          |  2837 |
+|  26 | COLOMBIA          | COLOMBIA         | ARAUCA            |  2463 |
+|  27 | COLOMBIA          | COLOMBIA         | GUAVIARE          |   637 |
+|  28 | COLOMBIA          | COLOMBIA         | SAN ANDRES        |   505 |
+|  29 | COLOMBIA          | COLOMBIA         | AMAZONAS          |   497 |
+|  30 | COLOMBIA          | COLOMBIA         | VICHADA           |   345 |
+|  31 | COLOMBIA          | COLOMBIA         | VAUPES            |   208 |
+|  32 | COLOMBIA          | COLOMBIA         | GUAINIA           |   158 |
+
+**Análisis por departamentos de residencia**
+
+En los resultados por departamento se confirma que 
+
+-   Los que se encuentran ubicados en las periferias de Colombia presentan un menor puntaje en las pruebas. En los lugares marginados de Colombia, se ve afectada la educación por difícil acceso y por baja calidad de la existente, ejemplo de ello el Chocó y el Amazonas. 
+
+-   Así mismo, se evidencia que en los departamentos grandes del país presentan mejores resultados en las pruebas, con excepción de Boyacá, que a pesar de no ser considerado uno de los departamentos con alta densidad urbana tiene puntajes altos en las dos pruebas. 	
+
+-   Se corrobora que el aspecto económico de los departamentos influye en los resultados como el caso de Santander, considerado como la quinta economía del país, presentando puntajes altos en las dos pruebas a pesar de no tener gran densidad poblacional urbana. 
 
 ```{python}
 #| cache: true

@@ -24,7 +24,7 @@ format:
    toc-location: left
    #fig-width: 5
    #fig-height: 5
-   code-fold: show
+   code-fold: false
    embed-resources: true
    self-contained-math: true
    # other-links:
@@ -92,6 +92,12 @@ df2 = pd.read_csv('Saber1120192_Mod.csv', header='infer')
 
 df2["ESTU_DEDICACIONINTERNET"].unique()
 ```
+
+**Análisis con base en las horas dedicadas a internet**
+
+-   En las gráficas se puede observar que en la medida que aumenta el tiempo de navegación en internet aumenta los puntajes en la prueba de lectura crítica, lo cual se encuentra justificado en el hecho de que navegar en internet implica lectura y acceso a la información independientemente de las áreas en las que se realice. 
+
+-   Los puntajes en las pruebas de matemáticas también aumentan con el tiempo de navegación en internet, es así como en esta última década la cantidad de libros disponibles para áreas específicas ha venido en aumento, asi como recursos videográficos que permiten a los estudiantes adquirir mayor información y recursos  de un tema puntual
 
 ```{python}
 #| layout-ncol: 2

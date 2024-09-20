@@ -24,7 +24,7 @@ format:
    toc-location: left
    #fig-width: 5
    #fig-height: 5
-   code-fold: show
+   code-fold: false
    embed-resources: true
    self-contained-math: true
    other-links:
@@ -108,14 +108,20 @@ os.chdir("E:/17. TalentoTECH/Proyecto")
 os.getcwd()
 ```
 
+Para para conocer como influencia los factores socioeconómicos sobre el desempeño en las pruebas de matemáticas y lectura se tomaron los datos suministrados por el servicio de información del Estado colombiano 
+
+Se importó la base de datos a python donde se evidenció que se Tenían un total de 546 212 registros en 82 columnas las cuales en su mayoría contienen aspectos personales socio económicos e información del colegio
+
 ```{python}
 #| label: lectura datos
 #| warning: false
-#| echo: false
+#| echo: true
 df = pd.read_csv('Saber1120192.csv', header='infer')
 ```
 
 ## Variables
+
+A continuación se evidencias las columnas establecidad y su tipo de variable
 
 ```{python}
 #| cache: true
@@ -124,11 +130,15 @@ df.info()
 
 ## Pre-procesamiento de datos
 
+Incialmente se realizó una limpieza de los datos donde se eliminaron todos los resultados no existentes obteniendo un total de 489561 datos
+
 ```{python}
 #| label: Eliminar NA
 df2=df.dropna()
 df2.shape
 ```
+
+Se realizó una verificación de la columna etnia donde no se registraba ningún valor, esto se modificó para determinar que estas personas no se categorizaban dentro de una etnia específica
 
 ```{python}
 #| label: Ajuste etnia
@@ -151,16 +161,12 @@ df2.ESTU_ETNIA = df.ESTU_ETNIA.replace({"-":"Ninguno"})
 ```
 
 ```{python}
-#df2.shape
-#df2.info()
-```
-
-```{python}
 #| label: ajuste etnia 3
 col = df2.pop("ESTU_ETNIA")
 df2.insert(9, col.name, col)
-#df2.info()
 ```
+
+De igual manera se realizo el filtro para las personas que se encuentran en Colombia y acceden a la educación en este pais; a partir de ello se obtuvieron un total de 388, 312 datos para analizar
 
 ```{python}
 #| label: ajuste residencia

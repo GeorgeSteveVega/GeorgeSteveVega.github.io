@@ -24,7 +24,7 @@ format:
    toc-location: left
    #fig-width: 5
    #fig-height: 5
-   code-fold: show
+   code-fold: false
    embed-resources: true
    self-contained-math: true
    # other-links:
@@ -88,7 +88,7 @@ df2 = pd.read_csv('Saber1120192_Mod.csv', header='infer')
 Constituida de 17 variables que permiten identificar el tipo de educación recibida, ubicación y jornada de estudio.
 
 | N°  | VARIABLE                      | DESCRIPCION                   | ITEMS                                                                                              |
-|-----|-------------------------------|-------------------------------|----------------------------------------------------------------------------------------------------|
+|------------|------------|------------|------------------------------------|
 | 39  | COLE_CODIGO_ICFES             | Codigo ICFES Colegio          | Código Icfes de la sede-jornada<br>Numérica                                                        |
 | 40  | COLE_COD_DANE_ESTABLECIMIENTO | Codigo DANE Colegio           | Código Dane del Establecimiento Educativo<br>Numérica                                              |
 | 41  | COLE_NOMBRE_ESTABLECIMIENTO   | Colegio                       | Nombre del Establecimiento<br>Texto                                                                |
@@ -107,6 +107,14 @@ Constituida de 17 variables que permiten identificar el tipo de educación recib
 | 54  | COLE_COD_DEPTO_UBICACION      | Codigo Ubicación Departamento | Código Dane del departamento<br>de la Sede<br>Numérica                                             |
 | 55  | COLE_DEPTO_UBICACION          | Ubicación Departamento        | Nombre del departamento donde está ubicada la Sede<br>Texto                                        |
 
+**Análisis con base en la jornada del colegio**
+
+-   En cuanto a los tipos de jornada de los colegios, se evidencia que la jornada completa presenta mayores puntajes tanto en lectura crítica como en matemáticas, lo que significa que incrementar las horas pedagógicas en las instituciones educativas tiene una influencia positiva sobre los resultados
+
+-   Corroborando la importancia del tiempo invertido en las jornadas pedagógicas, se encuentra la jornada sabatina donde se presenta un mayor número de puntajes bajos tanto en matemáticas como en lectura crítica debido a la carga horaria limitada, en la mayoría de los casos estas personas presentan desafíos personales, laborales o condiciones socioeconómicas que afectan su rendimiento . 
+
+-   La flexibilidad horaria tiene una gran influencia sobre la estructura académica y el apoyo brindado a los estudiantes lo que repercute sustancialmente sobre el desempeño en las pruebas
+
 ```{python}
 #| cache: true
 #| echo: false
@@ -114,7 +122,7 @@ import plotly.express as px
 
 fig = px.scatter(df2, x=df2['PUNT_MATEMATICAS'],  y=df2['PUNT_LECTURA_CRITICA'], color=df2["COLE_JORNADA"],symbol=df2["COLE_JORNADA"],
                  marginal_x="histogram", marginal_y="histogram",
-                  title="Click on the legend items!")
+                  title="Relacion de los puntajes obtenidos en función de la jornada")
 fig = fig.update_layout(legend=dict(
         x=-0.1,
         y=-0.5,
@@ -144,6 +152,12 @@ fig.layout.yaxis4.domain = (y2_, 1.0)
 
 fig.show()
 ```
+
+**Análisis con base en el tipo de colegio.**
+
+-   Los resultados para las pruebas analizadas difieren dependiendo del tipo de colegio, es así como en los colegios privados se obtienen mayores puntajes en promedio, esto puede ser debido a los recursos dispuestos por las entidades privadas donde el presupuesto, los recursos y la financiación  es mayor, permitiendo invertir en infraestructura, tecnología y material educativo.
+
+-   Así mismo, los colegios privados pueden adaptarse de manera mejor a las necesidades de los estudiantes, generando competencias más especializadas y con mayor tiempo de dedicación, lastimosamente  las escuelas públicas tienen mayores desafíos para mantener a sus estudiantes enfocados, una mayor número de estudiantes o a la diversidad de situaciones socio-económicas pueden afectar el desempeño de algunos estudiantes.
 
 ```{python}
 #| layout-ncol: 2
@@ -203,6 +217,14 @@ fig4=fig4.for_each_trace(lambda t: t.update(name = newnames[t.name],
 fig3.show()
 fig4.show()
 ```
+
+**Análisis con base en la zona del colegio.**
+
+-   El impacto que tiene la zona (rural o urbana) en los resultados es relevante, de tal manera que en la zona rural se encuentran más cantidad de puntajes menores en las pruebas, lo que puede atribuirse a los escasos recursos que se tienen en estas zonas, tanto en infraestructura como en recurso humano. Disminuyendo de esta manera no solo la cantidad de población que puede acceder a la educación, sino también la calidad de la educación recibida. 
+
+-   Por el contrario en la zona urbana los recursos son mayores, por lo tanto la posibilidad de tener mejores infraestructuras, material pedagógico, cantidad de personal calificado y especializado es mayor, lo cual se evidencia en mejores resultados de los estudiantes analizados. Adicionalmente, en la zona urbana se cuenta con otros tipos de instituciones, como los colegios técnicos o comerciales ya sean públicos o privados lo cuales tienen una mayor capacidad para brindar  una educación de mayor calidad  
+
+-   Las zonas urbanas cuentan con una prioridad más alta por parte del gobierno debido a la densidad poblacional, el desarrollo económico y un mercado laboral más amplio, lo cual no demerita la importancia de las zonas urbanas para la producción de alimentos y sus recursos naturales disponibles. La educación en las zonas rurales están encaminadas al desarrollo agroeconómico, razón por la cual se dejan de lado estas competencias básicas que se llevan a cabo en la educación media.
 
 ```{python}
 #| layout-ncol: 2

@@ -24,7 +24,7 @@ format:
    toc-location: left
    #fig-width: 5
    #fig-height: 5
-   code-fold: show
+   code-fold: false
    embed-resources: true
    self-contained-math: true
    # other-links:
@@ -85,6 +85,10 @@ import plotly.figure_factory as ff
 df2 = pd.read_csv('Saber1120192_Mod.csv', header='infer')
 ```
 
+**Análisis por aspectos relacionados con la lectura:**
+
+-   Uno de los aspectos más importantes para los puntajes relacionados con la lectura es el número de libros con los que se cuenta en casa  y el tiempo dedicación a la lectura, es así como se evidencia que de las personas que presentaron la prueba, la mitad solo tienen de 0 a 10 libros y  aproximadamente la misma cantidad solo dedica  30 minutos o menos a la lectura diaria explicando los bajos resultados en las pruebas Pisa
+
 ```{python}
 #| cache: true
 #| echo: false
@@ -102,6 +106,8 @@ df2["ESTU_DEDICACIONLECTURADIARIA"]= pd.Categorical(df2["ESTU_DEDICACIONLECTURAD
 df8 =  df2.sort_values(by='ESTU_DEDICACIONLECTURADIARIA')
 df8[["ESTU_DEDICACIONLECTURADIARIA"]].value_counts().reset_index()
 ```
+
+-   Se realiza el análisis para ver cuál es la influencia de los aspectos relacionados con la lectura sobre las pruebas saber Pro; allí se identifica que las personas que tienen más de 100 libros presentan los resultados más altos en las pruebas de matemáticas y lectura crítica con un puntaje de 57 y 58 respectivamente. En contraposición las personas que menos leen presentan resultados más bajos.
 
 ```{python}
 #| cache: true
@@ -180,3 +186,5 @@ fig1=fig1.update_xaxes(range=[-0.5, 4.5])
 fig1=fig1.update_xaxes()
 fig1.show()
 ```
+
+-   Los resultados de matemáticas presentan una tendencia decente en función del tiempo de lectura, se debe tener en cuenta que los resultados de matemáticas están relacionados directamente con los resultados de lectura crítica,  poder dar respuesta a las preguntas de matemáticas se debe leer  y entender el contexto de las preguntas, es así como personas que menos leen presentan resultados de matemáticas más bajos respecto a los que leen en mayor medida

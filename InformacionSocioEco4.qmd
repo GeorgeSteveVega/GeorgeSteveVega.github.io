@@ -24,7 +24,7 @@ format:
    toc-location: left
    #fig-width: 5
    #fig-height: 5
-   code-fold: show
+   code-fold: false
    embed-resources: true
    self-contained-math: true
    # other-links:
@@ -84,6 +84,14 @@ import plotly.figure_factory as ff
 #| echo: false
 df2 = pd.read_csv('Saber1120192_Mod.csv', header='infer')
 ```
+
+**Análisis teniendo en cuenta las horas laborales y el tipo de remuneración**
+
+-   El análisis de las horas laborales y el tipo de remuneración evidencia que la mayor parte de las personas analizadas presentan trabajos informales o no trabajan, a pesar de ello no se evidencia una clara influencia de las horas laborales sobre el puntaje de las pruebas.
+
+-   Se observan con una mayor frecuencia resultados más altos en las personas que no trabajan ,esto puede ser debido a que tienen más tiempo para dedicarse al estudio.
+
+-   Los resultados de tipo de remuneración versus horas laborales trabajadas presentan incongruencias, razón por lo cual se recomienda revisar el método de encuesta teniendo en cuenta que los resultados obtenidos no son completamente coherentes, no es comprensible como las personas que no trabajan tengan algún tipo de remuneración, de igual manera tampoco se hace distinción entre la remuneración en efectivo y la remuneración en especie lo cual no permite conocer su influencia sobre los resultados obtenidos .
 
 ```{python}
 #| cache: true
@@ -146,6 +154,14 @@ df12=df12.rename(columns={"FAMI_COMECEREALFRUTOSLEGUMBRE": "CANTIDAD"})
 #| echo: false
 df14 = pd.concat([df10,df11,df12],ignore_index=True)
 ```
+
+**Análisis teniendo en cuenta la alimentación.**
+
+-   Se realiza el análisis de la relación existente entre una alimentación sana, lo cual incluye proteína, verduras, frutas, leches y derivados y los resultados en las pruebas, corroborando que la relación es directa, lo que se puede entender por dos factores. 
+
+-   En primer lugar, de acuerdo a la condición económica se puede tener acceso a dicha alimentación y determina su regularidad, lo que significa que si existen buenas condiciones económicas la calidad de vida aumenta y con ello aumenta su rendimiento académico. 
+
+-   En segundo lugar, efectivamente los aportes nutricionales de estos alimentos inciden directamente en el funcionamiento del organismo, incluyendo el cerebro. Como se puede ver en las gráficas las personas que consumen estos alimentos todos o casi todos los días, tienen mejores puntajes en matemáticas y en lectura crítica respecto a la población con menor regularidad en el consumo de estos alimentos.
 
 ```{python}
 #| layout-ncol: 2

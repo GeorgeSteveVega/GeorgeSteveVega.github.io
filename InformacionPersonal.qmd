@@ -24,7 +24,7 @@ format:
    toc-location: left
    #fig-width: 5
    #fig-height: 5
-   code-fold: show
+   code-fold: false
    embed-resources: true
    self-contained-math: true
    # other-links:
@@ -85,7 +85,7 @@ import plotly.figure_factory as ff
 df2 = pd.read_csv('Saber1120192_Mod.csv', header='infer')
 ```
 
-Se incluyen 10 varibles incluyendo la información personal del colaborador, entre las cuales se incluye identificación, género, etnia, entre otros.
+Se incluyen 10 varibles incluyendo la información personal de la persona que presenta la prueba, entre las cuales se incluye identificación, género, etnia, entre otros.
 
 | N°  | VARIABLE             | DESCRIPCION      | ITEMS                                                                                                                                                                                                                                                                                                                                                                                         |
 |------------------|------------------|------------------|-------------------|
@@ -99,6 +99,26 @@ Se incluyen 10 varibles incluyendo la información personal del colaborador, ent
 | 8   | ESTU_TIENEETNIA      | Tiene etnia      | ¿Pertenece usted a un grupo<br>étnico minoritario?<br>SI<br>NO                                                                                                                                                                                                                                                                                                                                |
 | 9   | ESTU_PAIS_RESIDE     | Pais residencia  | Pais de residencia                                                                                                                                                                                                                                                                                                                                                                            |
 | 10  | ESTU_ETNIA           | Etnia            | ¿Cuál es el grupo étnico minoritario al que pertenece?<br>Arhuaco<br>Cancuamo<br>Comunidad afrodescendiente<br>Comunidades Rom (Gitanas)<br>Cubeo<br>Emberá<br>Guambiano<br>Huitoto<br>Inga<br>Paez<br>Palenquero<br>Pasto<br>Pijao<br>Raizal<br>Sikuani<br>Tucano<br>Wayúu<br>Zenú<br>Otro grupo étnico minoritario<br>Ninguno                                                               |
+
+**Análisis por género:**
+
+Se evidencia que el 54,8% de la población que presentó las pruebas en el año 2019 es femenina.
+
+Realizando un comparativo entre los dos géneros de los puntajes presentados, en la prueba de matemáticas se observa que 
+
+-   La población masculina tiene puntajes más altos respecto a la población femenina, ya que el 75% de la población masculina tiene puntajes menores de 62, con una media de 54. 
+
+-   La población femenina tiene puntajes menores a 58 con una media de 50.
+
+-   En cuanto a la lectura crítica los puntajes de las dos poblaciones fueron similares, con una media de 54 para la población masculina y de 53 para la femenina. 
+
+-   Adicionalmente, se puede observar que existe una relación directa entre los puntajes en matemáticas y lectura crítica.
+
+-   En los datos registrados se encuentran 4 puntajes de cero en lectura crítica, lo que puede ocurrir por dos razones:
+
+    -   La persona no sabe leer y contestó al azar la prueba de matemáticas.
+
+    -   La persona dejó la prueba de lectura crítica al final del examen y se culminó el tiempo de desarrollo quedando esta prueba sin respuestas. 
 
 ```{python}
 #| label: fig-gapminder
@@ -165,6 +185,14 @@ fig1.show()
 
 ```
 
+**Análisis por etnia:**
+
+En cuanto a los puntajes discriminados por etnia, se encuentra que
+
+-   365.782 personas no se consideran de alguna etnia, siendo la mayor parte de la población y que tiene un mayor puntaje, tanto en la prueba de matemáticas como en lectura crítica.
+
+-   Seguido a este se encuentra la comunidad afrodescendiente y Zenú como etnias mayoritarias.
+
 ```{python}
 #| cache: true
 #| eval: false
@@ -196,6 +224,8 @@ print("Total=                          ",values2.sum())
 | Tucano                        |           24 |
 | Comunidades Rom (Gitanas)     |            9 |
 | **Total**                     | **38388310** |
+
+-   Un aspecto importante es que etnias como Wayúu ubicados en la península de la Guajira y Sikuani que se encuentran en Vichada, Meta, Guainía, Arauca, Casanare, Caquetá y Guaviare principalmente, tienen puntajes más bajos en las dos pruebas. 
 
 ```{python}
 #| fig-cap: "Analisis por etnia"
@@ -243,6 +273,10 @@ fig2=fig2.update_xaxes(tickangle=-90)
 fig2.show()
 ```
 
+-   
+
+-   Esto evidencia que factores como la ubicación geográfica son importantes en los resultados de las pruebas, ya que en algunos lugares del país es difícil el acceso a la educación. 
+
 ```{python}
 #| cache: true
 #| echo: false
@@ -261,3 +295,7 @@ pex.scatter(df2                                # fuente de datos
           # ,range_x = [20000, 40000]
             )
 ```
+
+-   Adicionalmente, la influencia cultural impacta, ya que para algunas culturas el conocimiento va más allá de lo que brinda la academia, siendo de mayor relevancia aspectos legados de sus ancestros en otros campos. 
+
+-   Para realizar la comparación por etnia, lo más indicado es hacer una corrección teniendo en cuenta la cantidad de población para cada una, ya que esto influye en los resultados. 
