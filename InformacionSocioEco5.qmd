@@ -1,0 +1,158 @@
+---
+title: Información socioeconomica (5)
+#subtitle: Inteligencia Artificial
+#author: George Vega
+#date-format: "MM-YYYY"
+#date: 16-08-2024
+cls: apa.csl
+colorlinks: true
+#bibliography: References.bib
+engine: knitr
+jupyter: python3
+execute:
+  echo: true
+  warning: false
+  error: false
+format:
+ html:
+   toc: true
+   grid:
+      sidebar-width: 200px
+      body-width: 900px
+      margin-width: 100px
+      gutter-width: 1em
+   toc-location: left
+   #fig-width: 5
+   #fig-height: 5
+   code-fold: show
+   embed-resources: true
+   self-contained-math: true
+   # other-links:
+   #    - text: Resultados Saber 11 2019-2
+   #      href: https://www.datos.gov.co/Educaci-n/2019-2-Desempe-o-en-Matem-ticas-de-los-estudiantes/3qm6-df8e
+ipynb-shell-interactivity: last
+knitr:
+  opts_chunk: 
+    collapse: true
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+```{=html}
+<style scoped>
+table {
+  font-size: 11px;
+
+}
+</style>
+```
+```{r}
+#| label: reticulate
+#| echo: false
+#| warning: false
+#| results: hide
+library(reticulate)
+reticulate::conda_list()
+Sys.setenv(RETICULATE_PYTHON = "C:/Users/GeorgeVega/anaconda3/envs/TalentoTECH")
+#Sys.setenv(RETICULATE_PYTHON = "C:/Users/ocamp/.conda/envs/TalentoTECH")
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "E:/17. TalentoTECH/Proyecto")
+#knitr::opts_knit$set(root.dir = "C:/Users/ocamp/Downloads/Proyecto")
+getwd()
+```
+
+```{python}
+#| label: paquetes
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+import plotly.express as pex
+import plotly.graph_objects as go
+import plotly.io as pio
+import seaborn as sb
+import plotly.figure_factory as ff
+```
+
+```{python}
+#| label: lectura datos
+#| warning: false
+#| echo: false
+df2 = pd.read_csv('Saber1120192_Mod.csv', header='infer')
+```
+
+```{python}
+#| cache: true
+#| echo: false
+#| results: hide
+
+df2["ESTU_DEDICACIONINTERNET"].unique()
+```
+
+```{python}
+#| layout-ncol: 2
+#| column: body-outset-right
+#| cache: true
+#| echo: false
+import plotly.graph_objects as go
+from plotly.colors import n_colors
+import numpy as np
+np.random.seed(1)
+
+# 12 sets of normal distributed random data, with increasing mean and standard deviation
+data = (np.linspace(1, 2, 5)[:, np.newaxis] * np.random.randn(5, 200) +
+            (np.arange(5) + 2 * np.random.random(5))[:, np.newaxis])
+
+colors = n_colors('rgb(5, 200, 200)', 'rgb(200, 10, 10)', 12, colortype='rgb')
+
+
+fig0 = go.Figure()
+fig0 = fig0.add_trace(go.Violin(x=df2[df2["ESTU_DEDICACIONINTERNET"]=="No Navega Internet"]["PUNT_LECTURA_CRITICA"], line_color=colors[1], name="No Navega Internet"))
+fig0 = fig0.add_trace(go.Violin(x=df2[df2["ESTU_DEDICACIONINTERNET"]=="30 minutos o menos"]["PUNT_LECTURA_CRITICA"], line_color=colors[2], name="30 minutos o menos"))
+fig0 = fig0.add_trace(go.Violin(x=df2[df2["ESTU_DEDICACIONINTERNET"]=="Entre 30 y 60 minutos"]["PUNT_LECTURA_CRITICA"], line_color=colors[3], name="Entre 30 y 60 minutos"))
+fig0 = fig0.add_trace(go.Violin(x=df2[df2["ESTU_DEDICACIONINTERNET"]=="Entre 1 y 3 horas"]["PUNT_LECTURA_CRITICA"], line_color=colors[4], name="Entre 1 y 3 horas"))
+fig0 = fig0.add_trace(go.Violin(x=df2[df2["ESTU_DEDICACIONINTERNET"]=="Más de 3 horas"]["PUNT_LECTURA_CRITICA"], line_color=colors[5], name="Más de 3 horas"))
+
+fig0 = fig0.update_traces(orientation='h', side='positive', width=3, points=False, meanline_visible=True)
+fig0 = fig0.update_layout(legend=dict(
+        x=-0.1,
+        y=-0.45,
+        traceorder="normal",
+        font=dict(
+            family="sans-serif",
+            size=12,
+            color="black"
+        ),
+    ),margin=dict(t=30, b=10, l=5, r=5),
+    yaxis=dict(title='Puntaje de lectura crítica'),
+    height=450, width=450,xaxis_showgrid=False, xaxis_zeroline=False,boxmode='group'
+)
+fig1 = go.Figure()
+fig1 =fig1.add_trace(go.Violin(x=df2[df2["ESTU_DEDICACIONINTERNET"]=="No Navega Internet"]["PUNT_MATEMATICAS"], line_color=colors[6], name="No Navega Internet"))
+fig1 =fig1.add_trace(go.Violin(x=df2[df2["ESTU_DEDICACIONINTERNET"]=="30 minutos o menos"]["PUNT_MATEMATICAS"], line_color=colors[7], name="30 minutos o menos"))
+fig1 =fig1.add_trace(go.Violin(x=df2[df2["ESTU_DEDICACIONINTERNET"]=="Entre 30 y 60 minutos"]["PUNT_MATEMATICAS"], line_color=colors[8], name="Entre 30 y 60 minutos"))
+fig1 =fig1.add_trace(go.Violin(x=df2[df2["ESTU_DEDICACIONINTERNET"]=="Entre 1 y 3 horas"]["PUNT_MATEMATICAS"], line_color=colors[9], name="Entre 1 y 3 horas"))
+fig1 =fig1.add_trace(go.Violin(x=df2[df2["ESTU_DEDICACIONINTERNET"]=="Más de 3 horas"]["PUNT_MATEMATICAS"], line_color=colors[10], name="Más de 3 horas"))
+
+fig1 =fig1.update_traces(orientation='h', side='positive', width=3, points=False, meanline_visible=True)
+fig1 =fig1.update_layout(legend=dict(
+        x=-0.1,
+        y=-0.45,
+        traceorder="normal",
+        font=dict(
+            family="sans-serif",
+            size=12,
+            color="black"
+        ),
+    ),margin=dict(t=30, b=10, l=5, r=5),
+    yaxis=dict(title='Puntaje matemáticas'),
+    height=450, width=450,xaxis_showgrid=False, xaxis_zeroline=False,boxmode='group'
+)
+
+fig0.show()
+fig1.show()
+```

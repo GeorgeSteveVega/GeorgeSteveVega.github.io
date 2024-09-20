@@ -1,5 +1,5 @@
 ---
-title: Información socioeconomica
+title: Información socioeconomica (1)
 #subtitle: Inteligencia Artificial
 #author: George Vega
 #date-format: "MM-YYYY"
@@ -54,14 +54,14 @@ table {
 #| results: hide
 library(reticulate)
 reticulate::conda_list()
-#Sys.setenv(RETICULATE_PYTHON = "C:/Users/GeorgeVega/anaconda3/envs/TalentoTECH")
-Sys.setenv(RETICULATE_PYTHON = "C:/Users/ocamp/.conda/envs/TalentoTECH")
+Sys.setenv(RETICULATE_PYTHON = "C:/Users/GeorgeVega/anaconda3/envs/TalentoTECH")
+#Sys.setenv(RETICULATE_PYTHON = "C:/Users/ocamp/.conda/envs/TalentoTECH")
 ```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-#knitr::opts_knit$set(root.dir = "E:/17. TalentoTECH/Proyecto")
-knitr::opts_knit$set(root.dir = "C:/Users/ocamp/Downloads/Proyecto")
+knitr::opts_knit$set(root.dir = "E:/17. TalentoTECH/Proyecto")
+#knitr::opts_knit$set(root.dir = "C:/Users/ocamp/Downloads/Proyecto")
 getwd()
 ```
 
@@ -90,7 +90,7 @@ df2 = pd.read_csv('Saber1120192_Mod.csv', header='infer')
 Se tienen en cuenta 24 variables que permiten identificar las condiciones de vivienda, formación académica de los padres, tipo de trabajo, ingreso, bienes, hábitos de lectura y regularidad de ingesta de algunos alimentos.
 
 | N°  | VARIABLE                      | DESCRIPCION              | ITEMS                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|-------|-------|-------|----------------------------------------------------|
+|----------|----------|----------|-----------------------------------------|
 | 15  | FAMI_ESTRATOVIVIENDA          | Estrato                  | Estrato socioeconómico de su vivienda según recibo de energía eléctrica<br>Estrato 1<br>Estrato 2<br>Estrato 3<br>Estrato 4<br>Estrato 5<br>Estrato 6<br>Sin Estrato                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | 16  | FAMI_PERSONASHOGAR            | Personas Hogar           | ¿Cuántas personas conforman el hogar donde vive actualmente, incluido usted?<br>1 a 2<br>3 a 4<br>5 a 6<br>7 a 8<br>9 o más                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | 17  | FAMI_CUARTOSHOGAR             | Cuarto Hogar             | En total, ¿en cuántos cuartos duermen las personas de su hogar?<br>Uno<br>Dos<br>Tres<br>Cuatro<br>Cinco<br>Seis o más                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
@@ -114,7 +114,7 @@ Se tienen en cuenta 24 variables que permiten identificar las condiciones de viv
 | 35  | ESTU_DEDICACIONLECTURADIARIA  | Tiempo Lectura diaria    | Usualmente, ¿cuánto tiempo al día dedica a leer por entretenimiento?<br>No leo por entretenimiento<br>30 minutos o menos<br>Entre 30 y 60 minutos<br>Entre 1 y 2 horas<br>Más de 2 horas                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | 36  | ESTU_DEDICACIONINTERNET       | Tiempo dedicado Internet | Usualmente, ¿cuánto tiempo al día dedica a navegar en internet? Excluya actividades académicas<br>No navega internet<br>30 minutos o menos<br>Entre 30 y 60 minutos<br>Entre 1 y 3 horas<br>Mas de 3 horas                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | 37  | ESTU_HORASSEMANATRABAJA       | Horas laborales          | ¿Cuántas horas trabajó usted durante la semana pasada?<br>0<br>Menos de 10 horas<br>Entre 11 y 20 horas<br>Entre 21 y 30 horas<br>Más de 30 horas                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| 38  | ESTU_TIPOREMUNERACION         | Tipo de remuneracion     | ¿Usted recibe algún tipo de remuneración por trabajar?<br>No<br>Sí, en efectivo<br>Sí, en especie<br>Sí, en efectivo y en especie                                              
+| 38  | ESTU_TIPOREMUNERACION         | Tipo de remuneracion     | ¿Usted recibe algún tipo de remuneración por trabajar?<br>No<br>Sí, en efectivo<br>Sí, en especie<br>Sí, en efectivo y en especie                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 
 ```{python}
 #| layout-ncol: 2

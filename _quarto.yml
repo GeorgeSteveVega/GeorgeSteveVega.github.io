@@ -33,6 +33,9 @@ website:
           - InformacionSocioEco.qmd
           - InformacionSocioEco2.qmd
           - InformacionSocioEco3.qmd
+          - InformacionSocioEco4.qmd
+          - InformacionSocioEco5.qmd
+          - InformacionColegio.qmd
          
           # navigation items
 

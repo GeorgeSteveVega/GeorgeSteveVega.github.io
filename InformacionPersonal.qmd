@@ -54,14 +54,14 @@ table {
 #| results: hide
 library(reticulate)
 reticulate::conda_list()
-#Sys.setenv(RETICULATE_PYTHON = "C:/Users/GeorgeVega/anaconda3/envs/TalentoTECH")
-Sys.setenv(RETICULATE_PYTHON = "C:/Users/ocamp/.conda/envs/TalentoTECH")
+Sys.setenv(RETICULATE_PYTHON = "C:/Users/GeorgeVega/anaconda3/envs/TalentoTECH")
+#Sys.setenv(RETICULATE_PYTHON = "C:/Users/ocamp/.conda/envs/TalentoTECH")
 ```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-#knitr::opts_knit$set(root.dir = "E:/17. TalentoTECH/Proyecto")
-knitr::opts_knit$set(root.dir = "C:/Users/ocamp/Downloads/Proyecto")
+knitr::opts_knit$set(root.dir = "E:/17. TalentoTECH/Proyecto")
+#knitr::opts_knit$set(root.dir = "C:/Users/ocamp/Downloads/Proyecto")
 getwd()
 ```
 

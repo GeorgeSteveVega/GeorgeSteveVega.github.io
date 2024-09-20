@@ -1,0 +1,228 @@
+---
+title: Información colegio
+#subtitle: Inteligencia Artificial
+#author: George Vega
+#date-format: "MM-YYYY"
+#date: 16-08-2024
+cls: apa.csl
+colorlinks: true
+#bibliography: References.bib
+engine: knitr
+jupyter: python3
+execute:
+  echo: true
+  warning: false
+  error: false
+format:
+ html:
+   toc: true
+   grid:
+      sidebar-width: 200px
+      body-width: 900px
+      margin-width: 100px
+      gutter-width: 1em
+   toc-location: left
+   #fig-width: 5
+   #fig-height: 5
+   code-fold: show
+   embed-resources: true
+   self-contained-math: true
+   # other-links:
+   #    - text: Resultados Saber 11 2019-2
+   #      href: https://www.datos.gov.co/Educaci-n/2019-2-Desempe-o-en-Matem-ticas-de-los-estudiantes/3qm6-df8e
+ipynb-shell-interactivity: last
+knitr:
+  opts_chunk: 
+    collapse: true
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+```{=html}
+<style scoped>
+table {
+  font-size: 11px;
+
+}
+</style>
+```
+```{r}
+#| label: reticulate
+#| echo: false
+#| warning: false
+#| results: hide
+library(reticulate)
+reticulate::conda_list()
+Sys.setenv(RETICULATE_PYTHON = "C:/Users/GeorgeVega/anaconda3/envs/TalentoTECH")
+#Sys.setenv(RETICULATE_PYTHON = "C:/Users/ocamp/.conda/envs/TalentoTECH")
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "E:/17. TalentoTECH/Proyecto")
+#knitr::opts_knit$set(root.dir = "C:/Users/ocamp/Downloads/Proyecto")
+getwd()
+```
+
+```{python}
+#| label: paquetes
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+import plotly.express as pex
+import plotly.graph_objects as go
+import plotly.io as pio
+import seaborn as sb
+import plotly.figure_factory as ff
+```
+
+```{python}
+#| label: lectura datos
+#| warning: false
+#| echo: false
+df2 = pd.read_csv('Saber1120192_Mod.csv', header='infer')
+```
+
+Constituida de 17 variables que permiten identificar el tipo de educación recibida, ubicación y jornada de estudio.
+
+| N°  | VARIABLE                      | DESCRIPCION                   | ITEMS                                                                                              |
+|-----|-------------------------------|-------------------------------|----------------------------------------------------------------------------------------------------|
+| 39  | COLE_CODIGO_ICFES             | Codigo ICFES Colegio          | Código Icfes de la sede-jornada<br>Numérica                                                        |
+| 40  | COLE_COD_DANE_ESTABLECIMIENTO | Codigo DANE Colegio           | Código Dane del Establecimiento Educativo<br>Numérica                                              |
+| 41  | COLE_NOMBRE_ESTABLECIMIENTO   | Colegio                       | Nombre del Establecimiento<br>Texto                                                                |
+| 42  | COLE_GENERO                   | Genero Colegio                | Indica el género de la población del Establecimiento.<br>Femenino<br>Masculino<br>Mixto            |
+| 43  | COLE_NATURALEZA               | Tipo de colegio               | Indica la naturaleza del Establecimiento<br>No oficial<br>Oficial                                  |
+| 44  | COLE_CALENDARIO               | Calendario                    | Calendario académico del Establecimiento<br>A<br>B<br>Otro                                         |
+| 45  | COLE_BILINGUE                 | Colegio Bilingüe              | Indica si el Establecimiento es bilingüe o no<br>N - No<br>S - Sí                                  |
+| 46  | COLE_CARACTER                 | Carácter del colegio          | Indica el carácter del Establecimiento<br>Académico<br>Técnico<br>Técnico / Académico<br>No aplica |
+| 47  | COLE_COD_DANE_SEDE            | Codigo dane Sede Colegio      | Código Dane de la Sede<br>Numérica                                                                 |
+| 48  | COLE_NOMBRE_SEDE              | Nombre Sede                   | Nombre de la Sede<br>Texto                                                                         |
+| 49  | COLE_SEDE_PRINCIPAL           | Sede Principal                | ¿Esta es la sede principal del Establecimiento Educativo?<br>N - No<br>S - Sí                      |
+| 50  | COLE_AREA_UBICACION           | Zona                          | Área de ubicación de la Sede<br>Rural<br>Urbana                                                    |
+| 51  | COLE_JORNADA                  | Jornada                       | Jornada de la Sede<br>Completa<br>Mañana<br>Noche<br>Sabatina<br>Tarde<br>Única                    |
+| 52  | COLE_COD_MCPIO_UBICACION      | Codigo Ubicación Municipio    | Código Dane del municipio donde está ubicada la Sede<br>Numérica                                   |
+| 53  | COLE_MCPIO_UBICACION          | Ubicación Municipio           | Nombre del municipio donde está ubicada la Sede<br>Texto                                           |
+| 54  | COLE_COD_DEPTO_UBICACION      | Codigo Ubicación Departamento | Código Dane del departamento<br>de la Sede<br>Numérica                                             |
+| 55  | COLE_DEPTO_UBICACION          | Ubicación Departamento        | Nombre del departamento donde está ubicada la Sede<br>Texto                                        |
+
+```{python}
+#| cache: true
+#| echo: false
+import plotly.express as px
+
+fig = px.scatter(df2, x=df2['PUNT_MATEMATICAS'],  y=df2['PUNT_LECTURA_CRITICA'], color=df2["COLE_JORNADA"],symbol=df2["COLE_JORNADA"],
+                 marginal_x="histogram", marginal_y="histogram",
+                  title="Click on the legend items!")
+fig = fig.update_layout(legend=dict(
+        x=-0.1,
+        y=-0.5,
+        traceorder="normal",
+        font=dict(
+            family="sans-serif",
+            size=12,
+            color="black"
+        ),
+    ),margin=dict(t=30, b=10, l=5, r=5),
+    yaxis=dict(title='Puntaje de lectura crítica'),
+    xaxis=dict(title='Puntaje de matematicas'),
+    height=700, width=700,xaxis_showgrid=True, xaxis_zeroline=True,boxmode='group'
+)
+# x1=0.8358,x2=0.8408
+x1_, x2_ = 0.61, 0.615
+# y1=0.7326, y2=0.7426
+y1_, y2_ = 0.6, 0.605
+fig.layout.xaxis.domain = (0.0, x1_)
+fig.layout.xaxis2.domain = (x2_, 1.0)
+fig.layout.xaxis3.domain = (0.0, x1_)
+fig.layout.xaxis4.domain = (x2_, 1.0)
+fig.layout.yaxis.domain = (0.0, y1_)
+fig.layout.yaxis2.domain = (0.0, y1_)
+fig.layout.yaxis3.domain = (y2_, 1.0)
+fig.layout.yaxis4.domain = (y2_, 1.0)
+
+fig.show()
+```
+
+```{python}
+#| layout-ncol: 2
+#| column: body-outset-right
+#| cache: true
+#| echo: false
+
+import plotly.express as px
+
+fig3 = px.histogram(df2, x=df2['PUNT_MATEMATICAS'], color=df2["COLE_NATURALEZA"], marginal="box" # can be `box`, `violin`
+                         )
+fig3 =fig3.update_layout(legend=dict(
+        x=-0.1,
+        y=-0.45,
+        traceorder="normal",
+        font=dict(
+            family="sans-serif",
+            size=12,
+            color="black"
+        ),
+    ),legend_title="Tipo de colegio",margin=dict(t=30, b=10, l=5, r=5),
+    xaxis=dict(title='Puntaje de matemáticas'),
+    height=450, width=450,xaxis_showgrid=False, xaxis_zeroline=False,boxmode='group'
+)
+
+fig3 =fig3.update_traces(opacity=0.85)
+newnames = {'OFICIAL':'Publico', 'NO OFICIAL': 'Privado'}
+fig3 =fig3.for_each_trace(lambda t: t.update(name = newnames[t.name],
+                                      legendgroup = newnames[t.name],
+                                      hovertemplate = t.hovertemplate.replace(t.name, newnames[t.name])
+                                     )
+                  )
+
+fig4 = px.histogram(df2, x=df2['PUNT_LECTURA_CRITICA'], color=df2["COLE_NATURALEZA"], marginal="box" # can be `box`, `violin`
+                         )
+fig4=fig4.update_layout(legend=dict(
+        x=-0.1,
+        y=-0.45,
+        traceorder="normal",
+        font=dict(
+            family="sans-serif",
+            size=12,
+            color="black"
+        ),
+    ),legend_title="Tipo de colegio",margin=dict(t=30, b=10, l=5, r=5),
+    xaxis=dict(title='Puntaje de lectura crítica'),
+    height=450, width=450,xaxis_showgrid=False, xaxis_zeroline=False,boxmode='group'
+)
+
+fig4=fig4.update_traces(opacity=0.85)
+fig4=fig4.for_each_trace(lambda t: t.update(name = newnames[t.name],
+                                      legendgroup = newnames[t.name],
+                                      hovertemplate = t.hovertemplate.replace(t.name, newnames[t.name])
+                                     )
+                  )
+
+fig3.show()
+fig4.show()
+```
+
+```{python}
+#| layout-ncol: 2
+#| column: body-outset-right
+#| cache: true
+#| echo: false
+
+import plotly.express as px
+df = px.data.tips()
+
+fig = px.density_heatmap(df2, x=df2[df2["COLE_AREA_UBICACION"]=="RURAL"]["PUNT_MATEMATICAS"], y=df2[df2["COLE_AREA_UBICACION"]=="RURAL"]["PUNT_LECTURA_CRITICA"], text_auto=False, title="Zona rural")
+fig =fig.update_layout(margin=dict(t=30, b=10, l=5, r=5),
+    yaxis=dict(title='Puntaje de lectura crítica'),
+    xaxis=dict(title='Puntaje de matematicas'),
+    height=400, width=400)
+fig1 = px.density_heatmap(df2, x=df2[df2["COLE_AREA_UBICACION"]=="URBANO"]["PUNT_MATEMATICAS"], y=df2[df2["COLE_AREA_UBICACION"]=="URBANO"]["PUNT_LECTURA_CRITICA"], text_auto=False, title="Zona urbana")
+fig1 =fig1.update_layout(margin=dict(t=30, b=10, l=5, r=5),
+    yaxis=dict(title='Puntaje de lectura crítica'),
+    xaxis=dict(title='Puntaje de matematicas'),
+    height=400, width=400)
+fig.show()
+fig1.show()
+```

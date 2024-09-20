@@ -1,0 +1,254 @@
+---
+title: Información socioeconomica (4)
+#subtitle: Inteligencia Artificial
+#author: George Vega
+#date-format: "MM-YYYY"
+#date: 16-08-2024
+cls: apa.csl
+colorlinks: true
+#bibliography: References.bib
+engine: knitr
+jupyter: python3
+execute:
+  echo: true
+  warning: false
+  error: false
+format:
+ html:
+   toc: true
+   grid:
+      sidebar-width: 200px
+      body-width: 900px
+      margin-width: 100px
+      gutter-width: 1em
+   toc-location: left
+   #fig-width: 5
+   #fig-height: 5
+   code-fold: show
+   embed-resources: true
+   self-contained-math: true
+   # other-links:
+   #    - text: Resultados Saber 11 2019-2
+   #      href: https://www.datos.gov.co/Educaci-n/2019-2-Desempe-o-en-Matem-ticas-de-los-estudiantes/3qm6-df8e
+ipynb-shell-interactivity: last
+knitr:
+  opts_chunk: 
+    collapse: true
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+```{=html}
+<style scoped>
+table {
+  font-size: 11px;
+
+}
+</style>
+```
+```{r}
+#| label: reticulate
+#| echo: false
+#| warning: false
+#| results: hide
+library(reticulate)
+reticulate::conda_list()
+Sys.setenv(RETICULATE_PYTHON = "C:/Users/GeorgeVega/anaconda3/envs/TalentoTECH")
+#Sys.setenv(RETICULATE_PYTHON = "C:/Users/ocamp/.conda/envs/TalentoTECH")
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "E:/17. TalentoTECH/Proyecto")
+#knitr::opts_knit$set(root.dir = "C:/Users/ocamp/Downloads/Proyecto")
+getwd()
+```
+
+```{python}
+#| label: paquetes
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+import plotly.express as pex
+import plotly.graph_objects as go
+import plotly.io as pio
+import seaborn as sb
+import plotly.figure_factory as ff
+```
+
+```{python}
+#| label: lectura datos
+#| warning: false
+#| echo: false
+df2 = pd.read_csv('Saber1120192_Mod.csv', header='infer')
+```
+
+```{python}
+#| cache: true
+#| echo: false
+import plotly.express as px
+
+HorasTrabajo = ['0', 'Menos de 10 horas', 'Entre 11 y 20 horas', 'Entre 21 y 30 horas', 'Más de 30 horas']
+df2["ESTU_HORASSEMANATRABAJA"]= pd.Categorical(df2["ESTU_HORASSEMANATRABAJA"],categories= HorasTrabajo)
+df9 =  df2.sort_values(by='ESTU_HORASSEMANATRABAJA')
+
+
+fig = px.scatter(df9, x=df9['PUNT_MATEMATICAS'], y=df9['PUNT_LECTURA_CRITICA'], facet_col=df9["ESTU_HORASSEMANATRABAJA"], color=df9["ESTU_TIPOREMUNERACION"])
+fig=fig.update_layout(legend=dict(
+        x=-0.1,
+        y=-0.55,
+        traceorder="normal",
+        font=dict(
+            family="sans-serif",
+            size=12,
+            color="black"
+        ),
+    ),title="Puntajes  vs Horas laborales",
+    margin=dict(t=50, b=10, l=5, r=5),
+    yaxis=dict(title='Puntaje de lectura crítica'),
+    xaxis=dict(title='Puntaje de matemáticas'),
+    boxmode='group',height=500, width=900
+)
+fig=fig.update_xaxes(title_text="Puntaje matemáticas")
+fig=fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+fig.show()
+```
+
+```{python}
+#| cache: true
+#| echo: false
+df10=df2[["PUNT_MATEMATICAS", "PUNT_LECTURA_CRITICA","FAMI_COMELECHEDERIVADOS"]]
+df10["CONSUMO"] = "Leche y derivados"
+df10=df10.rename(columns={"FAMI_COMELECHEDERIVADOS":"CANTIDAD"})
+
+```
+
+```{python}
+#| cache: true
+#| echo: false
+df11=df2[["PUNT_MATEMATICAS", "PUNT_LECTURA_CRITICA","FAMI_COMECARNEPESCADOHUEVO"]]
+df11["CONSUMO"] = "Proteina"
+df11=df11.rename(columns={"FAMI_COMECARNEPESCADOHUEVO": "CANTIDAD"})
+```
+
+```{python}
+#| cache: true
+#| echo: false
+df12=df2[["PUNT_MATEMATICAS", "PUNT_LECTURA_CRITICA","FAMI_COMECEREALFRUTOSLEGUMBRE"]]
+df12["CONSUMO"] = "Verduras y frutas"
+df12=df12.rename(columns={"FAMI_COMECEREALFRUTOSLEGUMBRE": "CANTIDAD"})
+```
+
+```{python}
+#| cache: true
+#| echo: false
+df14 = pd.concat([df10,df11,df12],ignore_index=True)
+```
+
+```{python}
+#| layout-ncol: 2
+#| column: body-outset-right
+#| cache: true
+#| echo: false
+import plotly.graph_objects as go
+
+
+fig = go.Figure()
+
+fig =fig.add_trace(go.Box(
+    y=df14[df14["CANTIDAD"]=="Nunca o rara vez comemos eso"]["PUNT_MATEMATICAS"],
+    x=df14[df14["CANTIDAD"]=="Nunca o rara vez comemos eso"]["CONSUMO"],
+    name='Nunca o rara vez comemos eso',
+    marker_color='green'
+))
+
+fig =fig.add_trace(go.Box(
+    y=df14[df14["CANTIDAD"]=="1 o 2 veces por semana"]["PUNT_MATEMATICAS"],
+    x=df14[df14["CANTIDAD"]=="1 o 2 veces por semana"]["CONSUMO"],
+    name='1 o 2 veces por semana',
+    marker_color='red'
+))
+
+fig =fig.add_trace(go.Box(
+    y=df14[df14["CANTIDAD"]=="3 a 5 veces por semana"]["PUNT_MATEMATICAS"],
+    x=df14[df14["CANTIDAD"]=="3 a 5 veces por semana"]["CONSUMO"],
+    name='3 a 5 veces por semana',
+    marker_color='blue'
+))
+
+fig =fig.add_trace(go.Box(
+    y=df14[df14["CANTIDAD"]=="Todos o casi todos los días"]["PUNT_MATEMATICAS"],
+    x=df14[df14["CANTIDAD"]=="Todos o casi todos los días"]["CONSUMO"],
+    name='Todos o casi todos los días',
+    marker_color='magenta'
+))
+
+
+
+fig =fig=fig.update_layout(legend=dict(
+        x=-0.1,
+        y=-0.45,
+        traceorder="normal",
+        font=dict(
+            family="sans-serif",
+            size=12,
+            color="black"
+        ),
+    ),title="Puntajes en función de la alimentación",
+    margin=dict(t=30, b=10, l=5, r=5),
+    yaxis=dict(title='Puntaje de matemáticas'),
+    boxmode='group',height=400, width=400
+)
+
+fig1 = go.Figure()
+
+fig1 =fig1.add_trace(go.Box(
+    y=df14[df14["CANTIDAD"]=="Nunca o rara vez comemos eso"]["PUNT_LECTURA_CRITICA"],
+    x=df14[df14["CANTIDAD"]=="Nunca o rara vez comemos eso"]["CONSUMO"],
+    name='Nunca o rara vez comemos eso',
+    marker_color='darkgreen'
+))
+
+fig1 =fig1.add_trace(go.Box(
+    y=df14[df14["CANTIDAD"]=="1 o 2 veces por semana"]["PUNT_LECTURA_CRITICA"],
+    x=df14[df14["CANTIDAD"]=="1 o 2 veces por semana"]["CONSUMO"],
+    name='1 o 2 veces por semana',
+    marker_color='crimson'
+))
+
+fig1 =fig1.add_trace(go.Box(
+    y=df14[df14["CANTIDAD"]=="3 a 5 veces por semana"]["PUNT_LECTURA_CRITICA"],
+    x=df14[df14["CANTIDAD"]=="3 a 5 veces por semana"]["CONSUMO"],
+    name='3 a 5 veces por semana',
+    marker_color='dodgerblue'
+))
+
+fig1 =fig1.add_trace(go.Box(
+    y=df14[df14["CANTIDAD"]=="Todos o casi todos los días"]["PUNT_LECTURA_CRITICA"],
+    x=df14[df14["CANTIDAD"]=="Todos o casi todos los días"]["CONSUMO"],
+    name='Todos o casi todos los días',
+    marker_color='deeppink'
+))
+
+
+fig1=fig1.update_layout(legend=dict(
+        x=-0.1,
+        y=-0.45,
+        traceorder="normal",
+        font=dict(
+            family="sans-serif",
+            size=12,
+            color="black"
+        ),
+    ),margin=dict(t=30, b=10, l=5, r=5),
+    yaxis=dict(title='Puntaje de lectura crítica'),
+    boxmode='group',height=400, width=400
+)
+
+
+
+fig.show()
+fig1.show()
+```
